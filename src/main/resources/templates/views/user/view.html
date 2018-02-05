@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <h4 class="float-left mt-2">User : View</h4>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 th:text="${user.firstName} + ' ' + ${user.infix != null ? user.infix + ' ':''} + ${user.lastName}">Naam ...</h2>
+                    <div class="row">
+                        <div class="col-xs-4">ID</div>
+                        <div class="col-xs-8">
+                            <p><span th:text="${user.id}">ID</span><br/></p>
+                        </div>
+                        <div class="col-xs-4">Email</div>
+                        <div class="col-xs-8">
+                            <p><span th:text="${user.email}">Email</span><br/></p>
+                        </div>
+                        <div class="col-xs-4">Phone</div>
+                        <div class="col-xs-8">
+                            <p th:text="${user.phone}">Phone ...</p>
+                        </div>
+                        <div class="col-xs-4">Date of Birth</div>
+                        <!--<div class="col-xs-9"><p th:text="${#dates.format(user.dateOfBirth, 'dd MMM yyyy')}">Date of birth...</p>-->
+                        <div class="col-xs-8"><p th:text="${user.dateOfBirth}">Date of birth...</p>
+                        </div>
+                        <div class="col-xs-4">Created at</div>
+                        <div class="col-xs-8"><p th:text="${#dates.format(user.created, 'dd MMM yyyy  -  HH:mm')}">Created at...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="float-right mt-2" style="margin-bottom: 10px;">
+                    <a class="btn btn-primary btn-sm" th:href="@{/user/}">Users</a>
+                </div>
+                <br/>
+                <div class="float-right mt-2" style="margin-bottom: 10px;">
+                    <a class="btn btn-warning btn-sm" th:href="@{/user/{id}/edit(id=${user.id})}">Edit user</a>
+                </div>
+                <br/>
+                <div class="float-right mt-2" style="margin-bottom: 10px;">
+                    <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">Delete user</a>
+                    <div th:include="fragments :: modal(${'/user/' + user.id + '/delete'}, ${'/user/'}, ${'user'})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>

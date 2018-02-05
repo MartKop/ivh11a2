@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:fragment="head">
+		<title th:text="${title ?: 'Empty Title'}" ></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
+		<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
+		<link th:href="@{/css/custom.css}" rel="stylesheet" media="screen" />
+
+		<!--<link href="https://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" rel="stylesheet" media="screen" />-->
+		<!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css" th:src="@{/webjars/bootstrap-select/1.9.4/bootstrap-select.min.css}" rel="stylesheet" media="screen" />-->
+		<!--<link href="../static/css/core.css" th:href="@{/css/core.css}" rel="stylesheet" media="screen" />-->
+		<!--<link href="../static/css/sticky-footer-navbar.css" th:href="@{/css/sticky-footer-navbar.css}" rel="stylesheet" media="screen" />-->
+		<!--<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"/>-->
+	</head>
+	<body>
+		<div th:fragment="header" class="header" >
+
+			<nav th:fragment="navbar" class="navbar navbar-toggleable-md navbar-light bg-faded">
+				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<a class="navbar-brand" href="#">Navbar</a>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#">Disabled</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<th:block layout:fragment="flash">
+				<div th:if="${flash}">
+					<div class="alert alert-dismissable" th:classappend="'alert-' + ${flash.type}">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<th:block layout:fragment="alert-content">
+							<p th:text="${flash.text}">Default alert content</p>
+						</th:block>
+					</div>
+				</div>
+			</th:block>
+
+			<!--<div th:fragment="flash">-->
+				<!--<div th:if="${flash}" th:class="'alert alert-' + ${flash.type}" th:text="${}">Some Success message</div>-->
+			<!--</div>-->
+		</div> <!-- Close containter -->
+
+		<!-- Modal -->
+		<div th:fragment="modal(deleteUrl, endpoint, what)">
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel" th:text="${'Delete ' + what}">delete object</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p th:text="${'Are you sure you want to delete this ' + what + '?'}"></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondaryy" data-dismiss="modal">cancel</button>
+							<div>
+								<button type="button" class="btn btn-danger"
+										th:onclick="'javascript:sendAjaxDeleteRequest(\'' + ${deleteUrl} + '\',\'' + ${endpoint} +  '\',\'' + ${what} + '\');'">delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:fragment="scripts">
+			<script>
+                function sendAjaxDeleteRequest(where, endpoint, what) {
+                    $.ajax({
+                        url: where,
+                        type: 'DELETE',
+                        success: function(result) {
+                            location.href = endpoint
+                        },
+                        error: function(result) {
+                            alert('Error: ' + what + 'function could not be executed.');
+                        }
+                    });
+                }
+			</script>
+
+			<script src="http://cdn.jsdelivr.net/webjars/jquery/2.2.1/jquery.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+			<script src="http://cdn.jsdelivr.net/webjars/bootstrap/4.0.0/js/bootstrap.min.js" th:href="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+			<!--<script src="http://cdn.jsdelivr.net/webjars/jquery/2.2.1/jquery.min.js" th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"></script>-->
+			<!--<script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/js/bootstrap.min.js" th:href="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>-->
+		</div>
+	</body>
+</html>

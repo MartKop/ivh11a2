@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+    <div class="container">
+        <div th:include="fragments :: header"></div>
+
+            <h1>Error page</h1><br/>
+            <h1 th:text="${exception.class.name}">Error page</h1><br/>
+            <h3 th:text="${'at url: ' + url}"></h3>
+            <h3 th:text="${exception.message}" class="lead">Er is een fout opgetreden.</h3>
+    </div>
+
+    <div th:include="fragments :: scripts"></div>
+</body>
+</html>
