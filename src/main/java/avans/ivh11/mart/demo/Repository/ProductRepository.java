@@ -1,12 +1,10 @@
 package avans.ivh11.mart.demo.Repository;
 
-import avans.ivh11.mart.demo.Model.User;
+import avans.ivh11.mart.demo.Domain.Product;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
 
 @Transactional
-public interface UserRepository extends CrudRepository<User, Long> {
-
-	public User findByEmail(String email);
+public interface ProductRepository extends CrudRepository<Product, Long> {
 }

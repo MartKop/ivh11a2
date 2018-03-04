@@ -1,8 +1,11 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Model.User;
-import avans.ivh11.mart.demo.Repository.UserRepository;
-import org.apache.log4j.Logger;
+import avans.ivh11.mart.demo.Domain.BaseUser;
+import avans.ivh11.mart.demo.Domain.UnregisteredUser;
+import avans.ivh11.mart.demo.Repository.BaseUserRepository;
+import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
+import avans.ivh11.mart.demo.Repository.UnregisteredUserRepository;
+import avans.ivh11.mart.demo.Service.FlashService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -21,15 +25,22 @@ public class UserController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private FlashService flashService;
 
-    public UserController() {
+    @Autowired
+    private UnregisteredUserRepository unregisteredUserRepository;
 
-    }
+    @Autowired
+    private RegisteredUserRepository registeredUserRepository;
+
+
+    @Autowired
+    public UserController() {}
 
     @GetMapping
     public ModelAndView list() {
-        Iterable<User> users = this.userRepository.findAll();
+        Iterable<UnregisteredUser> users = this.unregisteredUserRepository.findAll();
+
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - List");
         mav.addObject("users", users);
@@ -40,7 +51,7 @@ public class UserController {
 
     @GetMapping(value = "{id}")
     public ModelAndView view(@PathVariable("id") String userId) {
-        User user = this.userRepository.findOne(Long.parseLong(userId));
+        UnregisteredUser user = (UnregisteredUser) this.unregisteredUserRepository.findOne(Long.parseLong(userId));
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - " + userId);
         mav.addObject("user", user);
@@ -50,8 +61,9 @@ public class UserController {
     }
 
     @GetMapping(value = "create")
-    public ModelAndView createForm(@ModelAttribute User user) {
+    public ModelAndView createForm(@ModelAttribute UnregisteredUser user) {
         ModelAndView mav = new ModelAndView();
+        mav.addObject("user", new UnregisteredUser());
         mav.addObject("title", "User - Create");
         mav.setViewName("views/user/form");
 
@@ -59,7 +71,8 @@ public class UserController {
     }
 
     @PostMapping(value = "create")
-    public ModelAndView create(@Valid User user, BindingResult result, RedirectAttributes redirect) {
+    //public ModelAndView create(@Valid UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
+    public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
         ModelAndView mav = new ModelAndView();
 
         if (result.hasErrors()) {
@@ -70,10 +83,10 @@ public class UserController {
             return mav;
         }
 
-        user = this.userRepository.save(user);
+        this.unregisteredUserRepository.save(user);
         mav.addObject("user.id", user.getId());
         mav.setViewName("redirect:/user/{user.id}");
-        redirect.addFlashAttribute("flash", this.createFlash("success", "Successfully created a new user"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully created a new user"));
 
         return mav;
     }
@@ -82,7 +95,7 @@ public class UserController {
     public ModelAndView modifyForm(@PathVariable("id") String userId) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - Edit");
-        mav.addObject("user", this.userRepository.findOne(Long.parseLong(userId)));
+        mav.addObject("user", this.unregisteredUserRepository.findOne(Long.parseLong(userId)));
         mav.addObject("edit", true);
         mav.setViewName("views/user/form");
 
@@ -90,7 +103,7 @@ public class UserController {
     }
 
     @PostMapping(value = "{id}/edit")
-    public ModelAndView updateUser(@Valid User user, BindingResult result, RedirectAttributes redirect) {
+    public ModelAndView updateUser(@Valid UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
         ModelAndView mav = new ModelAndView();
 
         if (result.hasErrors()) {
@@ -102,28 +115,26 @@ public class UserController {
             return mav;
         }
 
-        user = this.userRepository.save(user);
+        this.unregisteredUserRepository.save(user);
         mav.addObject("user.id", user.getId());
         mav.setViewName("redirect:/user/{user.id}");
-        redirect.addFlashAttribute("flash", this.createFlash("success", "Successfully updated user " + user.getId()));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully updated user " + user.getId()));
 
         return mav;
     }
 
     @DeleteMapping(value = "{id}/delete")
     public ModelAndView delete(@PathVariable("id") Long id) {
-        this.userRepository.delete(id);
-        Iterable<User> users = this.userRepository.findAll();
+        this.unregisteredUserRepository.delete(id);
 
-        return new ModelAndView("views/user/list", "users", users);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "User - List");
+        mav.addObject("users", this.unregisteredUserRepository.findAll());
+        mav.addObject("flash", this.flashService.createFlash("success", "Succesfully deleted user" + id));
+        mav.setViewName("redirect:/user/");
+
+        return mav;
     }
 
-    private HashMap<String, String> createFlash(String type, String text)
-    {
-        HashMap<String, String> flash = new HashMap<>();
-        flash.put("type", type);
-        flash.put("text", text);
 
-        return flash;
-    }
 }

@@ -5,7 +5,7 @@
 <div class="container">
     <div th:include="fragments :: header"></div>
 
-    <h4 class="float-left mt-2">User : View</h4>
+    <h4>User : View</h4>
 
     <div class="row">
         <div class="col-sm-6">
@@ -39,17 +39,17 @@
 
         <div class="col-sm-3">
             <div class="row">
-                <div class="float-right mt-2" style="margin-bottom: 10px;">
+                <div class="col-sm-12" style="margin-bottom: 10px;">
                     <a class="btn btn-primary btn-sm" th:href="@{/user/}">Users</a>
                 </div>
-                <br/>
-                <div class="float-right mt-2" style="margin-bottom: 10px;">
+
+                <div class="col-sm-12" style="margin-bottom: 10px;">
                     <a class="btn btn-warning btn-sm" th:href="@{/user/{id}/edit(id=${user.id})}">Edit user</a>
                 </div>
-                <br/>
-                <div class="float-right mt-2" style="margin-bottom: 10px;">
-                    <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">Delete user</a>
-                    <div th:include="fragments :: modal(${'/user/' + user.id + '/delete'}, ${'/user/'}, ${'user'})"></div>
+
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <a class="btn btn-danger btn-sm" data-toggle="modal" th:attr="data-target='#myModal'+${user.id}">Delete user</a>
+                    <div th:include="fragments :: modal(${'user'}, ${user.id})"></div>
                 </div>
             </div>
         </div>

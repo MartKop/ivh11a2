@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <h4>Product : View</h4>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 th:text="${product.name}">Name ...</h2>
+                    <div class="row">
+                        <div class="col-xs-4">ID</div>
+                        <div class="col-xs-8">
+                            <p><span th:text="${product.id}">ID</span><br/></p>
+                        </div>
+                        <div class="col-xs-4">Model Number</div>
+                        <div class="col-xs-8">
+                            <p><span th:text="${product.modelNumber}">Model Nr</span><br/></p>
+                        </div>
+                        <div class="col-xs-4">Description</div>
+                        <div class="col-xs-8">
+                            <p th:text="${product.description}">Description ...</p>
+                        </div>
+                        <div class="col-xs-4">Manufacturer</div>
+                        <div class="col-xs-8"><p th:text="${product.manufacturer}">Manufacturer...</p>
+                        </div>
+                        <div class="col-xs-4">Price</div>
+                        <div class="col-xs-8"><p th:text="${'€' + product.price}">Price ...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <p>Photo : <span th:text="${product.photo}"></span></p>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <a class="btn btn-primary btn-sm" th:href="@{/product/}">Products</a>
+                </div>
+
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <a class="btn btn-warning btn-sm" th:href="@{/product/{id}/edit(id=${product.id})}">Edit product</a>
+                </div>
+
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">Delete product</a>
+                    <div th:include="fragments :: modal(${'/product/' + product.id + '/delete'}, ${'/product/'}, ${'product'})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>

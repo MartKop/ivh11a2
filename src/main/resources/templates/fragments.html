@@ -25,14 +25,20 @@
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav">
 						<li class="nav-item active">
-							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						<li sec:authorize="isAnonymous()" class="nav-item active">
+							<a class="nav-link" th:href="@{/login}">Login <span class="sr-only">(current)</span></a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						<li sec:authorize="isAuthenticated()" class="nav-item">
+							<a class="nav-link" th:href="@{/logout}">Logout <span class="sr-only">(current)</span></a>
 						</li>
+						<!--<li sec:authorize="#{isAuthenticated()}">-->
+							<!--<a th:href="@{/logout}">Log out</a>-->
+						<!--</li>-->
+						<!--<li sec:authorize="#{isAnonymous()}">-->
+							<!--<a th:href="@{/login}">Log in</a>-->
+						<!--</li>-->
 						<li class="nav-item">
 							<a class="nav-link disabled" href="#">Disabled</a>
 						</li>
@@ -40,11 +46,11 @@
 				</div>
 			</nav>
 
-			<th:block layout:fragment="flash">
+			<th:block fragment="flash">
 				<div th:if="${flash}">
 					<div class="alert alert-dismissable" th:classappend="'alert-' + ${flash.type}">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<th:block layout:fragment="alert-content">
+						<th:block fragment="alert-content">
 							<p th:text="${flash.text}">Default alert content</p>
 						</th:block>
 					</div>
@@ -52,13 +58,13 @@
 			</th:block>
 
 			<!--<div th:fragment="flash">-->
-				<!--<div th:if="${flash}" th:class="'alert alert-' + ${flash.type}" th:text="${}">Some Success message</div>-->
+				<!--<div th:if="${flash}" th:class="'alert alert-' + ${flash.type}" th:text="${flash.text}">Some Success message</div>-->
 			<!--</div>-->
 		</div> <!-- Close containter -->
 
 		<!-- Modal -->
-		<div th:fragment="modal(deleteUrl, endpoint, what)">
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div th:fragment="modal(what, id)">
+			<div class="modal fade" th:id="${'myModal' + id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -72,7 +78,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondaryy" data-dismiss="modal">cancel</button>
-							<div>
+							<div th:with="deleteUrl=${'/' + what + '/' + id + '/delete'}, endpoint=${'/' + what + '/'}">
 								<button type="button" class="btn btn-danger"
 										th:onclick="'javascript:sendAjaxDeleteRequest(\'' + ${deleteUrl} + '\',\'' + ${endpoint} +  '\',\'' + ${what} + '\');'">delete</button>
 							</div>

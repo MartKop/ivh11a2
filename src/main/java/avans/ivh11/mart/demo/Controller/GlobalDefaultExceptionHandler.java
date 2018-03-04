@@ -1,39 +1,53 @@
 package avans.ivh11.mart.demo.Controller;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @ControllerAdvice
 class GlobalDefaultExceptionHandler {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
-    public static final String DEFAULT_ERROR_VIEW = "error/error";
-
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ModelAndView handleError404(HttpServletRequest request, Exception e) {
-		ModelAndView mav = new ModelAndView("error/404");
-		mav.addObject("title", "Oeps - 404");
-		mav.addObject("exception", e);
-		mav.addObject("url", request.getRequestURL());
+	    logger.error("404 - page was not found!");
 
-		return mav;
+		return this.errorValues("error/404", request, e, "Oeps - 404");
 	}
 
+    @ExceptionHandler(TemplateEngineException.class)
+    public ModelAndView handleThymeleaf(HttpServletRequest request, Exception e) {
+        logger.error("Thymeleaf error - critical error while loading template!");
+
+        return this.errorValues("error/5xx", request, e, "Oeps - 500");
+    }
+
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
-        ModelAndView mav = new ModelAndView();
-		mav.addObject("title", "Oeps - 5xx");
-		mav.addObject("errorcode", "Oeps");
+    public ModelAndView
+    defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
+        logger.error("5xx - Error!");
+        logger.error(e.getMessage());
+        if (AnnotationUtils.findAnnotation
+                (e.getClass(), ResponseStatus.class) != null)
+            throw e;
+
+        return this.errorValues("error/error", request, e, "5xx - Error");
+    }
+
+    private ModelAndView errorValues(String viewName, HttpServletRequest request, Exception e, String text) {
+        ModelAndView mav = new ModelAndView(viewName);
+        mav.addObject("title", text);
         mav.addObject("exception", e);
         mav.addObject("url", request.getRequestURL());
-        mav.setViewName(DEFAULT_ERROR_VIEW);
-        logger.error("return to view");
 
         return mav;
     }
