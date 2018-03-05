@@ -15,7 +15,7 @@
         <div th:fragment="form">
             <div th:if="${#fields.hasErrors('*')}">
                 <div layout:include="fragments/alert :: alert"
-                     th:with="type='danger', header='Fouten in het formulier'" th:remove="tag">
+                     th:with="type='danger', header='Errors in the form'" th:remove="tag">
                     <th:block layout:fragment="alert-summary">
                         <p>Niet alle velden in het formulier zijn correct ingevuld. Corrigeer deze en verzend
                             opnieuw.</p>

@@ -47,6 +47,14 @@ public abstract class BaseUser implements Serializable {
 
 	private Calendar created = Calendar.getInstance();
 
+	private boolean subscribeToNewsletter;
+
+	public String getFullname() {
+		if(this.infix.isEmpty())
+			return this.firstName + " " + this.lastName;
+
+		return this.firstName + " " + this.infix + " " + this.lastName;
+	}
 }
 
 
