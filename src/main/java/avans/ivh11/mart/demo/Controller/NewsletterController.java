@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.internet.InternetAddress;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/admin/newsletter")
@@ -33,16 +34,10 @@ public class NewsletterController {
     private FlashService flashService;
 
     @Autowired
-    private RegisteredUserRepository registeredUserRepository;
-
-    @Autowired
     private NewsletterConstraintService newsletterConstraintService;
 
     @Autowired
-    private NewsletterEmail newsletterEmail;
-
-    @Autowired
-    private NewsletterSMS newsletterSMS;
+    private NewsletterTemplateService newsletterService;
 
     @Autowired
     public NewsletterController() {}
@@ -51,7 +46,7 @@ public class NewsletterController {
     public ModelAndView newsletterForm(@ModelAttribute Newsletter newsletter) {
 
         ModelAndView mav = new ModelAndView();
-        mav.addObject("title", "Newsletter - List");
+        mav.addObject("title", "Newsletter - Create");
         mav.setViewName("views/newsletter/form");
 
         return mav;
@@ -60,6 +55,7 @@ public class NewsletterController {
     @PostMapping()
     public ModelAndView sendNewsletter(@ModelAttribute Newsletter newsletter, BindingResult bindingResult, RedirectAttributes redirect) {
         ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "Newsletter - Create");
 
         bindingResult = newsletterConstraintService.newsletterCheck(bindingResult, newsletter);
 
@@ -70,23 +66,10 @@ public class NewsletterController {
 
             return mav;
         }
-
-//        boolean sent = this.newsletterEmail.sendNewsletter(newsletter);
-        boolean sent = this.newsletterSMS.sendNewsletter(newsletter);
-
-        if(sent) {
-            redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Email was sent"));
-        } else {
-            redirect.addFlashAttribute("flash", this.flashService.createFlash("warning", "Email was not sent"));
-        }
-
-
         mav.setViewName("redirect:/admin/newsletter");
-        //redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully sent a newsletter"));
+
+        redirect = this.newsletterService.handleNewsletter(newsletter, redirect);
 
         return mav;
     }
-
-
-
 }

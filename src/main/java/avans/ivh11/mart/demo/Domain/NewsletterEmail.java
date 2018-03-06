@@ -1,33 +1,32 @@
 package avans.ivh11.mart.demo.Domain;
 
-import javax.mail.*;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
-import javax.mail.internet.MimeMessage;
-
-import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
 import com.google.common.collect.Lists;
 import it.ozimov.springboot.mail.model.Email;
 import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
 import it.ozimov.springboot.mail.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.stereotype.Component;
 
-import java.util.Properties;
+import java.util.HashMap;
 
+import static jdk.nashorn.internal.objects.NativeMath.round;
+
+@Component
 public class NewsletterEmail extends NewsletterFramework {
 
     @Autowired
     private EmailService emailService;
 
     @Override
-    public boolean sendingNewsletter(Iterable<RegisteredUser> recipients, Newsletter newsletter) {
-        boolean success = true;
+    public HashMap<String, Object> sendingNewsletter(Iterable<RegisteredUser> recipients, Newsletter newsletter) {
+        HashMap<String, Object> results = new HashMap<>();
+        int total = 0;
+        int failure = 0;
 
         for (RegisteredUser user : recipients) {
+            total += 1;
             try {
                 final Email email = DefaultEmail.builder()
                         .from(new InternetAddress("mkop@avans.nl", "Mart test"))
@@ -39,11 +38,19 @@ public class NewsletterEmail extends NewsletterFramework {
                         .build();
 
                 emailService.send(email);
+
             } catch (Exception e) {
-                success = false;
+                failure += 1;
+                logger.warn(e.getMessage());
+                results.put("error", e.getMessage());
             }
         }
 
-        return success;
+        //results.put("result", total != 0 && failure != 0);
+        results.put("failure", failure);
+        results.put("total", total);
+        results.put("success", total - failure);
+
+        return results;
     }
 }

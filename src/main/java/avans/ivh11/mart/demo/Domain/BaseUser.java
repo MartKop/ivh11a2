@@ -3,7 +3,6 @@ package avans.ivh11.mart.demo.Domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Table;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -16,9 +15,11 @@ import java.util.Calendar;
 @Setter
 @NoArgsConstructor
 @Getter
-@Table(appliesTo = "user")
-@MappedSuperclass
-public abstract class BaseUser implements Serializable {
+@Table(name = "user")
+@Inheritance
+@DiscriminatorColumn(name = "user_type")
+@Entity
+public class BaseUser implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
