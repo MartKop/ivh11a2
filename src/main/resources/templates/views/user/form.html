@@ -42,11 +42,15 @@
 
                 <label for="dateOfBirth">Geboortedatum</label>
                 <input type='text' class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
-                <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Name Error</p>
+                <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Geboortedatum Error</p>
 
                 <label for="phone">Telefoon</label>
                 <input type="text" class="form-control" id="phone" th:field="*{phone}"/>
-                <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</p>
+                <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</p>
+
+                <label for="subscribeToNewsletter">Subscribe to newsletter (SMS and email)</label>
+                <input type="checkbox" class="form-control" id="subscribeToNewsletter" th:field="*{subscribeToNewsletter}"/>
+                <p th:if="${#fields.hasErrors('subscribeToNewsletter')}" th:errors="*{subscribeToNewsletter}">Newsletter Error</p>
 
                 <div class="float-right mt-2">
                     <button type="submit" class="btn btn-primary">Submit</button>
