@@ -1,15 +1,10 @@
 package avans.ivh11.mart.demo.Domain;
 
-import org.hibernate.annotations.Table;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "Category")
-@Table(appliesTo = "category")
+@Table(name = "category")
 public class Category implements Serializable {
 
     @Id

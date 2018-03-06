@@ -3,8 +3,6 @@ package avans.ivh11.mart.demo.Domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Table;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -17,18 +15,18 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(appliesTo = "product")
+@Table(name = "product")
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty(message = "Name is required.")
+    @NotNull(message = "Name is required.")
     @Size(min = 3, max = 50, message = "3 to 50 characters")
     private String name;
 
-    @NotEmpty(message = "Description is required.")
+    @NotNull(message = "Description is required.")
     @Size(min = 3, max = 150, message = "3 to 150 characters")
     private String description;
 
