@@ -6,6 +6,9 @@ import lombok.Setter;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Calendar;
 
 @Entity
@@ -13,7 +16,11 @@ import java.util.Calendar;
 @Setter
 @NoArgsConstructor
 //@Table(appliesTo = "orders")
-public abstract class Order extends BaseOrder {
+public abstract class Order extends BaseOrder implements IOrder {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
 
     private String status;
 
