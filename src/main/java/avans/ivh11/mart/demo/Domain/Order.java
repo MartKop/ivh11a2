@@ -13,14 +13,20 @@ import java.util.Calendar;
 @Setter
 @NoArgsConstructor
 //@Table(appliesTo = "orders")
-public class Order extends BaseOrder {
+public abstract class Order extends BaseOrder {
 
     private String status;
 
     private Calendar created = Calendar.getInstance();
 
+    protected Payment payment;
+
     @Override
     public float price() {
         return 0;
+    }
+
+    public void applyPayment() {
+        payment.pay();
     }
 }
