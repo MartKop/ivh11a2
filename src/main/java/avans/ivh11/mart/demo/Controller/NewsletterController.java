@@ -1,28 +1,16 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
-import avans.ivh11.mart.demo.Domain.NewsletterEmail;
-import avans.ivh11.mart.demo.Domain.NewsletterSMS;
-import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
 import avans.ivh11.mart.demo.Service.NewsletterConstraintService;
-import avans.ivh11.mart.demo.Service.NewsletterTemplateService;
-import com.google.common.collect.Lists;
-import it.ozimov.springboot.mail.model.Email;
-import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
-import it.ozimov.springboot.mail.service.EmailService;
+import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterTemplateService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.mail.internet.InternetAddress;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping("/admin/newsletter")

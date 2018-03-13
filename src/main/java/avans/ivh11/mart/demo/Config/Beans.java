@@ -1,18 +1,11 @@
 package avans.ivh11.mart.demo.Config;
 
-import avans.ivh11.mart.demo.Domain.NewsletterEmail;
-import avans.ivh11.mart.demo.Domain.NewsletterFramework;
-import avans.ivh11.mart.demo.Domain.NewsletterSMS;
-import it.ozimov.springboot.mail.model.Email;
-import it.ozimov.springboot.mail.model.InlinePicture;
-import it.ozimov.springboot.mail.service.EmailService;
-import it.ozimov.springboot.mail.service.defaultimpl.DefaultEmailService;
-import it.ozimov.springboot.mail.service.exception.CannotSendEmailException;
+import avans.ivh11.mart.demo.Service.SMSSender;
+import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterEmail;
+import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterFramework;
+import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterSMS;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.mail.internet.MimeMessage;
-import java.util.Map;
 
 @Configuration
 public class Beans {
@@ -25,5 +18,10 @@ public class Beans {
     @Bean
     public NewsletterFramework newsletterSMS() {
         return new NewsletterSMS();
+    }
+
+    @Bean
+    public SMSSender sender() {
+        return new SMSSender();
     }
 }

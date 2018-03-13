@@ -1,7 +1,9 @@
-package avans.ivh11.mart.demo.Domain;
+package avans.ivh11.mart.demo.Service.TemplatePattern;
 
 import javax.mail.internet.InternetAddress;
 
+import avans.ivh11.mart.demo.Domain.Newsletter;
+import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import com.google.common.collect.Lists;
 import it.ozimov.springboot.mail.model.Email;
 import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-
-import static jdk.nashorn.internal.objects.NativeMath.round;
 
 @Component
 public class NewsletterEmail extends NewsletterFramework {
@@ -30,7 +30,7 @@ public class NewsletterEmail extends NewsletterFramework {
             try {
                 final Email email = DefaultEmail.builder()
                         .from(new InternetAddress("mkop@avans.nl", "Mart test"))
-                        .to(Lists.newArrayList(new InternetAddress(user.getEmail(), user.getFullname())))
+//                        .to(Lists.newArrayList(new InternetAddress(user.getEmail(), user.getFullname())))
                         .to(Lists.newArrayList(new InternetAddress("mart-k15@hotmail.com", "Marty ")))
                         .subject(newsletter.getSubject())
                         .body(newsletter.getBody())

@@ -1,5 +1,7 @@
-package avans.ivh11.mart.demo.Domain;
+package avans.ivh11.mart.demo.Service.TemplatePattern;
 
+import avans.ivh11.mart.demo.Domain.Newsletter;
+import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
 import com.google.common.collect.Iterables;
 import org.slf4j.LoggerFactory;

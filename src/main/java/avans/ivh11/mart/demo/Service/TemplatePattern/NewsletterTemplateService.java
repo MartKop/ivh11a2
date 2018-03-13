@@ -1,7 +1,7 @@
-package avans.ivh11.mart.demo.Service;
+package avans.ivh11.mart.demo.Service.TemplatePattern;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
-import avans.ivh11.mart.demo.Domain.NewsletterFramework;
+import avans.ivh11.mart.demo.Service.FlashService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
