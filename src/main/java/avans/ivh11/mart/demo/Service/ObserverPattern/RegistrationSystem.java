@@ -3,7 +3,6 @@ package avans.ivh11.mart.demo.Service.ObserverPattern;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Vector;
 
 public class RegistrationSystem {

@@ -1,23 +1,28 @@
 package avans.ivh11.mart.demo.Service.TemplatePattern;
 
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
-import com.google.common.collect.Lists;
-import it.ozimov.springboot.mail.model.Email;
-import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
-import it.ozimov.springboot.mail.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
-@Component
 public class NewsletterEmail extends NewsletterFramework {
 
     @Autowired
-    private EmailService emailService;
+    private TemplateEngine htmlTemplateEngine;
+
+    @Autowired
+    public JavaMailSender emailSender;
 
     @Override
     public HashMap<String, Object> sendingNewsletter(Iterable<RegisteredUser> recipients, Newsletter newsletter) {
@@ -28,16 +33,22 @@ public class NewsletterEmail extends NewsletterFramework {
         for (RegisteredUser user : recipients) {
             total += 1;
             try {
-                final Email email = DefaultEmail.builder()
-                        .from(new InternetAddress("mkop@avans.nl", "Mart test"))
-//                        .to(Lists.newArrayList(new InternetAddress(user.getEmail(), user.getFullname())))
-                        .to(Lists.newArrayList(new InternetAddress("mart-k15@hotmail.com", "Marty ")))
-                        .subject(newsletter.getSubject())
-                        .body(newsletter.getBody())
-                        .encoding("UTF-8")
-                        .build();
 
-                emailService.send(email);
+                Context ctx = new Context(new Locale("en"));
+                ctx.setVariable("name", user.getFirstName());
+                ctx.setVariable("subscriptionDate", new Date());
+                ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
+                String textContent = this.htmlTemplateEngine.process("mail/newsletter/newsletterTemplate", ctx);
+
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message);
+                helper.setFrom(new InternetAddress("mkop@avans.nl", "Test Newsletter"));
+                helper.setTo(new InternetAddress("mart-k15@hotmail.com", "Martyy"));
+//                helper.setTo(new InternetAddress(user.getEmail(), user.getFullname()));
+                helper.setSubject(newsletter.getBody());
+                helper.setText(textContent,true);
+
+                emailSender.send(message);
 
             } catch (Exception e) {
                 failure += 1;

@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public abstract class NewsletterFramework {
 
-    public final org.slf4j.Logger logger = LoggerFactory.getLogger(NewsletterSMS.class);
+    public final org.slf4j.Logger logger = LoggerFactory.getLogger(NewsletterFramework.class);
 
     @Autowired
     private RegisteredUserRepository userRepository;
