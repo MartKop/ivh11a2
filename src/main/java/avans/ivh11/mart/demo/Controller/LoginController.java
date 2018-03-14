@@ -20,15 +20,11 @@ import javax.validation.Valid;
 @Controller
 public class LoginController {
 
-//    @Autowired
-//    private FlashService flashService;
-//
+    @Autowired
+    private FlashService flashService;
+
     @Autowired
     private UserService userService;
-//
-//    @Autowired
-//    private SecurityService securityService;
-//
 
     @GetMapping(value = "/registration")
     public ModelAndView createForm(@ModelAttribute RegisteredUser user) {
@@ -41,17 +37,22 @@ public class LoginController {
 
     @PostMapping(value = "/registration")
     public ModelAndView registration(@Valid @ModelAttribute("user") RegisteredUser user, BindingResult bindingResult, RedirectAttributes redirect) {
-        userValidator.validate(user, bindingResult);
-
-        ModelAndView mav = new ModelAndView();
+        bindingResult = this.userService.validateUser(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
+            ModelAndView mav = new ModelAndView();
             mav.addObject("title", "Register");
             mav.addObject("form_errors", bindingResult.getAllErrors());
             mav.setViewName("views/user/form");
 
             return mav;
         }
+
+        this.userService.save(user);
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully registered"));
+
+        return new ModelAndView("redirect:/user");
+    }
 //
 //
 //        mav.setViewName("views/index");
