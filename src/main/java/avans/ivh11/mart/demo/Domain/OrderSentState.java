@@ -1,16 +1,17 @@
 package avans.ivh11.mart.demo.Domain;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+import javax.persistence.*;
+
 @Setter
 @NoArgsConstructor
-public class Login {
-
-    private String username;
-
-    private String password;
+@Getter
+@Entity
+@DiscriminatorValue("Order sent")
+public class OrderSentState extends OrderState {
 
 }

@@ -40,7 +40,6 @@ public class UserController {
     @GetMapping
     public ModelAndView list() {
         Iterable<UnregisteredUser> users = this.unregisteredUserRepository.findAll();
-
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - List");
         mav.addObject("users", users);

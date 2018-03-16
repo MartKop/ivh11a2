@@ -1,8 +1,9 @@
 package avans.ivh11.mart.demo.Domain;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-//@Table(appliesTo = "user")
+@DiscriminatorValue("unregistered")
 public class UnregisteredUser extends BaseUser {
 }

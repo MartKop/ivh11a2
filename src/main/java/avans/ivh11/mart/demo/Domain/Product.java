@@ -3,8 +3,8 @@ package avans.ivh11.mart.demo.Domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Table;
 import org.hibernate.validator.constraints.NotEmpty;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(appliesTo = "product")
+@Table(name = "product")
 public class Product implements Serializable {
 
     @Id

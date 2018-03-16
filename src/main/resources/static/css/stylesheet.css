@@ -1,0 +1,13 @@
+.productInfo {
+    padding: 20px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+.pointy{
+    cursor: pointer;
+}
+.productDescription{
+    font-size: 8pt;
+    font-style: italic;
+    cursor: pointer;
+}
