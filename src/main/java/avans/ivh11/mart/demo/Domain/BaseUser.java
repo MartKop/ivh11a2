@@ -25,7 +25,7 @@ public class BaseUser implements Serializable {
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long id;
 
-	@NotEmpty(message = "First name is required.")
+	@NotEmpty(message = "Email is required.")
 	@Email(message = "Email is invalid")
 	private String email;
 

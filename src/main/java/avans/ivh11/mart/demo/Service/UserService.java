@@ -22,17 +22,17 @@ public class UserService {
     private Set<RegisteredUser> list;
 
     public BindingResult validateUser(RegisteredUser user, BindingResult bindingResult) {
-        if (user.getUsername().length() <= 6 || user.getUsername().length() >= 32) {
+        if (user.getUsername().length() < 6 || user.getUsername().length() >32) {
             bindingResult.addError(
                 new FieldError(
                     "user",
                     "username",
-                    "Size must be 6 to 32 characters"
+                    "Username size must be 6 to 32 characters"
                 )
             );
         }
-
-        if (this.getUserByUsername(user.getUsername()) != null) {
+        RegisteredUser usertest = this.getUserByUsername(user.getUsername());
+        if (usertest != null) {
             bindingResult.addError(
                 new FieldError(
                     "user",
@@ -42,7 +42,7 @@ public class UserService {
             );
         }
 
-        if (user.getPassword().length() <= 8 || user.getPassword().length() >= 32) {
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             bindingResult.addError(
                 new FieldError(
                     "user",
@@ -67,11 +67,13 @@ public class UserService {
 
     @Transactional
     public void save(RegisteredUser registeredUser) {
+        this.syncUserList();
         this.list.add(registeredUser);
         this.registeredUserRepository.save(registeredUser);
     }
 
     public RegisteredUser getUserById(Long id) {
+        this.syncUserList();
         Optional<RegisteredUser> user = this.list.stream().filter(registeredUser -> registeredUser.getId() == id)
             .findFirst();
 
@@ -79,13 +81,13 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
+        this.syncUserList();
         this.list.removeIf(registeredUser -> registeredUser.getId() == id);
         this.registeredUserRepository.delete(id);
     }
 
     public Set<RegisteredUser> findAll() {
-        if (this.list == null || this.list.isEmpty())
-            this.syncUserList();
+        this.syncUserList();
         return this.list;
     }
 
@@ -94,10 +96,12 @@ public class UserService {
     }
 
     public RegisteredUser getUserByUsername(String username) {
+        this.syncUserList();
         try {
             return this.list.stream()
                 .filter(registeredUser -> registeredUser.getUsername().toLowerCase().equals(username.toLowerCase()))
-                .collect(onlyElement());
+//                .collect(onlyElement());
+                .findFirst().get();
         } catch (Exception e) {
             return null;
         }

@@ -43,7 +43,7 @@ public class LoginController {
             ModelAndView mav = new ModelAndView();
             mav.addObject("title", "Register");
             mav.addObject("form_errors", bindingResult.getAllErrors());
-            mav.setViewName("views/user/form");
+            mav.setViewName("views/login/register");
 
             return mav;
         }
