@@ -9,9 +9,9 @@
 
         <label class="pointy" th:text="${product.name} "></label><br/>
         <label class="productDescription" th:text="${product.description}"></label><br/>
-        <label class="pointy" th:text="${'€ ' + product.price}"></label>
+        <label class="pointy" th:text="${'€ ' + product.price}"></label><br/>
         <a th:href="@{'/shoppingCart/addProduct/{id}'(id=${product.id})}">
-            <button type="button" class="btn btn-primary" th:text="Buy">Aan winkelwagen toevoegen</button>
+           <button type="button" class="glyphicon glyphicon-shopping-cart"></button>
         </a>
     </div>
 </div>

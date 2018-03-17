@@ -15,4 +15,13 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Order Empty")
 public class OrderEmptyState extends OrderState {
 
+
+    boolean canCancel(Order order){
+        return false;
+    }
+
+    boolean canShip(Order order){
+        return false;
+    }
+
 }

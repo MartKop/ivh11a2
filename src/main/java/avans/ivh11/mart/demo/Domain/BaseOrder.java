@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "orders2")
+@Table(name = "orders")
 
 public abstract class BaseOrder implements Serializable {
 

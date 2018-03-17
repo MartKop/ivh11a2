@@ -38,39 +38,45 @@ public class ProductController {
 
     @GetMapping
     @RequestMapping("/dummydata")
-    public void AddData(){
+    public ModelAndView AddData(){
         Product producttest = new Product();
         producttest.setName("RAM-Geheugen");
         producttest.setDescription("Ram geheugen 8GB");
         producttest.setActive(true);
         producttest.setPrice(90);
+        producttest.setQuantity(20);
         productRepository.save(producttest);
         Product producttest1 = new Product();
         producttest1.setName("Voeding");
         producttest1.setDescription("Voeding voor je computer");
         producttest1.setActive(true);
         producttest1.setPrice(85);
+        producttest1.setQuantity(20);
         productRepository.save(producttest1);
         Product producttest2 = new Product();
         producttest2.setName("Moederbord");
         producttest2.setDescription("Moederbord LA2055");
         producttest2.setActive(true);
         producttest2.setPrice(125);
+        producttest2.setQuantity(20);
         productRepository.save(producttest2);
         Product producttest3 = new Product();
         producttest3.setName("Processor");
         producttest3.setDescription("Intel i7");
         producttest3.setActive(true);
         producttest3.setPrice(125);
+        producttest3.setQuantity(20);
         productRepository.save(producttest3);
 
         Order order = new Order();
-        OrderState state = new OrderPendingState();
+        OrderState state = new OrderEmptyState();
 
-        order.setStatus("test");
         order.setOrderState(state);
-        baseOrderRepository.save(order);
 
+        System.out.println("order kan gecanceld worden is nu "+order.canCancel());
+
+        ModelAndView mav = new ModelAndView("productOverview");
+        return mav;
     }
 
     @GetMapping

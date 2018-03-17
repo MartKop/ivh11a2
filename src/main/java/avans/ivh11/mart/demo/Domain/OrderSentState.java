@@ -14,4 +14,12 @@ import javax.persistence.*;
 @DiscriminatorValue("Order sent")
 public class OrderSentState extends OrderState {
 
+
+    boolean canCancel(Order order){
+        return false;
+    }
+
+    boolean canShip(Order order){
+        return false;
+    }
 }

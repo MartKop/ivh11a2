@@ -4,15 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Calendar;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "orders2")
 public class Order extends BaseOrder {
 
     private String status;
@@ -20,10 +18,28 @@ public class Order extends BaseOrder {
 
     private Calendar created = Calendar.getInstance();
 
+
+
     public OrderState orderState;
 
     public OrderState getOrderState() {
         return orderState;
+    }
+
+    public boolean canCancel(){
+        return orderState.canCancel(this);
+    }
+
+    public void cancelOrder(){
+        if(orderState.canCancel(this)){
+            orderState.cancelOrder(this);
+        }
+    }
+
+    public void SentOrder(){
+        if(orderState.canShip(this)){
+            orderState.orderSentState(this);
+        }
     }
 
     public void setOrderState(OrderState orderState) {

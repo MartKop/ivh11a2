@@ -11,17 +11,22 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Getter
-@Table(name = "orders2")
+@Table(name = "Order_State")
 @Inheritance
 @Entity
-@DiscriminatorColumn(name = "OrderState")
 public abstract class OrderState implements Serializable {
+
+    private Order order;
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-     void orderEmptyState(Order order){
+    public OrderState(Order order) {
+        this.order = order;
+    }
+
+    void orderEmptyState(Order order){
 
      }
 
@@ -29,12 +34,22 @@ public abstract class OrderState implements Serializable {
 
      }
 
+     boolean canCancel(Order order){
+        return false;
+     }
 
+     boolean canShip(Order order){
+        return false;
+     }
     void orderPaidState(Order order){
 
     }
 
     void orderSentState(Order order){
+
+    }
+
+    void cancelOrder(Order order){
 
     }
 

@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Map;
 
-@Service
+
 public interface ShoppingCardService {
 
     void addProduct(Product product);
