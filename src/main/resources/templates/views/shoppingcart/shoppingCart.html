@@ -26,6 +26,18 @@
         <br></br>
     </div>
 
+
+    <div class="row panel-body">
+        <h4 class="col-md-11">Versiering opties:</h4>
+        <div class="col-md-11">
+            <label>Cadeaupapier: + €2,50 </label><input type="checkbox"/>
+        </div>
+        <div class="col-md-11">
+            <label>Strikje: + € 1,00</label><input type="checkbox"/>
+        </div>
+    </div>
+
+
     <div class="row panel-body">
         <h2 class="col-md-11" th:text="${'Totaal: € ' + total}"></h2>
         <a th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
@@ -33,7 +45,30 @@
         </a>
     </div>
 
+
+
 </div>
 <div th:include="fragments :: scripts"></div>
+
+<!--<script>-->
+    <!--$(document).ready(function(){-->
+
+
+        <!--$('#decorationOrder').dialog({-->
+            <!--autoOpen: false,-->
+            <!--height: 200,-->
+            <!--width: 200,-->
+            <!--resizable: false,-->
+            <!--modal: true-->
+        <!--});-->
+
+        <!--$('#decorationDialog').click(function(){-->
+            <!--$('#decorationOrder').dialog('open');-->
+        <!--});-->
+
+
+
+    <!--})-->
+<!--</script>-->
 </body>
 </html>

@@ -35,7 +35,6 @@ public class Product implements Serializable {
     private String description;
 
     @NotNull(message = "Price is required.")
-//    @NumberFormat(style= NumberFormat.Style.CURRENCY)
     private float price;
 
     @Min(value = 0, message = "*Quantity has to be non negative number")

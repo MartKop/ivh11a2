@@ -1,6 +1,9 @@
 package avans.ivh11.mart.demo.Controller;
 
+import avans.ivh11.mart.demo.Domain.Order;
+import avans.ivh11.mart.demo.Domain.OrderOption;
 import avans.ivh11.mart.demo.Domain.Product;
+import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.ShoppingCardService;
 import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
@@ -19,6 +22,10 @@ public class ShoppingCartController {
     @Autowired
     private ShoppingCardService shoppingCardService;
 
+    @Autowired
+    private BaseOrderRepository<Order> orderRepository;
+    @Autowired
+    private BaseOrderRepository<OrderOption> orderOptionRepository;
 
 
     @GetMapping("/shoppingCart")

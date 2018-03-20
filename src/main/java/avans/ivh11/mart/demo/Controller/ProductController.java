@@ -17,7 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -29,6 +32,9 @@ public class ProductController {
 
     @Autowired
     private BaseOrderRepository baseOrderRepository;
+
+    @Autowired
+    private  BaseOrderRepository<OrderOption> orderOptionRepository;
     @Autowired
     private BaseUserRepository baseUserRepository;
 
@@ -68,14 +74,18 @@ public class ProductController {
         producttest3.setQuantity(20);
         productRepository.save(producttest3);
 
+        List<Product> orderItems = new ArrayList<>();
+        orderItems.add(producttest);
+        orderItems.add(producttest1);
         Order order = new Order();
-        OrderState state = new OrderEmptyState();
+        order.setOrderItems(orderItems);
 
-        order.setOrderState(state);
+        baseOrderRepository.save(order);
 
-        System.out.println("order kan gecanceld worden is nu "+order.canCancel());
-
-        ModelAndView mav = new ModelAndView("productOverview");
+        Optional<Order> concreteOrder  = Optional.ofNullable(order);
+        OrderOption decoratedOrder1 = new OrderOption(concreteOrder.get(),"Wrapping paper", 2.50F );
+        orderOptionRepository.save(decoratedOrder1);
+        ModelAndView mav = new ModelAndView("views/product/productOverview");
         return mav;
     }
 

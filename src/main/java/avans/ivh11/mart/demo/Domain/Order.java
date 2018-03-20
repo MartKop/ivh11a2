@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,7 +20,8 @@ public class Order extends BaseOrder {
 
     private Calendar created = Calendar.getInstance();
 
-
+    @OneToMany(cascade = javax.persistence.CascadeType.ALL)
+    private List<Product> orderItems = new ArrayList<>();
 
     public OrderState orderState;
 
@@ -50,4 +53,9 @@ public class Order extends BaseOrder {
     public float price() {
         return 0;
     }
+
+
+
+
+
 }
