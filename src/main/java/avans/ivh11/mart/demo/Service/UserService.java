@@ -28,6 +28,9 @@ public class UserService {
     @Transactional
     public void save(RegisteredUser registeredUser) {
         this.syncUserList();
+        if (registeredUser.getRole() == null) {
+            registeredUser.setRole("ROLE_USER");
+        }
         registeredUser.setPassword(this.bCryptPasswordEncoder.encode(registeredUser.getPassword()));
         this.list.add(registeredUser);
         this.registeredUserRepository.save(registeredUser);

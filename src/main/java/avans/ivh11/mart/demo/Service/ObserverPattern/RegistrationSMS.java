@@ -11,6 +11,10 @@ public class RegistrationSMS implements RegistrationListener {
 
     private final String text = "Thank you for your registration!";
 
+    public RegistrationSMS(SMSSender sender) {
+        this.sender = sender;
+    }
+
     @Override
     public void sendRegistrationConfirmation(RegisteredUser user) {
         this.sender.sendSMS(user, text);

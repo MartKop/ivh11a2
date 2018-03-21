@@ -25,6 +25,11 @@ public class RegistrationEmail implements RegistrationListener {
     @Autowired
     public JavaMailSender emailSender;
 
+    public RegistrationEmail(TemplateEngine htmlTemplateEngine, JavaMailSender emailSender) {
+        this.htmlTemplateEngine = htmlTemplateEngine;
+        this.emailSender = emailSender;
+    }
+
     @Override
     public void sendRegistrationConfirmation(RegisteredUser user) {
         try {
