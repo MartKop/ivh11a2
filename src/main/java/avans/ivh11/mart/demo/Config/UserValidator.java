@@ -1,19 +1,16 @@
 package avans.ivh11.mart.demo.Config;
 
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
-import avans.ivh11.mart.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 
-//@Component
-public class UserValidator { //implements Validator {
-
-//    @Autowired
-//    private UserService userService;
+@Service
+public class UserValidator { // implements Validator {
 //
 //    @Override
 //    public boolean supports(Class<?> aClass) {

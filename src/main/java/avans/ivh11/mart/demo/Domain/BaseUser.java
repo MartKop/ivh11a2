@@ -3,7 +3,6 @@ package avans.ivh11.mart.demo.Domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Table;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -16,15 +15,17 @@ import java.util.Calendar;
 @Setter
 @NoArgsConstructor
 @Getter
-@Table(appliesTo = "user")
-@MappedSuperclass
-public abstract class BaseUser implements Serializable {
+@Table(name = "user")
+@Inheritance
+@DiscriminatorColumn(name = "user_type")
+@Entity
+public class BaseUser implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long id;
 
-	@NotEmpty(message = "First name is required.")
+	@NotEmpty(message = "Email is required.")
 	@Email(message = "Email is invalid")
 	private String email;
 
@@ -47,6 +48,14 @@ public abstract class BaseUser implements Serializable {
 
 	private Calendar created = Calendar.getInstance();
 
+	private boolean subscribeToNewsletter;
+
+	public String getFullname() {
+		if(this.infix.isEmpty())
+			return this.firstName + " " + this.lastName;
+
+		return this.firstName + " " + this.infix + " " + this.lastName;
+	}
 }
 
 

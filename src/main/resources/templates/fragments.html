@@ -27,7 +27,7 @@
 						<li class="nav-item active">
 							<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 						</li>
-						<li sec:authorize="isAnonymous()" class="nav-item active">
+						<li sec:authorize="!isAuthenticated()" class="nav-item active">
 							<a class="nav-link" th:href="@{/login}">Login <span class="sr-only">(current)</span></a>
 						</li>
 						<li sec:authorize="isAuthenticated()" class="nav-item">
