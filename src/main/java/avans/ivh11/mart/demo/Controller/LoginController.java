@@ -2,9 +2,6 @@ package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.Login;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
-import avans.ivh11.mart.demo.Domain.Role;
-import avans.ivh11.mart.demo.Domain.UnregisteredUser;
-import avans.ivh11.mart.demo.Repository.RoleRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
 import avans.ivh11.mart.demo.Service.UserService;
 import org.slf4j.LoggerFactory;
@@ -14,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -64,16 +60,6 @@ public class LoginController {
 
         return new ModelAndView("redirect:/user");
     }
-//
-//
-//        mav.setViewName("views/index");
-//        userService.save(user);
-//        securityService.autologin(user.getUsername(), user.getPasswordConfirm());
-//        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully logged in"));
-//
-//        return mav;
-//    }
-//
 
     @GetMapping(value = "/login")
     public ModelAndView createForm(@ModelAttribute Login login) {
@@ -125,5 +111,4 @@ public class LoginController {
 
         return mav;
     }
-
 }

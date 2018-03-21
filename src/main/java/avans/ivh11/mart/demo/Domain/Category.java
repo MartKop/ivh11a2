@@ -3,7 +3,7 @@ package avans.ivh11.mart.demo.Domain;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "Category")
+@Entity(name = "category")
 @Table(name = "category")
 public class Category implements Serializable {
 

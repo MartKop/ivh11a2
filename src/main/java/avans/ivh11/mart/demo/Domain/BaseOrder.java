@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 @Table(name = "orders")
-@MappedSuperclass
 public abstract class BaseOrder implements Serializable {
 
     @Id

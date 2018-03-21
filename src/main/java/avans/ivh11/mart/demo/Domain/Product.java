@@ -7,9 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @Entity(name = "Product")
 @Getter
@@ -33,6 +31,9 @@ public class Product implements Serializable {
     @NotNull(message = "Price is required.")
     private float price;
 
+    @Min(value = 0, message = "*Quantity has to be non negative number")
+    private Integer quantity;
+
     private boolean active;
 
     private Calendar created = Calendar.getInstance();
@@ -42,8 +43,29 @@ public class Product implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
-    @OneToMany(cascade=CascadeType.ALL, targetEntity=Review.class)
-    @JoinColumn(name="id")
-    private List<Review> reviews = new ArrayList<>();
+    @Column(name = "quantity", nullable = false)
+    public Integer getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+//    @OneToMany(cascade=CascadeType.ALL, targetEntity=Review.class)
+//    @JoinColumn(name="id")
+//    private List<Review> reviews = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

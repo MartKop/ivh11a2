@@ -4,8 +4,6 @@ import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
-import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
-import avans.ivh11.mart.demo.Repository.UnregisteredUserRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

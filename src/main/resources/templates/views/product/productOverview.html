@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+<div class="row">
+    <div th:each="product : ${products}" class="col-xs-6 col-sm-6 col-md-4 col-lg-4 productInfo" th:id="${product.id}">
+
+        <label class="pointy" th:text="${product.name} "></label><br/>
+        <label class="productDescription" th:text="${product.description}"></label><br/>
+        <label class="pointy" th:text="${'€ ' + product.price}"></label><br/>
+        <a th:href="@{'/shoppingCart/addProduct/{id}'(id=${product.id})}">
+           <button type="button" class="glyphicon glyphicon-shopping-cart"></button>
+        </a>
+    </div>
+</div>
+</div>
+
+<div th:include="fragments :: scripts"></div>
+</body>
+
+<script>
+    $(document).ready(function(){
+
+        $('.productInfo').click(function(){
+            var value = this.id;
+            window.location.href = "/product/"+value;
+        })
+
+    })
+</script>
+</html>

@@ -1,31 +1,26 @@
 package avans.ivh11.mart.demo.Config;
 
-import avans.ivh11.mart.demo.Domain.BaseUser;
-import avans.ivh11.mart.demo.Repository.BaseUserRepository;
-import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
-import avans.ivh11.mart.demo.Repository.UnregisteredUserRepository;
+import avans.ivh11.mart.demo.Service.ShoppingCardService;
+import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
 import avans.ivh11.mart.demo.Service.SMSSender;
 import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterEmail;
 import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterFramework;
 import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterSMS;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import java.util.Collections;
 import java.util.Properties;
 
 @Configuration
 public class Beans {
 
-    public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
+    @Bean
+    public ShoppingCardService shoppingCardService(){
+        return new ShoppingCartServiceImpl();
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

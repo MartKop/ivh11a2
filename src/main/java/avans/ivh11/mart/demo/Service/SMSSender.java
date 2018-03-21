@@ -12,7 +12,7 @@ public class SMSSender {
 
     //THESE ARE PRODUCTION CREDENTIALS
 //    public static final String ACCOUNT_SID = "ACca192ebce23f2dffed78bb23e9ddbbf3";
-//    public static final String FROM = "+3197014200826";
+//    public static final String FROM_VALID = "+3197014200826";
 //    public static final String AUTH_TOKEN = "289ac7db647dd82b5cf957311d55c428";
     private static final String TO = "+31634888673";
 

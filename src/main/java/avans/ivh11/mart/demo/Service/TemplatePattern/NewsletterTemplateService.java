@@ -27,9 +27,11 @@ public class NewsletterTemplateService {
         switch (newsletter.getType()) {
             case "email":
                 results = this.newsletterEmail.sendNewsletter(newsletter);
+                break;
 
             case "sms":
                 results = this.newsletterSMS.sendNewsletter(newsletter);
+                break;
 
             default:
                 results.put("error", "Type " + newsletter.getType() + " is not supported...");
