@@ -3,8 +3,6 @@ package avans.ivh11.mart.demo.Domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Table;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -16,7 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(appliesTo = "review")
+@Table(name = "review")
 public class Review implements Serializable {
 
     @Id
@@ -27,7 +25,7 @@ public class Review implements Serializable {
     @Max(value = 10, message = "Maximum rating is 10")
     private int rating;
 
-    @NotEmpty(message = "Comment is required.")
+    @NotNull(message = "Comment is required.")
     private String comment;
 
     @ManyToOne

@@ -1,10 +1,9 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.BaseUser;
+import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
-import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
-import avans.ivh11.mart.demo.Repository.UnregisteredUserRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +27,18 @@ public class UserController {
     private FlashService flashService;
 
     @Autowired
-    private UnregisteredUserRepository unregisteredUserRepository;
+    private BaseUserRepository<UnregisteredUser> unregisteredUserRepository;
 
     @Autowired
-    private RegisteredUserRepository registeredUserRepository;
-
+    private BaseUserRepository<RegisteredUser> registeredUserRepository;
 
     @Autowired
-    public UserController() {}
+    private BaseUserRepository<BaseUser> baseUserBaseUserRepository;
 
     @GetMapping
     public ModelAndView list() {
-        Iterable<UnregisteredUser> users = this.unregisteredUserRepository.findAll();
+        Iterable<BaseUser> users = this.baseUserBaseUserRepository.findAll();
+
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - List");
         mav.addObject("users", users);
@@ -50,7 +49,7 @@ public class UserController {
 
     @GetMapping(value = "{id}")
     public ModelAndView view(@PathVariable("id") String userId) {
-        UnregisteredUser user = (UnregisteredUser) this.unregisteredUserRepository.findOne(Long.parseLong(userId));
+        BaseUser user = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - " + userId);
         mav.addObject("user", user);
@@ -70,7 +69,6 @@ public class UserController {
     }
 
     @PostMapping(value = "create")
-    //public ModelAndView create(@Valid UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
     public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
         ModelAndView mav = new ModelAndView();
 
@@ -82,7 +80,7 @@ public class UserController {
             return mav;
         }
 
-        this.unregisteredUserRepository.save(user);
+        this.baseUserBaseUserRepository.save(user);
         mav.addObject("user.id", user.getId());
         mav.setViewName("redirect:/user/{user.id}");
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully created a new user"));

@@ -1,11 +1,13 @@
 package avans.ivh11.mart.demo.Domain;
 
+import avans.ivh11.mart.demo.Domain.OrderState.OrderState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import javax.persistence.Entity;
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,7 +18,6 @@ import java.util.List;
 public class Order extends BaseOrder {
 
     private String status;
-
 
     private Calendar created = Calendar.getInstance();
 
@@ -53,9 +54,4 @@ public class Order extends BaseOrder {
     public float price() {
         return 0;
     }
-
-
-
-
-
 }

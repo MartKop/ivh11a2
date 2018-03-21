@@ -3,17 +3,11 @@ package avans.ivh11.mart.demo.Domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
-
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
 
 @Entity(name = "Product")
 @Getter
@@ -26,11 +20,11 @@ public class Product implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty(message = "Name is required.")
+    @NotNull(message = "Name is required.")
     @Size(min = 3, max = 50, message = "3 to 50 characters")
     private String name;
 
-    @NotEmpty(message = "Description is required.")
+    @NotNull(message = "Description is required.")
     @Size(min = 3, max = 150, message = "3 to 150 characters")
     private String description;
 
@@ -57,7 +51,6 @@ public class Product implements Serializable {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
 
 //    @OneToMany(cascade=CascadeType.ALL, targetEntity=Review.class)
 //    @JoinColumn(name="id")

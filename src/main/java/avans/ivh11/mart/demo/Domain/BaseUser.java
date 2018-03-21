@@ -19,13 +19,13 @@ import java.util.Calendar;
 @Inheritance
 @DiscriminatorColumn(name = "user_type")
 @Entity
-public abstract class BaseUser implements Serializable {
+public class BaseUser implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long id;
 
-	@NotEmpty(message = "First name is required.")
+	@NotEmpty(message = "Email is required.")
 	@Email(message = "Email is invalid")
 	private String email;
 
@@ -48,6 +48,14 @@ public abstract class BaseUser implements Serializable {
 
 	private Calendar created = Calendar.getInstance();
 
+	private boolean subscribeToNewsletter;
+
+	public String getFullname() {
+		if(this.infix.isEmpty())
+			return this.firstName + " " + this.lastName;
+
+		return this.firstName + " " + this.infix + " " + this.lastName;
+	}
 }
 
 

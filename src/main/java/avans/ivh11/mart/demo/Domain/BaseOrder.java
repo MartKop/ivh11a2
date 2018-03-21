@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,7 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
-
 public abstract class BaseOrder implements Serializable {
 
     @Id

@@ -1,9 +1,7 @@
-package avans.ivh11.mart.demo.Domain;
+package avans.ivh11.mart.demo.Domain.OrderState;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import avans.ivh11.mart.demo.Domain.Order;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -13,14 +11,15 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Order pending")
 public class OrderPendingState extends OrderState {
 
-    void orderPendingState(Order order){
+    public void orderPendingState(Order order){
 
     }
-    boolean canCancel(Order order){
+
+    public boolean canCancel(Order order){
         return true;
     }
 
-    boolean canShip(Order order){
+    public boolean canShip(Order order){
         return false;
     }
 

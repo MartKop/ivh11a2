@@ -1,6 +1,7 @@
-package avans.ivh11.mart.demo.Domain;
+package avans.ivh11.mart.demo.Domain.OrderState;
 
 
+import avans.ivh11.mart.demo.Domain.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Getter
-@Table(name = "Order_State")
+@Table(name = "order_state")
 @Inheritance
 @Entity
 public abstract class OrderState implements Serializable {
@@ -34,22 +35,23 @@ public abstract class OrderState implements Serializable {
 
      }
 
-     boolean canCancel(Order order){
-        return false;
-     }
+    public boolean canCancel(Order order){
+return false;
+}
 
-     boolean canShip(Order order){
-        return false;
-     }
-    void orderPaidState(Order order){
+    public boolean canShip(Order order){
+return false;
+}
 
-    }
-
-    void orderSentState(Order order){
+    public void orderPaidState(Order order){
 
     }
 
-    void cancelOrder(Order order){
+    public void orderSentState(Order order){
+
+    }
+
+    public void cancelOrder(Order order){
 
     }
 

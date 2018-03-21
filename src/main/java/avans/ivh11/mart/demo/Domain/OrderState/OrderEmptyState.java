@@ -1,6 +1,7 @@
-package avans.ivh11.mart.demo.Domain;
+package avans.ivh11.mart.demo.Domain.OrderState;
 
 
+import avans.ivh11.mart.demo.Domain.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,13 +16,11 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Order Empty")
 public class OrderEmptyState extends OrderState {
 
-
-    boolean canCancel(Order order){
+    public boolean canCancel(Order order){
         return false;
     }
 
-    boolean canShip(Order order){
+    public boolean canShip(Order order){
         return false;
     }
-
 }
