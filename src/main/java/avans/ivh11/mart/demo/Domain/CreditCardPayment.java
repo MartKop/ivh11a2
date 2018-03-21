@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class CreditCardPayment implements Payment {
 
+    private String ccv;
+
     @Override
     public void pay() {
 

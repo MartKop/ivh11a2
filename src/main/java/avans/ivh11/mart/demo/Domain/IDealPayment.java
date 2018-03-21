@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 @Setter
 @NoArgsConstructor
 public class IDealPayment implements Payment {
+
+
     @Override
     public void pay() {
 
