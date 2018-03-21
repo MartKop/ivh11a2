@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface RoleRepository { //extends CrudRepository<Role, Long> {
 
 //    public Role findByName(String name) {
 //        Iterable<Role> roles = findAll();

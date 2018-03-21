@@ -1,5 +1,9 @@
 package avans.ivh11.mart.demo.Config;
 
+import avans.ivh11.mart.demo.Domain.BaseUser;
+import avans.ivh11.mart.demo.Repository.BaseUserRepository;
+import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
+import avans.ivh11.mart.demo.Repository.UnregisteredUserRepository;
 import avans.ivh11.mart.demo.Service.SMSSender;
 import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterEmail;
 import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterFramework;
@@ -9,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -21,6 +26,11 @@ import java.util.Properties;
 public class Beans {
 
     public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public NewsletterFramework newsletterEmail() {

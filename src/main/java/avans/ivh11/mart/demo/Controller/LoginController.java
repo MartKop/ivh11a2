@@ -7,7 +7,14 @@ import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Repository.RoleRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
 import avans.ivh11.mart.demo.Service.UserService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,9 +23,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class LoginController {
+
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private FlashService flashService;
@@ -63,20 +74,56 @@ public class LoginController {
 //        return mav;
 //    }
 //
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public String login(Model model, String error, String logout) {
-//        if (error != null)
-//            model.addAttribute("error", "Your username and password is invalid.");
-//
-//        if (logout != null)
-//            model.addAttribute("message", "You have been logged out successfully.");
-//
-//        return "views/login/login";
-//    }
-//
-//    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-//    public String welcome(Model model) {
-//        return "views/index";
-//    }
+
+    @GetMapping(value = "/login")
+    public ModelAndView createForm(@ModelAttribute Login login) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("login", new Login());
+        mav.addObject("title", "Login");
+        mav.setViewName("views/login/login");
+
+        logger.info("login form");
+
+        return mav;
+    }
+
+    @PostMapping(value = "/login")
+    public ModelAndView login(@ModelAttribute("login") Login login, BindingResult result, RedirectAttributes redirect) {
+        logger.info("login post form");
+        result = this.userService.loginUser(login, result);
+        ModelAndView mav = new ModelAndView();
+
+        if (result.hasErrors()) {
+            logger.info("login error");
+            mav.addObject("title", "Login");
+            mav.addObject("login", login);
+            mav.addObject("form_errors", result.getAllErrors());
+            mav.setViewName("/views/login/login");
+
+            return mav;
+        }
+        logger.info("login succes");
+        RegisteredUser user = this.userService.getUserByUsername(login.getUsername());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+
+        // DO SOME MORE LOGGIN SHIZZLE
+        authorities.add(new SimpleGrantedAuthority(user.getRole() != null ? user.getRole() : "ROLE_USER"));
+        Authentication auth = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        mav.setViewName("redirect:/welcome");
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully logged in"));
+
+        return mav;
+    }
+
+    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    public ModelAndView welcome(Model model) {
+        ModelAndView mav = new ModelAndView("views/index");
+        mav.addObject("title", "Login");
+
+        return mav;
+    }
 
 }

@@ -7,23 +7,44 @@
 <div class="container">
     <div th:include="fragments :: header"></div>
 
-    <form method="POST" action="/login" class="form-signin">
-        <h2 class="form-heading">Log in</h2>
+    <form id="form" th:object="${login}" th:action="@{/login}" method="post">
+        <h4 th:text="'Login'"></h4>
 
-        <div class="form-group ${error != null ? 'has-error' : ''}">
-            <span>${message}</span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
-                   autofocus="true"/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <span>${error}</span>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div th:fragment="form">
+            <div th:if="${#fields.hasErrors('*')}">
+                <div th:if="${#fields.hasErrors('*')}">
+                    <div layout:include="fragments/alert :: error_summary"
+                         th:with="type='danger', header=${'Errors in the form'}, errors=${form_errors}" th:remove="tag">
+                        <th:block layout:fragment="alert-summary">
+                            <p>
+                                Not every field was filled in correctly
+                            </p>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="/registration">Create an account</a></h4>
+            <div class="form-group">
+                <label for="Username">Username</label>
+                <input type="text" class="form-control" id="Username" th:field="*{username}"/>
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+
+                <label for="Password">Password</label>
+                <input type="password" class="form-control" id="Password" th:field="*{password}"/>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+
+                <div class="float-right mt-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+                <div class="float-right mt-2">
+                    <a th:href="@{/}">
+                        <div class="btn btn-secondary">Cancel</div>
+                    </a>
+                </div>
+            </div>
         </div>
-
     </form>
-
 </div>
 <div th:include="fragments :: scripts"></div>
 </body>
