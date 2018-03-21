@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+    <title>Messages : Create</title>
+</head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <form id="form" action="#" th:object="${newsletter}" th:action="@{/admin/newsletter}" method="post">
+        <h4>Send a newsletter</h4>
+
+        <div th:fragment="form">
+            <!--<div th:if="${#fields.hasErrors('*')}">-->
+                <!--<div layout:include="fragments/alert :: alert"-->
+                     <!--th:with="type='danger', header='Fouten in het formulier'" th:remove="tag">-->
+                    <!--<th:block layout:fragment="alert-summary">-->
+                        <!--<p>Niet alle velden in het formulier zijn correct ingevuld. Corrigeer deze en verzend-->
+                            <!--opnieuw.</p>-->
+                    <!--</th:block>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div th:if="${#fields.hasErrors('*')}">
+                <div th:each="error : ${form_errors}">
+                    <div layout:include="fragments/alert :: alert" th:with="type='danger', header=${'Error: ' + error.getObjectName()}, text=${error.getDefaultMessage()}" th:remove="tag">
+                    <!--<div layout:include="fragments/alert :: alert" th:with="type='danger', header='Error: ', text='default'" th:remove="tag">-->
+                        <th:block layout:fragment="alert-summary">
+                            <p>Niet alle velden in het formulier zijn correct ingevuld. Corrigeer deze en verzend
+                                opnieuw.</p>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="body">Content</label>
+                <textarea form="form" type="text" class="form-control" id="body" th:field="*{body}">
+                    Enter your message here
+                </textarea>
+                <p th:if="${#fields.hasErrors('body')}" th:errors="*{body}">Title Error</p>
+                <br/>
+
+                <label for="type">Message type</label>
+                <select th:field="*{type}" id="type" name="type" form="form">
+                    <option value="email">E-mail</option>
+                    <option value="sms">SMS message</option>
+                    <option value="dawdaw">awdawd mawdessage</option>
+                </select>
+                <p th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Type Error</p>
+                <br/>
+
+                <label for="subject">Subject (only for emails)</label>
+                <input type="text" class="form-control" id="subject" th:field="*{subject}"/>
+                <p th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}">Subject Error</p>
+
+                <div class="float-right mt-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+                <div class="float-right mt-2">
+                    <a th:href="@{/}">
+                        <div class="btn btn-secondary">Cancel</div>
+                    </a>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>

@@ -14,7 +14,6 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Model Number</th>
             <th>Name</th>
             <th>Description</th>
             <th>Categories</th>
@@ -25,7 +24,6 @@
         <tbody>
         <tr th:each="product : ${products}">
             <td th:text="${product.id}">1</td>
-            <td th:text="${product.modelNumber}">Model Nr ...</td>
             <td><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name} ">Name ...</a></td>
             <td th:text="${product.description}">Description ...</td>
             <td>Categories ...</td>
@@ -36,10 +34,10 @@
                 </a>
             </th>
             <th>
-                <a data-toggle="modal" data-target="#myModal">
+                <a data-toggle="modal" th:attr="data-target='#myModal'+${product.id}">
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
-                <div th:include="fragments :: modal(${'/product/' + product.id + '/delete'}, ${'/product/'}, ${'product'})"></div>
+                <div th:include="fragments :: modal(${'product'}, ${product.id})"></div>
             </th>
         </tr>
         </tbody>
