@@ -1,0 +1,34 @@
+{
+  "products": [
+    {
+      "naam": "Computer harddrive 3TB",
+      "prijs": 350,
+      "beschrijving": "3TB HDD opslagruimte voor uw PC.",
+      "foto_url": ""
+    },
+    {
+      "naam": "Computer harddrive 1TB",
+      "prijs": 120,
+      "beschrijving": "1TB HDD opslagruimte voor uw PC.",
+      "foto_url": ""
+    },
+    {
+      "naam": "Computer harddrive 2TB",
+      "prijs": 250,
+      "beschrijving": "2TB HDD opslagruimte voor uw PC.",
+      "foto_url": ""
+    },
+    {
+      "naam": "Computer SSD 1TB",
+      "prijs": 500,
+      "beschrijving": "1TB SSD opslagruimte voor uw PC.",
+      "foto_url": ""
+    },
+    {
+      "naam": "Computer SSD 2TB",
+      "prijs": 750,
+      "beschrijving": "2TB SSD opslagruimte voor uw PC.",
+      "foto_url": ""
+    }
+  ]
+}
