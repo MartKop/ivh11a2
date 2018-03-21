@@ -13,7 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
-
 public abstract class BaseOrder implements Serializable {
 
     @Id

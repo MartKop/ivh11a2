@@ -32,29 +32,38 @@ public class ProductAPIController {
     @RequestMapping(method = RequestMethod.PUT, value="/products/{id}")
     public Product update(@PathVariable Long id, @RequestBody Product product){
         Product prodToUpdate = productRepository.findOne(id);
-        if(product.getName() != null){
-            prodToUpdate.setName(product.getName());
+
+        if(product.getPrice() != prodToUpdate.getPrice()){
+            prodToUpdate.setActive(false);
+            productRepository.save(prodToUpdate);
+            productRepository.save(product);
+            return product;
+        }else {
+
+            if (product.getName() != null) {
+                prodToUpdate.setName(product.getName());
+            }
+            if (product.getPrice() != 0.0f) {
+                prodToUpdate.setPrice(product.getPrice());
+            }
+            if (product.getDescription() != null) {
+                prodToUpdate.setDescription(product.getDescription());
+            }
+            if (product.getCategory() != null) {
+                prodToUpdate.setCategory(product.getCategory());
+            }
+            if (product.getPhoto() != null) {
+                prodToUpdate.setPhoto(product.getPhoto());
+            }
+            if (product.getQuantity() != null) {
+                prodToUpdate.setQuantity(product.getQuantity());
+            }
+            if (product.getCreated() != null) {
+                prodToUpdate.setCreated(product.getCreated());
+            }
+            productRepository.save(prodToUpdate);
+            return prodToUpdate;
         }
-        if(product.getPrice() != 0.0f){
-            prodToUpdate.setPrice(product.getPrice());
-        }
-        if(product.getDescription() != null){
-            prodToUpdate.setDescription(product.getDescription());
-        }
-        if(product.getCategory() != null){
-            prodToUpdate.setCategory(product.getCategory());
-        }
-        if(product.getPhoto() != null){
-            prodToUpdate.setPhoto(product.getPhoto());
-        }
-        if(product.getQuantity() != null){
-            prodToUpdate.setQuantity(product.getQuantity());
-        }
-        if(product.getCreated() != null){
-            prodToUpdate.setCreated(product.getCreated());
-        }
-        productRepository.save(prodToUpdate);
-        return prodToUpdate;
     }
 
 

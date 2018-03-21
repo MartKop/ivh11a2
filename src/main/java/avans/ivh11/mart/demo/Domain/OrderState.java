@@ -41,6 +41,7 @@ public abstract class OrderState implements Serializable {
      boolean canShip(Order order){
         return false;
      }
+
     void orderPaidState(Order order){
 
     }
