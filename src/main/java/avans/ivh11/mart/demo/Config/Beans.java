@@ -15,12 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import java.util.Collections;
 import java.util.Properties;
 
 @Configuration
@@ -76,34 +71,16 @@ public class Beans {
     }
 
     @Bean
-    public TemplateEngine emailTemplateEngine() {
-        final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        // Resolver for HTML emails (except the editable one)
-        templateEngine.addTemplateResolver(htmlTemplateResolver());
-        // Resolver for HTML editable emails (which will be treated as a String)
-//        templateEngine.addTemplateResolver(stringTemplateResolver());
-//        // Message source, internationalization specific to emails
-//        templateEngine.setTemplateEngineMessageSource(emailMessageSource());
-        return templateEngine;
-    }
-
-    private ITemplateResolver htmlTemplateResolver() {
-        final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-//        templateResolver.setOrder(0);
-//        templateResolver.setResolvablePatterns(Collections.singleton("html/*"));
-//        templateResolver.setPrefix("/mail/");
-//        templateResolver.setSuffix(".html");
-        templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setCacheable(false);
-        return templateResolver;
-    }
-
-    @Bean
     public RegistrationSystem registrationSystem() {
         RegistrationSystem registrationSystem = new RegistrationSystem();
-        registrationSystem.register(new RegistrationEmail(new TemplateEngine(), this.emailSender()));
+        registrationSystem.register(this.registrationEmail());
         registrationSystem.register(new RegistrationSMS(this.sender()));
 
         return registrationSystem;
+    }
+
+    @Bean
+    public RegistrationEmail registrationEmail() {
+        return new RegistrationEmail();
     }
 }

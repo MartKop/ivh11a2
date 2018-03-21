@@ -1,13 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<p th:text="${'hello ' + name}">
+<p th:text="${'hello ' + user.getFullname()}">
     Hello, Peter Static!
 </p>
-<p th:if="${name.length() gt 10}">
+<p th:if="${user.getFullname().length() gt 10}">
     Wow! You've got a long name (more than 10 chars)! <br />
 </p>
 <p>
-    You have been successfully subscribed to the <b>Fake newsletter</b> on
-    <span th:text="${#dates.format(subscriptionDate)}">28-12-2012</span>
+    You have registered successfully to the <b>Observer pattern</b>
 </p>
 <p>Your hobbies are:</p>
 <ul th:remove="all-but-first">
