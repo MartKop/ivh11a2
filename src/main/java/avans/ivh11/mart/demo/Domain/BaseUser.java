@@ -50,7 +50,10 @@ public class BaseUser implements Serializable {
 
 	private boolean subscribeToNewsletter;
 
-	public String getFullname() {
+	@Transient
+	private String fullName;
+
+	public String getFullName() {
 		if(this.infix.isEmpty())
 			return this.firstName + " " + this.lastName;
 

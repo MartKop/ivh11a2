@@ -1,5 +1,9 @@
 package avans.ivh11.mart.demo.Config;
 
+import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationEmail;
+import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationListener;
+import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSMS;
+import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSystem;
 import avans.ivh11.mart.demo.Service.ShoppingCardService;
 import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
 import avans.ivh11.mart.demo.Service.SMSSender;
@@ -49,7 +53,8 @@ public class Beans {
         javaMailSender.setPort(587);
         javaMailSender.setUsername("9b64f11f41684523c392969e5e1ace2c");
         javaMailSender.setPassword("a1b38108c24652320dc4ff427e45e37d");
-        javaMailSender.setJavaMailProperties(javaMailProperties());
+        javaMailSender.setJavaMailProperties(this.javaMailProperties());
+
         return javaMailSender;
     }
 
@@ -61,6 +66,21 @@ public class Beans {
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.starttls.required", "true");
         properties.put("mail.debug", "true");
+
         return properties;
+    }
+
+    @Bean
+    public RegistrationSystem registrationSystem() {
+        RegistrationSystem registrationSystem = new RegistrationSystem();
+        registrationSystem.register(this.registrationEmail());
+        registrationSystem.register(new RegistrationSMS(this.sender()));
+
+        return registrationSystem;
+    }
+
+    @Bean
+    public RegistrationEmail registrationEmail() {
+        return new RegistrationEmail();
     }
 }

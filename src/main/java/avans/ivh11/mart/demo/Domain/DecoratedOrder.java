@@ -5,12 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@MappedSuperclass
 public abstract class DecoratedOrder extends BaseOrder {
 
     @OneToOne

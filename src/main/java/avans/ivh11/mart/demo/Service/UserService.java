@@ -5,12 +5,20 @@ import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.thymeleaf.extras.springsecurity4.auth.Authorization;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,6 +36,9 @@ public class UserService {
     @Transactional
     public void save(RegisteredUser registeredUser) {
         this.syncUserList();
+        if (registeredUser.getRole() == null) {
+            registeredUser.setRole("ROLE_USER");
+        }
         registeredUser.setPassword(this.bCryptPasswordEncoder.encode(registeredUser.getPassword()));
         this.list.add(registeredUser);
         this.registeredUserRepository.save(registeredUser);
@@ -78,7 +89,7 @@ public class UserService {
         }
     }
 
-    public BindingResult loginUser(Login login, BindingResult bindingResult) {
+    public BindingResult loginUserResult(Login login, BindingResult bindingResult) {
         RegisteredUser user = this.getUserByUsername(login.getUsername());
         if (user == null) {
             bindingResult.addError(
@@ -159,5 +170,36 @@ public class UserService {
         }
 
         return bindingResult;
+    }
+
+    public void loginUser(RegisteredUser user) {
+        List<GrantedAuthority> authorities = this.getAuthorities(user);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, "credentials?", authorities);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    private List<GrantedAuthority> getAuthorities(RegisteredUser user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        switch (user.getRole()) {
+            case RegisteredUser.ROLE_SUPER_ADMIN:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_SUPER_ADMIN));
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_ADMIN));
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+                break;
+
+            case RegisteredUser.ROLE_ADMIN:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_ADMIN));
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+                break;
+
+            case RegisteredUser.ROLE_USER:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+                break;
+
+            default:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+        }
+
+        return authorities;
     }
 }

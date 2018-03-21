@@ -12,6 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "order_type")
 public abstract class BaseOrder implements Serializable {
 
     @Id

@@ -20,28 +20,39 @@
 				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<a class="navbar-brand" href="/">Webshop</a>
+				<a class="navbar-brand" href="/welcome">Webshop</a>
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav">
 						<li class="nav-item active">
-							<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-						</li>
-						<li sec:authorize="!isAuthenticated()" class="nav-item active">
-							<a class="nav-link" th:href="@{/login}">Login <span class="sr-only">(current)</span></a>
-						</li>
-						<li sec:authorize="isAuthenticated()" class="nav-item">
-							<a class="nav-link" th:href="@{/logout}">Logout <span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="/welcome">Home <span class="sr-only">(current)</span></a>
 						</li>
 						<li>
-							<a class="nav-link" href="/productOverview">Home <span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="/productOverview">Product Catalogus <span class="sr-only">(current)</span></a>
 						</li>
-
-						<li class="nav-item">
-							<a class="nav-link disabled" href="#">Disabled</a>
-						</li>
-
 						<li class="nav-item pull-right">
-							<a class="nav-link" href="/shoppingCart">Winkelwagen</a>
+							<a class="nav-link" href="/shoppingCart">Shopping cart</a>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+                        <div sec:authorize="!isAuthenticated()">
+                            <li>
+                                <a class="nav-link" th:href="@{/registration}">Register<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li>
+                                <a class="nav-link" th:href="@{/login}">Login <span class="sr-only">(current)</span></a>
+                            </li>
+                        </div>
+						<li sec:authorize="isAuthenticated()" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span sec:authentication="principal.fullName"></span> <!-- PRINCIPAL IS HIER HET USER OBJCECT -->
+							</a>
+							<ul class="dropdown-menu">
+								<li sec:authorize="hasRole('ROLE_USER')"><a href="#">My profile</a></li>
+								<li><a th:href="@{/logout}">Log out</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')" role="separator" class="divider"></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 1</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 2</a></li>
+							</ul>
 						</li>
 					</ul>
 				</div>

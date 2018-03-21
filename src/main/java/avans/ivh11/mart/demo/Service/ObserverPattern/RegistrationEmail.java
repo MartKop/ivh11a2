@@ -25,13 +25,20 @@ public class RegistrationEmail implements RegistrationListener {
     @Autowired
     public JavaMailSender emailSender;
 
+    public RegistrationEmail(TemplateEngine htmlTemplateEngine, JavaMailSender emailSender) {
+        this.htmlTemplateEngine = htmlTemplateEngine;
+        this.emailSender = emailSender;
+    }
+
+    public RegistrationEmail() {}
+
     @Override
     public void sendRegistrationConfirmation(RegisteredUser user) {
         try {
             Context ctx = new Context(new Locale("en"));
             ctx.setVariable("user", user);
             ctx.setVariable("date", new Date());
-            String textContent = this.htmlTemplateEngine.process("mail/registration/registrationTemplate", ctx);
+            String textContent = this.htmlTemplateEngine.process("/mail/registration/registrationTemplate", ctx);
 
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);

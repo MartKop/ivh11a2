@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 
 
 @Entity
-@DiscriminatorValue("Order pending")
+@DiscriminatorValue("pending")
 public class OrderPendingState extends OrderState {
 
     public void orderPendingState(Order order){

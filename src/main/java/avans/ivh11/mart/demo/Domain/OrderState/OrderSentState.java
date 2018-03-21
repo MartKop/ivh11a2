@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-@DiscriminatorValue("Order sent")
+@DiscriminatorValue("sent")
 public class OrderSentState extends OrderState {
     public boolean canCancel(Order order){
         return false;

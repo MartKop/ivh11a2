@@ -1,6 +1,5 @@
 package avans.ivh11.mart.demo.Domain.OrderState;
 
-
 import avans.ivh11.mart.demo.Domain.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +11,14 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Getter
-@Table(name = "order_state")
+@Table(name = "orders_state")
+@DiscriminatorColumn(name = "state")
 @Inheritance
-@Entity
+@Entity(name = "order_state")
 public abstract class OrderState implements Serializable {
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @Id
