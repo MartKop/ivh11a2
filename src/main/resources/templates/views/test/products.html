@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <h4>Products : View all</h4>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>
