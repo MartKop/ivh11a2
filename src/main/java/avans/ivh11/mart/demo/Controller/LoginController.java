@@ -64,7 +64,8 @@ public class LoginController {
         }
 
         this.userService.save(user);
-        this.registrationSystem.sendConfirmations(user);
+        this.userService.loginUser(user);
+//        this.registrationSystem.sendConfirmations(user);
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully registered"));
 
         return new ModelAndView("redirect:/user");
@@ -85,7 +86,7 @@ public class LoginController {
     @PostMapping(value = "/login")
     public ModelAndView login(@ModelAttribute("login") Login login, BindingResult result, RedirectAttributes redirect) {
         logger.info("login post form");
-        result = this.userService.loginUser(login, result);
+        result = this.userService.loginUserResult(login, result);
         ModelAndView mav = new ModelAndView();
 
         if (result.hasErrors()) {
@@ -98,13 +99,9 @@ public class LoginController {
             return mav;
         }
         logger.info("login succes");
-        RegisteredUser user = this.userService.getUserByUsername(login.getUsername());
-        List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // DO SOME MORE LOGGIN SHIZZLE
-        authorities.add(new SimpleGrantedAuthority(user.getRole() != null ? user.getRole() : "ROLE_USER"));
-        Authentication auth = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword(), authorities);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        RegisteredUser user = this.userService.getUserByUsername(login.getUsername());
+        this.userService.loginUser(user);
 
         mav.setViewName("redirect:/welcome");
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully logged in"));
@@ -119,4 +116,6 @@ public class LoginController {
 
         return mav;
     }
+
+
 }

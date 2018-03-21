@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Getter
 @Entity
-@DiscriminatorValue("Order Empty")
+@DiscriminatorValue("empty")
 public class OrderEmptyState extends OrderState {
 
     public boolean canCancel(Order order){

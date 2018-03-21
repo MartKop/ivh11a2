@@ -11,10 +11,11 @@ import javax.persistence.Entity;
 import java.util.Calendar;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@DiscriminatorValue(value = "order")
 public class Order extends BaseOrder {
 
     private String status;
@@ -24,6 +25,8 @@ public class Order extends BaseOrder {
     @OneToMany(cascade = javax.persistence.CascadeType.ALL)
     private List<Product> orderItems = new ArrayList<>();
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = true)
     public OrderState orderState;
 
     public OrderState getOrderState() {
