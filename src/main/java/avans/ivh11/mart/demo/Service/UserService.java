@@ -173,9 +173,33 @@ public class UserService {
     }
 
     public void loginUser(RegisteredUser user) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole() != null ? user.getRole() : "ROLE_USER"));
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword(), authorities);
+        List<GrantedAuthority> authorities = this.getAuthorities(user);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, "credentials?", authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    private List<GrantedAuthority> getAuthorities(RegisteredUser user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        switch (user.getRole()) {
+            case RegisteredUser.ROLE_SUPER_ADMIN:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_SUPER_ADMIN));
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_ADMIN));
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+                break;
+
+            case RegisteredUser.ROLE_ADMIN:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_ADMIN));
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+                break;
+
+            case RegisteredUser.ROLE_USER:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+                break;
+
+            default:
+                authorities.add(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER));
+        }
+
+        return authorities;
     }
 }

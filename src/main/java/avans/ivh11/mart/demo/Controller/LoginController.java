@@ -109,7 +109,7 @@ public class LoginController {
         return mav;
     }
 
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/welcome"}, method = RequestMethod.GET)
     public ModelAndView welcome(Model model) {
         ModelAndView mav = new ModelAndView("views/index");
         mav.addObject("title", "Login");
