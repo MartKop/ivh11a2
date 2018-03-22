@@ -26,7 +26,7 @@ public class Order extends BaseOrder {
     private List<Product> orderItems = new ArrayList<>();
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = true)
+            fetch = FetchType.EAGER, optional = true)
     public OrderState orderState;
 
     public OrderState getOrderState() {
