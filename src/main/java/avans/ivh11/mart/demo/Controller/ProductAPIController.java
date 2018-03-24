@@ -58,7 +58,7 @@ public class ProductAPIController {
     public String delete(@PathVariable Long id){
         Product productToDelete = productRepository.findOne(id);
         productRepository.delete(productToDelete);
-        return "Product: " + productToDelete.getName() + " verwijderd";
+        return "Product: " + productToDelete.getName() + " deleted";
     }
 
     @PostMapping(value = "/api/products/{id}")
@@ -74,31 +74,31 @@ public class ProductAPIController {
             productRepository.save(prodToUpdate);
             productRepository.save(product);
             return product;
-        } else {
-
-            if (product.getName() != null) {
-                prodToUpdate.setName(product.getName());
-            }
-            if (product.getPrice() != 0.0f) {
-                prodToUpdate.setPrice(product.getPrice());
-            }
-            if (product.getDescription() != null) {
-                prodToUpdate.setDescription(product.getDescription());
-            }
-            if (product.getCategory() != null) {
-                prodToUpdate.setCategory(product.getCategory());
-            }
-            if (product.getPhoto() != null) {
-                prodToUpdate.setPhoto(product.getPhoto());
-            }
-            if (product.getQuantity() != null) {
-                prodToUpdate.setQuantity(product.getQuantity());
-            }
-            if (product.getCreated() != null) {
-                prodToUpdate.setCreated(product.getCreated());
-            }
-            productRepository.save(prodToUpdate);
         }
+
+        if (product.getName() != null) {
+            prodToUpdate.setName(product.getName());
+        }
+        if (product.getPrice() != 0.0f) {
+            prodToUpdate.setPrice(product.getPrice());
+        }
+        if (product.getDescription() != null) {
+            prodToUpdate.setDescription(product.getDescription());
+        }
+        if (product.getCategory() != null) {
+            prodToUpdate.setCategory(product.getCategory());
+        }
+        if (product.getPhoto() != null) {
+            prodToUpdate.setPhoto(product.getPhoto());
+        }
+        if (product.getQuantity() != null) {
+            prodToUpdate.setQuantity(product.getQuantity());
+        }
+        if (product.getCreated() != null) {
+            prodToUpdate.setCreated(product.getCreated());
+        }
+
+        productRepository.save(prodToUpdate);
 
         return prodToUpdate;
     }
