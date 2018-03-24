@@ -7,7 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity(name = "Product")
 @Getter
@@ -52,9 +54,12 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
-//    @OneToMany(cascade=CascadeType.ALL, targetEntity=Review.class)
-//    @JoinColumn(name="id")
-//    private List<Review> reviews = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy= "product")
+    private List<Review> reviews = new ArrayList<>();
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
 
     @Override
     public boolean equals(Object o) {

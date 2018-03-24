@@ -202,4 +202,14 @@ public class UserService {
 
         return authorities;
     }
+
+    public RegisteredUser getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof RegisteredUser) {
+            return this.registeredUserRepository.findOne(((RegisteredUser) principal).getId());
+        }
+
+        return null;
+    }
 }
