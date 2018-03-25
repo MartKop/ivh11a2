@@ -18,6 +18,10 @@
     padding: 10px;
 }
 
+.commentTableWrapper {
+    margin-bottom: 30px;
+}
+
 .commentForm {
     padding: 20px;
     /*cursor: pointer;*/

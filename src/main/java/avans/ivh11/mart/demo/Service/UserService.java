@@ -17,10 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.thymeleaf.extras.springsecurity4.auth.Authorization;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -201,6 +198,23 @@ public class UserService {
         }
 
         return authorities;
+    }
+
+    public String getRole() {
+        Collection authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(authorities.contains(new SimpleGrantedAuthority(RegisteredUser.ROLE_SUPER_ADMIN))) {
+            return RegisteredUser.ROLE_SUPER_ADMIN;
+        }
+
+        if(authorities.contains(new SimpleGrantedAuthority(RegisteredUser.ROLE_ADMIN))) {
+            return RegisteredUser.ROLE_ADMIN;
+        }
+
+        if(authorities.contains(new SimpleGrantedAuthority(RegisteredUser.ROLE_USER))) {
+            return RegisteredUser.ROLE_USER;
+        }
+
+        return null;
     }
 
     public RegisteredUser getCurrentUser() {

@@ -7,7 +7,7 @@
 
         <h1 th:if="${exception}" th:text="${exception.class.name}">Error page</h1><br/>
         <h3 th:if="${url}" th:text="${'at url: ' + url}"></h3>
-        <h3 th:if="${exception.getMessage}" th:text="${exception.getMessage}" class="lead">Er is een fout opgetreden.</h3>
+        <h3 th:text="${exception}" class="lead">Er is een fout opgetreden.</h3>
         <p class="lead">Er was een fout in het 500-bereik.</p>
         <p>De precieze fout zou je nog beter kunnen afhandelen ...</p>
     </div>
