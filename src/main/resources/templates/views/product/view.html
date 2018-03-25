@@ -68,26 +68,31 @@
         </div>
 
         <div sec:authorize="isAuthenticated()">
-            <form id="form" action="#" th:object="${review}" th:action="@{'/comment/product/{id}/create'(id=${product.id})}" method="post">
-                <div class="form-group">
-                    <label for="comment">Comment</label>
-                    <input type="text" class="form-control" id="comment" th:field="*{comment}"/>
-                    <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment error</p>
+            <div class="panel panel-default">
+                <h3>Leave a comment</h3>
+                <div class="commentFormFrame">
+                    <form id="form" action="#" th:object="${review}" th:action="@{'/comment/product/{id}/create'(id=${product.id})}" method="post">
+                        <div class="form-group">
+                            <label for="comment">Comment</label>
+                            <input type="text" class="form-control" id="comment" th:field="*{comment}"/>
+                            <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment error</p>
 
-                    <label for="rating">Rating</label>
-                    <input type="range" id="rating" th:field="*{rating}" min="1" max="10" />
-                    <p th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Rating Error</p>
+                            <label for="rating">Rating</label>
+                            <input type="range" id="rating" th:field="*{rating}" min="1" max="10" />
+                            <p th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Rating Error</p>
 
-                    <div class="float-right mt-2">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
+                            <div class="float-right mt-2">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
     <div>
-        <a th:href="@{/productOverview}" class="btn btn-default">Ga terug</a>
+        <a th:href="@{/productOverview}" class="btn btn-default">Go back</a>
     </div>
 </div>
 <div th:include="fragments :: scripts"></div>
