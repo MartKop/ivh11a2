@@ -13,8 +13,9 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Getter
 @Entity
-@DiscriminatorValue("empty")
-public class OrderEmptyState extends OrderState {
+@DiscriminatorValue("cancelled")
+public class OrderCancelledState extends OrderState{
+
 
     public boolean canCancel(Order order){
         return false;

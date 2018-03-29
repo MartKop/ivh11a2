@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import javax.validation.Valid;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping("/user")
@@ -67,7 +66,6 @@ public class UserController {
 
         return mav;
     }
-
     @PostMapping(value = "create")
     public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
         ModelAndView mav = new ModelAndView();
@@ -76,7 +74,6 @@ public class UserController {
             mav.addObject("title", "User - Create");
             mav.addObject("form_errors", result.getAllErrors());
             mav.setViewName("views/user/form");
-
             return mav;
         }
 
@@ -108,7 +105,6 @@ public class UserController {
             mav.addObject("form_errors", result.getAllErrors());
             mav.addObject("edit", true);
             mav.setViewName("views/user/form");
-
             return mav;
         }
 

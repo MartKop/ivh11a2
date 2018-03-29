@@ -17,5 +17,7 @@ public interface ShoppingCardService {
 
     void checkout();
 
+    int getSize();
+
     Float getTotal();
 }

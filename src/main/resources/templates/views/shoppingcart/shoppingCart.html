@@ -4,6 +4,8 @@
 <body>
 <div class="container">
     <div th:include="fragments :: header"></div>
+    <div th:fragment="form">
+
 
     <h1>Winkelwagen</h1>
     <div class="row">
@@ -40,13 +42,24 @@
 
     <div class="row panel-body">
         <h2 class="col-md-11" th:text="${'Totaal: € ' + total}"></h2>
-        <a th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
-            <button type="button" class="btn btn-danger" th:text="Betalen"></button>
-        </a>
+        <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+            <a th:case="${false}" th:href="@{'/registrationUnregistered'}" class="col-md-1">
+                <button type="button" class="btn btn-danger" th:text="Betalen"></button>
+            </a>
+            <a th:case="${true}" th:href="@{'/shoppingCart/goToPayment'}" class="col-md-1">
+                <button type="button" class="btn btn-danger" th:text="Betalen"></button>
+            </a>
+            <span th:case="*">Should never happen, but who knows...</span>
+        </div>
+
+        <!--<a th:href="@{'/shoppingCart/goToPayment'}" class="col-md-1">-->
+            <!--<button type="button" class="btn btn-danger" th:text="Betalen"></button>-->
+        <!--</a>-->
     </div>
 
 
 
+</div>
 </div>
 <div th:include="fragments :: scripts"></div>
 

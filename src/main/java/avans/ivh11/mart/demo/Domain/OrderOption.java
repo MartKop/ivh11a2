@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -17,12 +15,17 @@ public class OrderOption extends DecoratedOrder {
 
     private String name;
     private float price;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private RegisteredUser user;
 
-    public OrderOption(BaseOrder order, String name, float price) {
+    public OrderOption(BaseOrder order, String name, float price, RegisteredUser user) {
         super(order);
         this.name = name;
         this.price = price;
+        this.user = user;
     }
+
 
     @Override
     public float price() {

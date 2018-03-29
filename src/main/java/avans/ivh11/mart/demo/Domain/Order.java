@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.*;
 import javax.persistence.Entity;
-import java.util.Calendar;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,10 +18,15 @@ public class Order extends BaseOrder {
 
     private String status;
 
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private RegisteredUser user;
+
     private Calendar created = Calendar.getInstance();
 
-    @OneToMany(cascade = javax.persistence.CascadeType.ALL)
-    private List<Product> orderItems = new ArrayList<>();
+    @OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "order")
+    private List<OrderRow> products = new ArrayList<>();
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = true)

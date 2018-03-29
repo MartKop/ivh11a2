@@ -2,7 +2,9 @@ package avans.ivh11.mart.demo.Service;
 
 import avans.ivh11.mart.demo.Domain.Login;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
+import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Repository.RegisteredUserRepository;
+import avans.ivh11.mart.demo.Repository.UnregisteredUserRepository;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,9 @@ public class UserService {
     private RegisteredUserRepository registeredUserRepository;
 
     @Autowired
+    private UnregisteredUserRepository unregisteredUserRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private Set<RegisteredUser> list;
@@ -43,6 +48,12 @@ public class UserService {
         this.list.add(registeredUser);
         this.registeredUserRepository.save(registeredUser);
     }
+
+    @Transactional
+    public void saveUnregistered(UnregisteredUser unregisteredUser){
+        this.unregisteredUserRepository.save(unregisteredUser);
+    }
+
 
     public RegisteredUser getUserById(Long id) {
         this.syncUserList();

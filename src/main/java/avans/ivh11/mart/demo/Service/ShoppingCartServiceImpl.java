@@ -1,6 +1,11 @@
 package avans.ivh11.mart.demo.Service;
 
+import avans.ivh11.mart.demo.Domain.Order;
+import avans.ivh11.mart.demo.Domain.OrderOption;
+import avans.ivh11.mart.demo.Domain.OrderRow;
+import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Domain.Product;
+import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -9,15 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Shopping Cart is implemented with a Map, and as a session bean
- *
- * @author Dusan
- */
+
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
@@ -25,6 +24,12 @@ public class ShoppingCartServiceImpl implements ShoppingCardService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private BaseOrderRepository baseOrderRepository;
+
+    @Autowired
+    private  BaseOrderRepository<OrderOption> orderOptionRepository;
 
     private Map<Product, Integer> products = new HashMap<>();
 
@@ -71,7 +76,23 @@ public class ShoppingCartServiceImpl implements ShoppingCardService {
 
     @Override
     public void checkout() {
+        List<OrderRow> orderRows = new LinkedList<>();
+        for(Map.Entry<Product, Integer> pair : products.entrySet()) {
+            OrderRow row = new OrderRow();
+            row.setProduct(pair.getKey());
+            row.setQuantity(pair.getValue());
+            orderRows.add(row);
+        }
+        Order order = new Order();
+        order.setProducts(orderRows);
+        order.setOrderState(new OrderPendingState(order));
+
         products.clear();
+    }
+
+    @Override
+    public int getSize() {
+        return products.size();
     }
 
     @Override
