@@ -49,4 +49,8 @@ public class PaymentServiceImpl implements PaymentService {
 
         return payment;
     }
+
+    public void creditCardPayment(String price){
+        // implement creditcard payment
+    }
 }

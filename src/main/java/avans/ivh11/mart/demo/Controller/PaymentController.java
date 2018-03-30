@@ -77,4 +77,9 @@ public class PaymentController {
 
         return payment();
     }
+
+    @RequestMapping(value = "/payment/creditcard", method = RequestMethod.GET)
+    public ModelAndView creditCardPayment(){
+        return payment();
+    }
 }
