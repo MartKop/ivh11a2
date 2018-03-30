@@ -1,10 +1,9 @@
 package avans.ivh11.mart.demo.Config;
 
 import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationEmail;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationListener;
 import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSMS;
 import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSystem;
-import avans.ivh11.mart.demo.Service.ShoppingCardService;
+import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
 import avans.ivh11.mart.demo.Service.SMSSender;
 import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterEmail;
@@ -22,7 +21,7 @@ import java.util.Properties;
 public class Beans {
 
     @Bean
-    public ShoppingCardService shoppingCardService(){
+    public ShoppingCartService shoppingCartService(){
         return new ShoppingCartServiceImpl();
     }
 

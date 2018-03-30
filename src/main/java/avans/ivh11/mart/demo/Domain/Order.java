@@ -16,17 +16,22 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue(value = "order")
-public class Order extends BaseOrder implements IOrder{
+public class Order extends BaseOrder implements IOrder {
 
     private String status;
 
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private BaseUser user;
+
     private Calendar created = Calendar.getInstance();
 
-    @OneToMany(cascade = javax.persistence.CascadeType.ALL)
-    private List<Product> orderItems = new ArrayList<>();
+    @OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "order")
+    private List<OrderRow> products = new ArrayList<>();
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = true)
+            fetch = FetchType.LAZY, optional = true)
     public OrderState orderState;
 
     public OrderState getOrderState() {
@@ -54,12 +59,12 @@ public class Order extends BaseOrder implements IOrder{
     }
 
     @Override
-    public float price() {
-        return 0;
+    public Order getOrder() {
+        return null;
     }
 
     @Override
-    public Order getOrder() {
-        return null;
+    public float price() {
+        return 0;
     }
 }

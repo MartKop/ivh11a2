@@ -30,14 +30,6 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private BaseOrderRepository baseOrderRepository;
-
-    @Autowired
-    private  BaseOrderRepository<OrderOption> orderOptionRepository;
-    @Autowired
-    private BaseUserRepository baseUserRepository;
-
     public ProductController() {
 
     }
@@ -73,18 +65,6 @@ public class ProductController {
         producttest3.setPrice(125);
         producttest3.setQuantity(20);
         productRepository.save(producttest3);
-
-        List<Product> orderItems = new ArrayList<>();
-        orderItems.add(producttest);
-        orderItems.add(producttest1);
-        Order order = new Order();
-        order.setOrderItems(orderItems);
-
-        baseOrderRepository.save(order);
-
-        Optional<Order> concreteOrder  = Optional.ofNullable(order);
-        OrderOption decoratedOrder1 = new OrderOption(concreteOrder.get(),"Wrapping paper", 2.50F );
-        orderOptionRepository.save(decoratedOrder1);
         ModelAndView mav = new ModelAndView("views/product/productOverview");
         return mav;
     }
@@ -94,7 +74,7 @@ public class ProductController {
     public ModelAndView list() {
         Iterable<Product> products = this.productRepository.findAll();
         ModelAndView mav = new ModelAndView();
-        mav.addObject("title", "Product - List");
+        mav.addObject("title", "ProductenOverzicht");
         mav.addObject("products", products);
         mav.setViewName("views/product/list");
         return mav;
