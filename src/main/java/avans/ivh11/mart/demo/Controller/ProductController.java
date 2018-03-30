@@ -28,6 +28,12 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private BaseOrderRepository baseOrderRepository;
+
+    @Autowired
+    private BaseUserRepository baseUserRepository;
+
     public ProductController() {
 
     }
@@ -63,6 +69,28 @@ public class ProductController {
         producttest3.setPrice(125);
         producttest3.setQuantity(20);
         productRepository.save(producttest3);
+
+        RegisteredUser user = (RegisteredUser) this.baseUserRepository.findOne(1L);
+
+        OrderRow row1 = new OrderRow();
+        row1.setProduct(producttest);
+        row1.setQuantity(2);
+        OrderRow row2 = new OrderRow();
+        row2.setProduct(producttest2);
+        row2.setQuantity(12);
+        List<OrderRow> producten = new ArrayList<>();
+        producten.add(row1);
+        producten.add(row2);
+
+        Order order = new Order();
+        order.setProducts(producten);
+        row1.setOrder(order);
+        row2.setOrder(order);
+        order.setOrderState(new OrderPendingState(order));
+        order.setUser(user);
+
+        baseOrderRepository.save(order);
+
         ModelAndView mav = new ModelAndView("views/product/productOverview");
         return mav;
     }

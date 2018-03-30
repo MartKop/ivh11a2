@@ -55,7 +55,10 @@ return false;
     }
 
     public void cancelOrder(Order order){
-
     }
 
+    @Override
+    public String toString() {
+        return "OrderState";
+    }
 }

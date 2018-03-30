@@ -26,4 +26,8 @@ public class OrderPaidState extends OrderState {
     public boolean canShip(Order order){
         return true;
     }
+    @Override
+    public String toString() {
+        return "Paid";
+    }
 }

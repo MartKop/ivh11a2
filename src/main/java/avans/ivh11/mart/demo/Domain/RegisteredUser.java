@@ -29,7 +29,7 @@ public class RegisteredUser extends BaseUser {
     @Transient
     private String passwordConfirm;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy= "user")
+    @OneToMany(mappedBy= "user")
     private Set<Order> orders = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy= "user")

@@ -48,10 +48,11 @@ public class UserController {
 
     @GetMapping(value = "{id}")
     public ModelAndView view(@PathVariable("id") String userId) {
-        BaseUser user = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
+        RegisteredUser user = (RegisteredUser) this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "User - " + userId);
         mav.addObject("user", user);
+        mav.addObject("orders", user.getOrders());
         mav.setViewName("views/user/view");
 
         return mav;

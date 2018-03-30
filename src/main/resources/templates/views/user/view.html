@@ -54,6 +54,32 @@
             </div>
         </div>
     </div>
+
+
+        <div clas="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>Order</td>
+                    <td>Order datum</td>
+                    <td>Order status</td>
+                </tr>
+                </thead>
+                <tbody th:each="order : ${orders}">
+                <tr>
+                    <td><a th:href="@{/order/{id}(id=${order.id})}" th:text="${order.id}"></a></td>
+                    <td th:text="${#dates.format(order.created, 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${order.orderState.toString()}"></td>
+                </tr>
+                </tbody>
+            </table>
+                </div>
+            </div>
+        </div>
+
+
 </div>
 
 <div th:include="fragments :: scripts"></div>

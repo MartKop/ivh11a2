@@ -28,4 +28,10 @@ public class OrderCancelledState extends OrderState{
     public boolean canShip(Order order){
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Cancelled";
+    }
+
 }
