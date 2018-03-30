@@ -17,9 +17,9 @@ public class OrderOption extends DecoratedOrder {
     private float price;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
-    private RegisteredUser user;
+    private BaseUser user;
 
-    public OrderOption(BaseOrder order, String name, float price, RegisteredUser user) {
+    public OrderOption(BaseOrder order, String name, float price, BaseUser user) {
         super(order);
         this.name = name;
         this.price = price;

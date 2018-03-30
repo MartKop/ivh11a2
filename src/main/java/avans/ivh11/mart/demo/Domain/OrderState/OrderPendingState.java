@@ -13,10 +13,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("pending")
 public class OrderPendingState extends OrderState {
 
-    private Order order;
-
     public OrderPendingState(Order order) {
-        this.order = order;
+        super(order);
     }
 
     public boolean canCancel(Order order){

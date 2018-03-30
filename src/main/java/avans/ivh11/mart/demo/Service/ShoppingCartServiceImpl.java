@@ -1,10 +1,7 @@
 package avans.ivh11.mart.demo.Service;
 
-import avans.ivh11.mart.demo.Domain.Order;
-import avans.ivh11.mart.demo.Domain.OrderOption;
-import avans.ivh11.mart.demo.Domain.OrderRow;
+import avans.ivh11.mart.demo.Domain.*;
 import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
-import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,7 @@ import java.util.*;
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
-public class ShoppingCartServiceImpl implements ShoppingCardService {
+public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
     private ProductRepository productRepository;
@@ -32,6 +29,9 @@ public class ShoppingCartServiceImpl implements ShoppingCardService {
     private  BaseOrderRepository<OrderOption> orderOptionRepository;
 
     private Map<Product, Integer> products = new HashMap<>();
+
+    private boolean wrappingPaper, bow;
+
 
     /**
      * If product is in the map just increment quantity by 1.
@@ -75,19 +75,34 @@ public class ShoppingCartServiceImpl implements ShoppingCardService {
 
 
     @Override
-    public void checkout() {
+    @Transactional
+    public void checkout(BaseUser user) {
         List<OrderRow> orderRows = new LinkedList<>();
+        Order order = new Order();
         for(Map.Entry<Product, Integer> pair : products.entrySet()) {
             OrderRow row = new OrderRow();
             row.setProduct(pair.getKey());
             row.setQuantity(pair.getValue());
+            row.setOrder(order);
             orderRows.add(row);
         }
-        Order order = new Order();
         order.setProducts(orderRows);
+        order.setUser(user);
         order.setOrderState(new OrderPendingState(order));
+        baseOrderRepository.save(order);
+        if(bow){
+            OrderOption bow = new OrderOption(order, "WrappingPaper", 1.00F, user);
+            orderOptionRepository.save(bow);
 
+        }
+        if(wrappingPaper){
+            OrderOption wrapping = new OrderOption(order, "Wrapping paper", 2.50F, user);
+            orderOptionRepository.save(wrapping);
+        }
+        wrappingPaper = false;
+        bow = false;
         products.clear();
+
     }
 
     @Override
@@ -101,6 +116,30 @@ public class ShoppingCartServiceImpl implements ShoppingCardService {
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             total += entry.getKey().getPrice() * (new Float(entry.getValue()));
         }
+        if(wrappingPaper){
+            total += 2.50f;
+        }
+        if(bow){
+            total+=1.00f;
+        }
         return total;
     }
+
+    public boolean isWrappingPaper() {
+        return wrappingPaper;
+    }
+
+    public boolean isBow() {
+        return bow;
+    }
+
+    public void setWrappingPaper(boolean wrappingPaper) {
+        this.wrappingPaper = wrappingPaper;
+    }
+
+
+    public void setBow(boolean bow) {
+        this.bow = bow;
+    }
+
 }

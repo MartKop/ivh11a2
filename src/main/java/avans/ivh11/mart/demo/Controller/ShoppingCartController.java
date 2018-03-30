@@ -3,27 +3,21 @@ package avans.ivh11.mart.demo.Controller;
 import avans.ivh11.mart.demo.Domain.*;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
-import avans.ivh11.mart.demo.Service.ShoppingCardService;
-import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
+import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.security.Principal;
 
 @Controller
 public class ShoppingCartController {
-//    RegisteredUser user1 = (RegisteredUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
-    private ShoppingCardService shoppingCardService;
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     private BaseOrderRepository<Order> orderRepository;
@@ -34,40 +28,66 @@ public class ShoppingCartController {
     @GetMapping("/shoppingCart")
     public ModelAndView shoppingCart() {
         ModelAndView modelAndView = new ModelAndView("views/shoppingCart/shoppingCart");
-        modelAndView.addObject("products", shoppingCardService.getProductsInCart());
-        modelAndView.addObject("total", shoppingCardService.getTotal().toString());
+        modelAndView.addObject("title", "Winkelwagen");
+        modelAndView.addObject("products", shoppingCartService.getProductsInCart());
+        modelAndView.addObject("total", shoppingCartService.getTotal().toString());
+        modelAndView.addObject("wrapping", shoppingCartService.isWrappingPaper());
+        modelAndView.addObject("bow", shoppingCartService.isBow());
         return modelAndView;
     }
 
     @GetMapping("/shoppingCart/addProduct/{productId}")
     public ModelAndView addProductToCart(@PathVariable("productId") Long productId) {
-        shoppingCardService.addProduct(productRepository.findOne(productId));
+        shoppingCartService.addProduct(productRepository.findOne(productId));
         return shoppingCart();
     }
 
     @GetMapping("/shoppingCart/removeProduct/{productId}")
     public ModelAndView removeProductFromCart(@PathVariable("productId") Long productId) {
-        shoppingCardService.removeProduct(productRepository.findOne(productId));
+        shoppingCartService.removeProduct(productRepository.findOne(productId));
         return shoppingCart();
     }
 
     @GetMapping("/shoppingCart/goToPayment")
     public ModelAndView goToPayment(){
-        if(shoppingCardService.getSize() > 0){
+        if(shoppingCartService.getSize() > 0){
             ModelAndView mav = new ModelAndView();
-                mav.addObject("products", shoppingCardService.getProductsInCart());
-                mav.addObject("total", shoppingCardService.getTotal());
-                mav.setViewName("views/payment/paymentSelection");
-                return mav;
+            mav.addObject("products", shoppingCartService.getProductsInCart());
+            mav.addObject("total", shoppingCartService.getTotal());
+            mav.setViewName("views/payment/paymentSelection");
+            return mav;
         }else{
             return shoppingCart();
         }
     }
 
     @GetMapping("/shoppingCart/checkout")
-    public ModelAndView checkout() {
-        shoppingCardService.checkout();
-        return shoppingCart();
+    public ModelAndView checkout(@ModelAttribute("user")  BaseUser unregUser) {
+        if(unregUser.getEmail() != null){
+            shoppingCartService.checkout(unregUser);
+            ModelAndView mav = new ModelAndView("views/product/productOverview");
+            return mav;
+        }else {
+            BaseUser user = (BaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            shoppingCartService.checkout(user);
+            ModelAndView mav = new ModelAndView("views/product/productOverview");
+            return mav;
+        }
+    }
+
+
+    @GetMapping("/shoppingCart/bow")
+    @ResponseBody
+    public Float updateBow(@RequestParam boolean checked){
+        shoppingCartService.setBow(checked);
+        return shoppingCartService.getTotal();
+    }
+
+    @GetMapping("/shoppingCart/wrapping")
+    @ResponseBody
+    public Float updateWrapping(@RequestParam boolean checked){
+        shoppingCartService.setWrappingPaper(checked);
+        return shoppingCartService.getTotal();
     }
 
 

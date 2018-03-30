@@ -21,7 +21,7 @@ public class Order extends BaseOrder {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
-    private RegisteredUser user;
+    private BaseUser user;
 
     private Calendar created = Calendar.getInstance();
 

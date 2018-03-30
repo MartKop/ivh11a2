@@ -1,5 +1,6 @@
 package avans.ivh11.mart.demo.Controller;
 
+import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.Login;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.UnregisteredUser;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +120,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/registrationUnregistered")
-    public ModelAndView registrationUnregistered(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
+    public ModelAndView registrationUnregistered(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView();
@@ -128,20 +130,11 @@ public class LoginController {
             return mav;
         }
         this.userService.saveUnregistered(user);
-        //redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully registered"));
+        redirect.addFlashAttribute("user", user);
+        ModelAndView mav = new ModelAndView("redirect:/shoppingCart/checkout");
+        return mav;
 
-        return new ModelAndView("redirect:/shoppingCart/goToPayment");
     }
-
-
-
-
-
-
-
-
-
-
 
     @RequestMapping(value = {"", "/welcome"}, method = RequestMethod.GET)
     public ModelAndView welcome(Model model) {

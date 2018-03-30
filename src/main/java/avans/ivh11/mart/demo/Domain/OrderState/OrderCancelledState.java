@@ -17,6 +17,10 @@ import javax.persistence.Entity;
 public class OrderCancelledState extends OrderState{
 
 
+    public OrderCancelledState(Order order) {
+        super(order);
+    }
+
     public boolean canCancel(Order order){
         return false;
     }
