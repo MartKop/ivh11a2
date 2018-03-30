@@ -9,6 +9,10 @@
 
     <p th:text="${total}"></p>
 
+    <a th:href="@{'/payment/paypal'}" class="col-md-1">
+        <button type="button" class="btn btn-danger" th:text="paypal"></button>
+    </a>
+
 
 </div>
 <div th:include="fragments :: scripts"></div>
