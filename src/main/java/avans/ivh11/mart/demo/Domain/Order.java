@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue(value = "order")
-public class Order extends BaseOrder {
+public class Order extends BaseOrder implements IOrder{
 
     private String status;
 
@@ -56,5 +56,10 @@ public class Order extends BaseOrder {
     @Override
     public float price() {
         return 0;
+    }
+
+    @Override
+    public Order getOrder() {
+        return null;
     }
 }
