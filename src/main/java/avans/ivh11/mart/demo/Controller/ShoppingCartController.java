@@ -1,7 +1,6 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.*;
-import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ShoppingCartController {
+
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private ShoppingCartService shoppingCartService;
-
-    @Autowired
-    private BaseOrderRepository<Order> orderRepository;
-    @Autowired
-    private BaseOrderRepository<OrderOption> orderOptionRepository;
 
 
     @GetMapping("/shoppingCart")

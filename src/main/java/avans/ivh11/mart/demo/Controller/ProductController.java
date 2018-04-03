@@ -1,7 +1,6 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.*;
-import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
@@ -9,7 +8,6 @@ import avans.ivh11.mart.demo.Service.FlashService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -18,64 +16,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.util.*;
+
 
 @Controller
 public class ProductController {
 
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
-
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private BaseOrderRepository baseOrderRepository;
-
-    @Autowired
-    private BaseUserRepository baseUserRepository;
 
     @Autowired
     private FlashService flashService;
 
     public ProductController() {
 
-    }
-
-    @GetMapping
-    @RequestMapping("/dummydata")
-    public ModelAndView AddData(){
-        Product producttest = new Product();
-        producttest.setName("RAM-Geheugen");
-        producttest.setDescription("Ram geheugen 8GB");
-        producttest.setActive(true);
-        producttest.setPrice(90);
-        producttest.setQuantity(20);
-        productRepository.save(producttest);
-        Product producttest1 = new Product();
-        producttest1.setName("Voeding");
-        producttest1.setDescription("Voeding voor je computer");
-        producttest1.setActive(true);
-        producttest1.setPrice(85);
-        producttest1.setQuantity(20);
-        productRepository.save(producttest1);
-        Product producttest2 = new Product();
-        producttest2.setName("Moederbord");
-        producttest2.setDescription("Moederbord LA2055");
-        producttest2.setActive(true);
-        producttest2.setPrice(125);
-        producttest2.setQuantity(20);
-        productRepository.save(producttest2);
-        Product producttest3 = new Product();
-        producttest3.setName("Processor");
-        producttest3.setDescription("Intel i7");
-        producttest3.setActive(true);
-        producttest3.setPrice(125);
-        producttest3.setQuantity(20);
-        productRepository.save(producttest3);
-
-        ModelAndView mav = new ModelAndView("views/product/productOverview");
-        return mav;
     }
 
     @GetMapping

@@ -2,8 +2,8 @@ package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
 import avans.ivh11.mart.demo.Service.FlashService;
+import avans.ivh11.mart.demo.Service.Newsletter.NewsletterTemplateService;
 import avans.ivh11.mart.demo.Service.NewsletterConstraintService;
-import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterTemplateService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

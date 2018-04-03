@@ -1,8 +1,8 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Adapter.BolAPIProductAdapter;
-import avans.ivh11.mart.demo.Adapter.LocalJsonAPIProductAdapter;
-import avans.ivh11.mart.demo.Adapter.ProductAdapter;
+import avans.ivh11.mart.demo.Service.Adapter.BolAPIProductAdapter;
+import avans.ivh11.mart.demo.Service.Adapter.LocalJsonAPIProductAdapter;
+import avans.ivh11.mart.demo.Service.Adapter.ProductAdapter;
 import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.FlashService;

@@ -11,7 +11,6 @@ import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 
 @ControllerAdvice
 class GlobalDefaultExceptionHandler {

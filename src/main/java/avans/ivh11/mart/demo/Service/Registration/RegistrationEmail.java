@@ -1,7 +1,6 @@
-package avans.ivh11.mart.demo.Service.ObserverPattern;
+package avans.ivh11.mart.demo.Service.Registration;
 
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
-import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterFramework;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Service.TemplatePattern;
+package avans.ivh11.mart.demo.Service.Newsletter;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;

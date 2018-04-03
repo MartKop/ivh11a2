@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Adapter;
+package avans.ivh11.mart.demo.Service.Adapter;
 
 import avans.ivh11.mart.demo.Domain.Product;
 

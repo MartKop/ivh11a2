@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Service.TemplatePattern;
+package avans.ivh11.mart.demo.Service.Newsletter;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;

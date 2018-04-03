@@ -1,7 +1,6 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.Product;
-import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.Review;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Repository.ReviewRepository;
@@ -9,19 +8,14 @@ import avans.ivh11.mart.demo.Service.FlashService;
 import avans.ivh11.mart.demo.Service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.transaction.Transactional;
-import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 public class CommentController {
