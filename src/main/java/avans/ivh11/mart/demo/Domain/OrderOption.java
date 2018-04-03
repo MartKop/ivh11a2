@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class OrderOption extends DecoratedOrder {
 
     private String name;
-    private float price;
+    private Float price;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private BaseUser user;
@@ -24,12 +24,6 @@ public class OrderOption extends DecoratedOrder {
         this.name = name;
         this.price = price;
         this.user = user;
-    }
-
-
-    @Override
-    public float price() {
-        return price;
     }
 
     @Override

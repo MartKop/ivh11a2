@@ -33,7 +33,7 @@ public class Order extends BaseOrder implements IOrder {
             fetch = FetchType.LAZY, optional = true)
     private OrderState orderState;
 
-    private Float totalPrice;
+    private Float price;
 
     public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState) {
         this.status = status;
@@ -41,7 +41,7 @@ public class Order extends BaseOrder implements IOrder {
         this.created = created;
         this.products = products;
         this.orderState = orderState;
-        getPrice();
+        loadPrice();
     }
 
     public OrderState getOrderState() {
@@ -68,11 +68,15 @@ public class Order extends BaseOrder implements IOrder {
         this.orderState = orderState;
     }
 
-    public Float getPrice(){
+    private void loadPrice(){
         Float price = 0.0f;
         for (OrderRow product : products) {
             price += product.getProduct().getPrice() * product.getQuantity();
         }
+        this.price = price;
+    }
+
+    public Float getPrice() {
         return price;
     }
 }
