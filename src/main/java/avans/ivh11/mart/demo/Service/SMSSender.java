@@ -27,6 +27,15 @@ public class SMSSender {
 //    public static final String TO_SMS_INCAPABLE = "+15005550009";
 //    public static final String TO_UNROUTABLE = "+15005550002";
 
+    /**
+     * send an SMS to a user
+     * returns true on success, false on failure
+     *
+     * @param recipient
+     * @param body
+     *
+     * @return boolean
+     */
     public boolean sendSMS(RegisteredUser recipient, String body) {
         try {
             this.createTwilioObject(recipient.getPhone(), body);
@@ -38,6 +47,14 @@ public class SMSSender {
         return true;
     }
 
+    /**
+     * sends SMS messages to a group of users
+     * returns true on success, false on failure
+     *
+     * @param recipients
+     * @param body
+     * @return
+     */
     public boolean sendBulkSMS(Iterable<RegisteredUser> recipients, String body) {
         int total = 0;
         int failure = 0;
@@ -55,6 +72,12 @@ public class SMSSender {
         return total > 0 && failure != 0;
     }
 
+    /**
+     * Creates a Twilio object for sending an SMS via Twilio
+     *
+     * @param phoneNumber
+     * @param body
+     */
     private void createTwilioObject(String phoneNumber, String body) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message message = Message.creator(

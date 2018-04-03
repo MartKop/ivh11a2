@@ -20,6 +20,13 @@ public class NewsletterTemplateService {
     @Autowired
     private FlashService flashService;
 
+    /**
+     * Calling the right type of newsletter
+     *
+     * @param newsletter
+     * @param redirect
+     * @return
+     */
     public RedirectAttributes handleNewsletter(Newsletter newsletter, RedirectAttributes redirect) {
 
         HashMap<String, Object> results = new HashMap<>();

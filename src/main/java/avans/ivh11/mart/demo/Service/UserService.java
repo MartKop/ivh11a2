@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.thymeleaf.extras.springsecurity4.auth.Authorization;
 
 import java.util.*;
 
@@ -35,6 +34,11 @@ public class UserService {
 
     private Set<RegisteredUser> list;
 
+    /**
+     * Add a role to a new registered user and encrypt his password. Save him in the db
+     *
+     * @param registeredUser
+     */
     @Transactional
     public void save(RegisteredUser registeredUser) {
         this.syncUserList();
@@ -46,12 +50,22 @@ public class UserService {
         this.registeredUserRepository.save(registeredUser);
     }
 
+    /**
+     * Add a unregistered user to the database
+     *
+     * @param unregisteredUser
+     */
     @Transactional
     public void saveUnregistered(UnregisteredUser unregisteredUser){
         this.unregisteredUserRepository.save(unregisteredUser);
     }
 
-
+    /**
+     * Find a registered user by Id
+     *
+     * @param id
+     * @return
+     */
     public RegisteredUser getUserById(Long id) {
         this.syncUserList();
         Optional<RegisteredUser> user = this.list.stream().filter(registeredUser -> registeredUser.getId() == id)
@@ -60,21 +74,40 @@ public class UserService {
         return user.isPresent() ? user.get() : this.registeredUserRepository.findOne(id);
     }
 
+    /**
+     * Delete a registered user
+     *
+     * @param id
+     */
     public void deleteUserById(Long id) {
         this.syncUserList();
         this.list.removeIf(registeredUser -> registeredUser.getId() == id);
         this.registeredUserRepository.delete(id);
     }
 
+    /**
+     * Update the list of registered users and return them
+     *
+     * @return
+     */
     public Set<RegisteredUser> findAll() {
         this.syncUserList();
         return this.list;
     }
 
+    /**
+     * Synchronize the list
+     */
     private void syncUserList() {
         this.list = Sets.newHashSet(this.registeredUserRepository.findAll());
     }
 
+    /**
+     * find a user based on username or return null
+     *
+     * @param username
+     * @return
+     */
     public RegisteredUser getUserByUsername(String username) {
         this.syncUserList();
         try {
@@ -86,6 +119,12 @@ public class UserService {
         }
     }
 
+    /**
+     * find a user based on email address or return null
+     *
+     * @param email
+     * @return
+     */
     public RegisteredUser getUserByEmail(String email) {
         this.syncUserList();
         try {
@@ -97,6 +136,13 @@ public class UserService {
         }
     }
 
+    /**
+     * check the login request and add errors to the bindingResult if invalid attempt
+     *
+     * @param login
+     * @param bindingResult
+     * @return
+     */
     public BindingResult loginUserResult(Login login, BindingResult bindingResult) {
         RegisteredUser user = this.getUserByUsername(login.getUsername());
         if (user == null) {
@@ -126,6 +172,13 @@ public class UserService {
         return bindingResult;
     }
 
+    /**
+     * custom user validation constraints check
+     *
+     * @param user
+     * @param bindingResult
+     * @return
+     */
     public BindingResult validateUser(RegisteredUser user, BindingResult bindingResult) {
         if (user.getUsername().length() < 6 || user.getUsername().length() >32) {
             bindingResult.addError(
@@ -180,12 +233,23 @@ public class UserService {
         return bindingResult;
     }
 
+    /**
+     * log the user in
+     *
+     * @param user
+     */
     public void loginUser(RegisteredUser user) {
         List<GrantedAuthority> authorities = this.getAuthorities(user);
         Authentication auth = new UsernamePasswordAuthenticationToken(user, "credentials?", authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
+    /**
+     * find the authorities based on user_role
+     *
+     * @param user
+     * @return
+     */
     private List<GrantedAuthority> getAuthorities(RegisteredUser user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         switch (user.getRole()) {
@@ -211,6 +275,11 @@ public class UserService {
         return authorities;
     }
 
+    /**
+     * find the current logged in user
+     *
+     * @return
+     */
     public RegisteredUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

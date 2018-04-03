@@ -18,6 +18,13 @@ public class NewsletterSMS extends NewsletterFramework {
     @Autowired
     private SMSSender sender;
 
+    /**
+     * calls the SMS sender and tries to send a SMS message
+     *
+     * @param recipients
+     * @param newsletter
+     * @return
+     */
     @Override
     public HashMap<String, Object> sendingNewsletter(Iterable<RegisteredUser> recipients, Newsletter newsletter) {
         HashMap<String, Object> results = new HashMap<>();

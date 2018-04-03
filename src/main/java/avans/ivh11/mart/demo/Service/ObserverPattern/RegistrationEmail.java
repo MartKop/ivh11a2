@@ -32,6 +32,11 @@ public class RegistrationEmail implements RegistrationListener {
 
     public RegistrationEmail() {}
 
+    /**
+     * Sends a registration confirmation e-mail to a registered user
+     *
+     * @param user
+     */
     @Override
     public void sendRegistrationConfirmation(RegisteredUser user) {
         try {

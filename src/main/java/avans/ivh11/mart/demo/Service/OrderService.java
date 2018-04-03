@@ -17,6 +17,12 @@ public class OrderService {
         return (Order) baseOrderRepository.findOne(id);
     }
 
+    /**
+     * Get the total prize of an order by finding order-rows and adding their prices together
+     *
+     * @param order
+     * @return
+     */
     public Float getTotalPrice(Order order){
         Float total = 0.0f;
         for(OrderRow prod : order.getProducts()){
@@ -25,6 +31,11 @@ public class OrderService {
         return total;
     }
 
+    /**
+     * Change the order state to cancel an order
+     *
+     * @param order
+     */
     public void cancelOrder(Order order){
         order.setOrderState(new OrderCancelledState(order));
         baseOrderRepository.save(order);
