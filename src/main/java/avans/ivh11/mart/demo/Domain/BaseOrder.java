@@ -18,7 +18,7 @@ import java.util.Calendar;
 public abstract class BaseOrder implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Calendar created = Calendar.getInstance();

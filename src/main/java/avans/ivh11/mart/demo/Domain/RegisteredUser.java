@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Setter
 @NoArgsConstructor
@@ -30,7 +28,7 @@ public class RegisteredUser extends BaseUser {
     private String passwordConfirm;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy= "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
     private String role;

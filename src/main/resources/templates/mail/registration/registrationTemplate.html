@@ -1,22 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<p th:text="${'hello ' + user.getFullname()}">
-    Hello, Peter Static!
+<p th:text="${'Beste ' + user.getFullName() + ','}">
+    Hallo statisch
 </p>
-<p th:if="${user.getFullname().length() gt 10}">
-    Wow! You've got a long name (more than 10 chars)! <br />
-</p>
+
 <p>
-    You have registered successfully to the <b>Observer pattern</b>
+    Dit bericht is ter bevestiging van je registratie bij de webwinkel IVH11A2.
 </p>
-<p>Your hobbies are:</p>
-<ul th:remove="all-but-first">
-    <li th:each="hobby : ${hobbies}"
-        th:text="${hobby}">Reading</li>
-    <li>Writing</li>
-    <li>Bowling</li>
-</ul>
+
 <p>
-    Regards, <br />
-    &emsp; <em>The Thymeleaf Team</em>
+    Dit bericht is automatisch verstuurd vanuit een Spring applicatie.
 </p>
 </html>

@@ -54,8 +54,8 @@ public class ProductAPIController {
         return this.updateProduct(id, product);
     }
 
-    @DeleteMapping(value="/api/products/{id}")
-    public String delete(@PathVariable Long id){
+    @DeleteMapping(value = "/api/products/{id}")
+    public String delete(@PathVariable Long id) {
         Product productToDelete = productRepository.findOne(id);
         productRepository.delete(productToDelete);
         return "Product: " + productToDelete.getName() + " deleted";
@@ -84,9 +84,6 @@ public class ProductAPIController {
         }
         if (product.getDescription() != null) {
             prodToUpdate.setDescription(product.getDescription());
-        }
-        if (product.getCategory() != null) {
-            prodToUpdate.setCategory(product.getCategory());
         }
         if (product.getPhoto() != null) {
             prodToUpdate.setPhoto(product.getPhoto());

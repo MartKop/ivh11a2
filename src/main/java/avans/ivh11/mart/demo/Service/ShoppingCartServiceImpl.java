@@ -3,7 +3,6 @@ package avans.ivh11.mart.demo.Service;
 import avans.ivh11.mart.demo.Domain.*;
 import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
-import avans.ivh11.mart.demo.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -28,7 +27,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private Map<Product, Integer> products = new HashMap<>();
 
     private boolean wrappingPaper, bow;
-
 
     /**
      * If product is in the map just increment quantity by 1.
@@ -132,17 +130,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return wrappingPaper;
     }
 
-    public boolean isBow() {
-        return bow;
-    }
-
     public void setWrappingPaper(boolean wrappingPaper) {
         this.wrappingPaper = wrappingPaper;
     }
 
+    public boolean isBow() {
+        return bow;
+    }
 
     public void setBow(boolean bow) {
         this.bow = bow;
     }
-
 }

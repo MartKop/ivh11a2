@@ -6,12 +6,12 @@
     <div th:include="fragments :: header"></div>
     <div th:fragment="form">
 
-
     <h1>Winkelwagen</h1>
+
     <div class="row">
-    <div class="col-sm-12">
-        <a th:href="@{/productOverview}" class="btn btn-default">Terug naar producten overzicht</a>
-    </div>
+        <div class="col-sm-12">
+            <a th:href="@{/productOverview}" class="btn btn-default">Terug naar producten overzicht</a>
+        </div>
     </div>
     <div class="panel-default well" th:each="product : ${products.entrySet()}">
         <div class="panel-heading">
@@ -28,7 +28,6 @@
         <br></br>
     </div>
 
-
     <div class="row panel-body">
         <h4 class="col-md-11">Versiering opties:</h4>
         <div class="col-md-11">
@@ -39,7 +38,6 @@
         </div>
     </div>
 
-
     <div class="row panel-body">
         <h2 id="totalPrice" class="col-md-11" th:text="${'Totaal: € ' + total}"></h2>
         <a th:href="@{'/shoppingCart/goToPayment'}" class="col-md-1">
@@ -47,10 +45,9 @@
         </a>
     </div>
 
-
-
+    </div>
 </div>
-</div>
+
 <div th:include="fragments :: scripts"></div>
 
 <script>

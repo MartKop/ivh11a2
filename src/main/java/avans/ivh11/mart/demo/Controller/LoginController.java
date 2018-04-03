@@ -1,23 +1,13 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.Login;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Service.FlashService;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationEmail;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationListener;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSMS;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSystem;
+import avans.ivh11.mart.demo.Service.Registration.RegistrationSystem;
 import avans.ivh11.mart.demo.Service.UserService;
-import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Controller
 public class LoginController {
@@ -64,12 +53,13 @@ public class LoginController {
 
             return mav;
         }
+
         this.userService.save(user);
         this.userService.loginUser(user);
 //        this.registrationSystem.sendConfirmations(user);
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully registered"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Registratie succesvol."));
 
-        return new ModelAndView("redirect:/user");
+        return new ModelAndView("redirect:/profile");
     }
 
     @GetMapping(value = "/login")
@@ -105,7 +95,7 @@ public class LoginController {
         this.userService.loginUser(user);
 
         mav.setViewName("redirect:/welcome");
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully logged in"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Je bent ingelogd."));
 
         return mav;
     }

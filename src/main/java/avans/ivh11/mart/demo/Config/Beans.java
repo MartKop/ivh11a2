@@ -1,15 +1,14 @@
 package avans.ivh11.mart.demo.Config;
 
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationEmail;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationListener;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSMS;
-import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSystem;
+import avans.ivh11.mart.demo.Service.Newsletter.NewsletterEmail;
+import avans.ivh11.mart.demo.Service.Newsletter.NewsletterFramework;
+import avans.ivh11.mart.demo.Service.Newsletter.NewsletterSMS;
+import avans.ivh11.mart.demo.Service.Registration.RegistrationEmail;
+import avans.ivh11.mart.demo.Service.Registration.RegistrationSMS;
+import avans.ivh11.mart.demo.Service.Registration.RegistrationSystem;
+import avans.ivh11.mart.demo.Service.SMSSender;
 import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
-import avans.ivh11.mart.demo.Service.SMSSender;
-import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterEmail;
-import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterFramework;
-import avans.ivh11.mart.demo.Service.TemplatePattern.NewsletterSMS;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,7 +21,7 @@ import java.util.Properties;
 public class Beans {
 
     @Bean
-    public ShoppingCartService shoppingCartService(){
+    public ShoppingCartService shoppingCartService() {
         return new ShoppingCartServiceImpl();
     }
 
@@ -58,7 +57,7 @@ public class Beans {
         return javaMailSender;
     }
 
-    private Properties javaMailProperties(){
+    private Properties javaMailProperties() {
         Properties properties = new Properties();
         // add more properties in the same way
         properties.put("mail.transport.protocol", "smtp");

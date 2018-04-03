@@ -2,10 +2,6 @@ package avans.ivh11.mart.demo.Service;
 
 import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.Product;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.Map;
 
 
