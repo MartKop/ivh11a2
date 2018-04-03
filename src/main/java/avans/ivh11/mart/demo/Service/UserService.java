@@ -113,7 +113,7 @@ public class UserService {
         try {
             return this.list.stream()
                 .filter(registeredUser -> registeredUser.getUsername().toLowerCase().equals(username.toLowerCase()))
-                .findAny().get();
+                .findAny().orElse(null);
         } catch (Exception e) {
             return null;
         }
@@ -130,7 +130,7 @@ public class UserService {
         try {
             return this.list.stream()
                 .filter(registeredUser -> registeredUser.getEmail().toLowerCase().equals(email.toLowerCase()))
-                .findFirst().get();
+                .findFirst().orElse(null);
         } catch (Exception e) {
             return null;
         }
