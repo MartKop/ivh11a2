@@ -29,7 +29,7 @@ public class Product implements Serializable {
     private String name;
 
     @NotNull(message = "Description is required.")
-    @Size(min = 3, max = 150, message = "3 to 150 characters")
+    @Size(min = 3, max = 500, message = "3 to 150 characters")
     private String description;
 
     @NotNull(message = "Price is required.")

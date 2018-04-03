@@ -39,7 +39,7 @@ public class LocalJsonAPIProductAdapter implements ProductAdapter {
 
         for (int i = 0; i < products.length(); i++) {
             JSONObject jsonProduct = products.getJSONObject(i);
-            if (StreamSupport.stream(webshopProducts.spliterator(), false).noneMatch(x -> x.getName().equals(StringUtils.abbreviate(jsonProduct.getString("naam"), 50)))) {
+            if (StreamSupport.stream(webshopProducts.spliterator(), false).noneMatch(x -> x.getName().equals(StringUtils.abbreviate(jsonProduct.getString("naam"), 500)))) {
                 productList.add(this.createProduct(jsonProduct));
             }
         }

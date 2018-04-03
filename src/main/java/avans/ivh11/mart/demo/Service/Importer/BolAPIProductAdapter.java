@@ -43,7 +43,7 @@ public class BolAPIProductAdapter implements ProductAdapter {
 
         for (int i = 0; i < products.length(); i++) {
             JSONObject jsonProduct = products.getJSONObject(i);
-            if (StreamSupport.stream(webshopProducts.spliterator(), false).noneMatch(x -> x.getName().equals(StringUtils.abbreviate(jsonProduct.getString("title"), 50)))) {
+            if (StreamSupport.stream(webshopProducts.spliterator(), false).noneMatch(x -> x.getName().equals(StringUtils.abbreviate(jsonProduct.getString("title"), 500)))) {
                 productList.add(this.createProduct(jsonProduct));
             }
         }
@@ -58,7 +58,7 @@ public class BolAPIProductAdapter implements ProductAdapter {
         product.setName(StringUtils.abbreviate(jsonProduct.getString("title"), 50));
         product.setPrice(jsonProduct.getJSONObject("offerData").getJSONArray("offers").getJSONObject(0).getFloat("price"));
         product.setActive(true);
-        product.setDescription(StringUtils.abbreviate(jsonProduct.getString("longDescription"), 150));
+        product.setDescription(StringUtils.abbreviate(jsonProduct.getString("longDescription"), 500));
         product.setPhoto(jsonProduct.getJSONArray("images").getJSONObject(3).getString("url"));
 
         return product;
