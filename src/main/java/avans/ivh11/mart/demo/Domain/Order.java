@@ -20,7 +20,6 @@ public class Order extends BaseOrder implements IOrder {
 
     private String status;
 
-
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private BaseUser user;
@@ -32,7 +31,18 @@ public class Order extends BaseOrder implements IOrder {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = true)
-    public OrderState orderState;
+    private OrderState orderState;
+
+    private Float totalPrice;
+
+    public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState) {
+        this.status = status;
+        this.user = user;
+        this.created = created;
+        this.products = products;
+        this.orderState = orderState;
+        getPrice();
+    }
 
     public OrderState getOrderState() {
         return orderState;
@@ -58,13 +68,11 @@ public class Order extends BaseOrder implements IOrder {
         this.orderState = orderState;
     }
 
-    @Override
-    public Order getOrder() {
-        return null;
-    }
-
-    @Override
-    public float price() {
-        return 0;
+    public Float getPrice(){
+        Float price = 0.0f;
+        for (OrderRow product : products) {
+            price += product.getProduct().getPrice() * product.getQuantity();
+        }
+        return price;
     }
 }

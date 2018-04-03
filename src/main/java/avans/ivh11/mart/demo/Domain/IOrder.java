@@ -1,6 +1,5 @@
 package avans.ivh11.mart.demo.Domain;
 
 public interface IOrder {
-    public Order getOrder();
-    public float price();
+    public Float getPrice();
 }

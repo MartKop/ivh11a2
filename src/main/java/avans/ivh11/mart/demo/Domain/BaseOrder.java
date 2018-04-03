@@ -20,5 +20,5 @@ public abstract class BaseOrder implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    public abstract float price();
+    public abstract Float getPrice();
 }
