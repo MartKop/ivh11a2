@@ -24,7 +24,7 @@ public class Beans {
     }
 
     @Bean
-    public PaymentService paymentService() { return new PaymentServiceImpl(); }
+    public PaymentStrategy paymentStrategy() { return new PayPalPayment(); }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

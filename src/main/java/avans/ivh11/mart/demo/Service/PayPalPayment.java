@@ -1,6 +1,8 @@
 package avans.ivh11.mart.demo.Service;
 
 import com.paypal.api.payments.*;
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -8,14 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
-public class PaymentServiceImpl implements PaymentService {
+public class PayPalPayment implements PaymentStrategy {
 
-    public Payment payPalPayment(String price) {
+    public String pay(String price) {
 
         // Payment ammount
         Amount amount = new Amount();
@@ -47,10 +50,27 @@ public class PaymentServiceImpl implements PaymentService {
         redirectUrls.setReturnUrl("http://localhost:8080/");
         payment.setRedirectUrls(redirectUrls);
 
-        return payment;
-    }
+        try {
+            // Sandbox api credentials.
+            APIContext apiContext = new APIContext(
+                    "AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
+                    "EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL",
+                    "sandbox");
+            Payment createdPayment = payment.create(apiContext);
+            System.out.println(createdPayment.toString());
 
-    public void creditCardPayment(String price){
-        // implement creditcard payment
+            Iterator links = createdPayment.getLinks().iterator();
+
+            while (links.hasNext()){
+                Links link = (Links) links.next();
+                if (link.getRel().equalsIgnoreCase("approval_url")){
+                    return link.getHref();
+                }
+            }
+        } catch (PayPalRESTException e) {
+            System.err.println(e.getDetails());
+            return "/";
+        }
+        return "/";
     }
 }

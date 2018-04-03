@@ -1,6 +1,7 @@
 package avans.ivh11.mart.demo.Domain;
 
 import avans.ivh11.mart.demo.Domain.OrderState.OrderState;
+import avans.ivh11.mart.demo.Service.PaymentStrategy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,14 +34,18 @@ public class Order extends BaseOrder implements IOrder {
             fetch = FetchType.LAZY, optional = true)
     private OrderState orderState;
 
+    private PaymentStrategy paymentStrategy;
+
     private Float price;
 
-    public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState) {
+    public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState,
+                 final PaymentStrategy paymentStrategy) {
         this.status = status;
         this.user = user;
         this.created = created;
         this.products = products;
         this.orderState = orderState;
+        this.paymentStrategy = paymentStrategy;
         loadPrice();
     }
 
@@ -78,5 +83,9 @@ public class Order extends BaseOrder implements IOrder {
 
     public Float getPrice() {
         return price;
+    }
+
+    public void setStrategy(final PaymentStrategy paymentStrategy){
+        this.paymentStrategy = paymentStrategy;
     }
 }
