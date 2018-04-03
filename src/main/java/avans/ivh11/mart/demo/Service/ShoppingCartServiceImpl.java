@@ -18,10 +18,7 @@ import java.util.*;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-
-    @Autowired
-    private ProductRepository productRepository;
-
+    
     @Autowired
     private BaseOrderRepository baseOrderRepository;
 

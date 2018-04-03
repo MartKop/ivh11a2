@@ -2,7 +2,7 @@ package avans.ivh11.mart.demo.Service;
 
 import avans.ivh11.mart.demo.Domain.Order;
 import avans.ivh11.mart.demo.Domain.OrderRow;
-import avans.ivh11.mart.demo.Domain.Product;
+import avans.ivh11.mart.demo.Domain.OrderState.OrderCancelledState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     @Autowired
-    BaseOrderRepository baseOrderRepository;
+    private BaseOrderRepository baseOrderRepository;
+
+    @Autowired
+    private OrderStateRepository orderStateRepository;
 
     public Order getOrderDetails(Long id){
         return (Order) baseOrderRepository.findOne(id);
@@ -23,6 +26,12 @@ public class OrderService {
             total += prod.getProduct().getPrice();
         }
         return total;
+    }
+
+    public void cancelOrder(Order order){
+        orderStateRepository.delete(order.getOrderState().getId());
+        order.setOrderState(new OrderCancelledState(order));
+        baseOrderRepository.save(order);
     }
 
 

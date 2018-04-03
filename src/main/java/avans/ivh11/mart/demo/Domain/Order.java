@@ -28,7 +28,7 @@ public class Order extends BaseOrder {
     @OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "order")
     private List<OrderRow> products = new ArrayList<>();
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
+    @OneToOne(mappedBy = "order", cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY, optional = true)
     public OrderState orderState;
 
