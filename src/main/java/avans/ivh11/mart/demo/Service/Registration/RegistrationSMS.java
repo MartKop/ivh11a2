@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class RegistrationSMS implements RegistrationListener {
 
+    private final String text = "Bedankt voor je registratie bij de webwinkel van 23IVH11A2!";
     @Autowired
     private SMSSender sender;
-
-    private final String text = "Thank you for your registration!";
 
     public RegistrationSMS(SMSSender sender) {
         this.sender = sender;

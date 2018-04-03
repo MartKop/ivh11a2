@@ -57,7 +57,7 @@ public class LoginController {
         this.userService.save(user);
         this.userService.loginUser(user);
 //        this.registrationSystem.sendConfirmations(user);
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully registered"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Registratie succesvol."));
 
         return new ModelAndView("redirect:/profile");
     }
@@ -95,7 +95,7 @@ public class LoginController {
         this.userService.loginUser(user);
 
         mav.setViewName("redirect:/welcome");
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully logged in"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Je bent ingelogd."));
 
         return mav;
     }

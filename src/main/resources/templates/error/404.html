@@ -5,10 +5,10 @@
     <div class="container">
         <div th:replace="fragments :: header"></div>
 
-        <h1>404 - Page not found</h1>
-        <p>The page you were looking for was not found.
-            Click <a th:text="here" th:href="@{/welcome}">here </a> to return to the homepage.</p>
-
+        <h1>404 - Pagina niet gevonden</h1>
+        <p>De pagina die je zoekt is niet gevonden.
+            Hier <a th:text="hier" th:href="@{/welcome}">hier</a> om naar de home pagina terug te gaan.</p>
+        <p><i><span th:if="${exception}" th:text="${exception}"></span></i></p>
 
     </div>
     <div th:replace="fragments :: scripts"></div>

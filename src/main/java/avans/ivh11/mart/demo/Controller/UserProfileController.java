@@ -39,7 +39,7 @@ public class UserProfileController {
         RegisteredUser user = this.userService.getUserById(userService.getCurrentUser().getId());
         ModelAndView mav = new ModelAndView();
 
-        mav.addObject("title", "profile - " + user.getFullName());
+        mav.addObject("title", "Profiel - " + user.getFullName());
         mav.addObject("user", user);
         mav.setViewName("views/profile/view");
 
@@ -51,13 +51,13 @@ public class UserProfileController {
         RegisteredUser user = this.userService.getUserById(Long.parseLong(userId));
         ModelAndView mav = new ModelAndView();
 
-        if (userService.getCurrentUser().getId() != Long.parseLong(userId) &&!request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
+        if (userService.getCurrentUser().getId() != Long.parseLong(userId) && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
             mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            mav.addObject("exception", new AccessDeniedException("Je hebt geen toegang tot deze pagina."));
             return mav;
         }
 
-        mav.addObject("title", "profile - " + user.getFullName());
+        mav.addObject("title", "Profiel - " + user.getFullName());
         mav.addObject("user", user);
         mav.setViewName("views/profile/view");
 
@@ -68,7 +68,7 @@ public class UserProfileController {
     public ModelAndView modifyForm(@PathVariable("id") String userId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
-        mav.addObject("title", "Profile - Edit");
+        mav.addObject("title", "Profiel - Wijzigen");
         mav.addObject("user", this.baseUserBaseUserRepository.findOne(Long.parseLong(userId)));
         mav.addObject("edit", true);
         mav.setViewName("views/user/form");
@@ -79,13 +79,13 @@ public class UserProfileController {
     @Transactional
     @PostMapping(value = "{id}/edit")
     public ModelAndView updateProfile(@PathVariable("id") String userId, @Valid BaseUser user,
-                                   BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
+                                      BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         BaseUser oldUser = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
 
         if (userService.getCurrentUser().getId() != user.getId() && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
             mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            mav.addObject("exception", new AccessDeniedException("Je hebt geen toegang tot deze pagina."));
             return mav;
         }
 
@@ -100,7 +100,7 @@ public class UserProfileController {
         oldUser.updateBaseUser(user);
         mav.addObject("user.id", user.getId());
         mav.setViewName("redirect:/profile/{user.id}");
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully updated user " + user.getId()));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Gebruiker gewijzigd: " + user.getFullName()));
 
         return mav;
     }

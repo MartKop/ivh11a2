@@ -14,8 +14,7 @@ public class FlashService {
      * @param text
      * @return
      */
-    public HashMap<String, String> createFlash(String type, String text)
-    {
+    public HashMap<String, String> createFlash(String type, String text) {
         HashMap<String, String> flash = new HashMap<>();
         flash.put("type", type);
         flash.put("text", text);

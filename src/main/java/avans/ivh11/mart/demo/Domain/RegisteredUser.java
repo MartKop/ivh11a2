@@ -28,7 +28,7 @@ public class RegisteredUser extends BaseUser {
     private String passwordConfirm;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy= "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
     private String role;

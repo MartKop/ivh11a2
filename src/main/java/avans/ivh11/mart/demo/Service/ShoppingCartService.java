@@ -18,7 +18,6 @@ public interface ShoppingCartService {
 
     Float getTotal();
 
-
     boolean isWrappingPaper();
 
     boolean isBow();

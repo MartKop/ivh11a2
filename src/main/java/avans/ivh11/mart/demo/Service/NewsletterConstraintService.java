@@ -34,7 +34,6 @@ public class NewsletterConstraintService {
     }
 
     /**
-     *
      * @param bindingResult
      * @param newsletter
      * @return
@@ -63,13 +62,12 @@ public class NewsletterConstraintService {
     }
 
     /**
-     *
      * @param bindingResult
      * @param newsletter
      * @return
      */
     private BindingResult doSMS(BindingResult bindingResult, Newsletter newsletter) {
-        if (newsletter.getBody().length() >= 160 || newsletter.getBody().length() < 5 ) {
+        if (newsletter.getBody().length() >= 160 || newsletter.getBody().length() < 5) {
             bindingResult.addError(
                     new ObjectError(
                             "body",

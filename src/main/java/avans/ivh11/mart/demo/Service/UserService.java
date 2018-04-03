@@ -18,7 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -56,7 +59,7 @@ public class UserService {
      * @param unregisteredUser
      */
     @Transactional
-    public void saveUnregistered(UnregisteredUser unregisteredUser){
+    public void saveUnregistered(UnregisteredUser unregisteredUser) {
         this.unregisteredUserRepository.save(unregisteredUser);
     }
 
@@ -69,7 +72,7 @@ public class UserService {
     public RegisteredUser getUserById(Long id) {
         this.syncUserList();
         Optional<RegisteredUser> user = this.list.stream().filter(registeredUser -> registeredUser.getId() == id)
-            .findFirst();
+                .findFirst();
 
         return user.isPresent() ? user.get() : this.registeredUserRepository.findOne(id);
     }
@@ -112,8 +115,8 @@ public class UserService {
         this.syncUserList();
         try {
             return this.list.stream()
-                .filter(registeredUser -> registeredUser.getUsername().toLowerCase().equals(username.toLowerCase()))
-                .findAny().orElse(null);
+                    .filter(registeredUser -> registeredUser.getUsername().toLowerCase().equals(username.toLowerCase()))
+                    .findAny().orElse(null);
         } catch (Exception e) {
             return null;
         }
@@ -129,8 +132,8 @@ public class UserService {
         this.syncUserList();
         try {
             return this.list.stream()
-                .filter(registeredUser -> registeredUser.getEmail().toLowerCase().equals(email.toLowerCase()))
-                .findFirst().orElse(null);
+                    .filter(registeredUser -> registeredUser.getEmail().toLowerCase().equals(email.toLowerCase()))
+                    .findFirst().orElse(null);
         } catch (Exception e) {
             return null;
         }
@@ -147,11 +150,11 @@ public class UserService {
         RegisteredUser user = this.getUserByUsername(login.getUsername());
         if (user == null) {
             bindingResult.addError(
-                new FieldError(
-                    "login",
-                    "username",
-                    "Username was not found"
-                )
+                    new FieldError(
+                            "login",
+                            "username",
+                            "Gebruikersnaam niet gevonden."
+                    )
             );
 
             return bindingResult;
@@ -159,11 +162,11 @@ public class UserService {
 
         if (!this.bCryptPasswordEncoder.matches(login.getPassword(), user.getPassword())) {
             bindingResult.addError(
-                new FieldError(
-                    "login",
-                    "password",
-                    "Password is incorrect"
-                )
+                    new FieldError(
+                            "login",
+                            "password",
+                            "Wachtwoord is niet correct."
+                    )
             );
 
             return bindingResult;
@@ -180,53 +183,53 @@ public class UserService {
      * @return
      */
     public BindingResult validateUser(RegisteredUser user, BindingResult bindingResult) {
-        if (user.getUsername().length() < 6 || user.getUsername().length() >32) {
+        if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
             bindingResult.addError(
-                new FieldError(
-                    "user",
-                    "username",
-                    "Username size must be 6 to 32 characters"
-                )
+                    new FieldError(
+                            "user",
+                            "username",
+                            "Gebruikersnaam moet tussen de 6 en 32 karakters zijn"
+                    )
             );
         }
 
         if (this.getUserByUsername(user.getUsername()) != null) {
             bindingResult.addError(
-                new FieldError(
-                    "user",
-                    "username",
-                    "Username already exists"
-                )
+                    new FieldError(
+                            "user",
+                            "username",
+                            "Gebruikersnaam bestaat al."
+                    )
             );
         }
 
         if (this.getUserByEmail(user.getEmail()) != null) {
             bindingResult.addError(
-                new FieldError(
-                    "user",
-                    "email",
-                    "Email already exists"
-                )
+                    new FieldError(
+                            "user",
+                            "email",
+                            "E-mail bestaat al."
+                    )
             );
         }
 
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             bindingResult.addError(
-                new FieldError(
-                    "user",
-                    "password",
-                    "Password must be 8-32 characters"
-                )
+                    new FieldError(
+                            "user",
+                            "password",
+                            "Wachtwoord moet 8-32 karakters lang zijn"
+                    )
             );
         }
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             bindingResult.addError(
-                new FieldError(
-                    "user",
-                    "passwordConfirm",
-                    "Password check does not match"
-                )
+                    new FieldError(
+                            "user",
+                            "passwordConfirm",
+                            "Wachtwoorden komen niet overeen"
+                    )
             );
         }
 

@@ -7,13 +7,8 @@
     <div class="row">
 
         <div class="col-sm-8">
-            <div>
-                <h4 th:text="${'Order status: ' +order.orderState.toString()}"></h4>
-            </div>
-        </div>
-
-        <div class="col-sm-8">
-            <h4 th:text="${#dates.format(order.created, 'dd-MM-yyyy')}"></h4>
+            <h4 th:text="${'De status van de bestelling: ' +order.orderState.toString()}"></h4>
+            <h4 th:text="${'geplaatst op: ' + #dates.format(order.created, 'dd-MM-yyyy')}"></h4>
         </div>
 
         <table class="table table-striped">

@@ -5,20 +5,20 @@
 <div class="container">
     <div th:include="fragments :: header"></div>
 
-    <h4>Users : View all</h4>
+    <h4>Alle gebruikers</h4>
     <div>
-        <a class="btn btn-primary btn-sm" th:href="@{/user/create}">Create User</a>
+        <a class="btn btn-primary btn-sm" th:href="@{/user/create}">Maak een gebruiker aan</a>
     </div>
 
     <table class="table table-striped table-hover">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Date of birth</th>
-            <th>Created at</th>
+            <th>Naam</th>
+            <th>E-mail</th>
+            <th>Telefoon</th>
+            <th>Geboortedatum</th>
+            <th>Geregistreerd op</th>
             <th colspan="2">Options</th>
         </tr>
         </thead>

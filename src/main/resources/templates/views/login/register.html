@@ -25,19 +25,19 @@
             </div>
 
             <div class="form-group">
-                <label for="Username">Username</label>
+                <label for="Username">Gebruikersnaam</label>
                 <input type="text" class="form-control" id="Username" th:field="*{username}"/>
                 <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
 
-                <label for="Password">Password</label>
+                <label for="Password">Wachtwoord</label>
                 <input type="password" class="form-control" id="Password" th:field="*{password}"/>
                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
 
-                <label for="ConfirmPassword">Confirm Password</label>
+                <label for="ConfirmPassword">Wachtwoord check</label>
                 <input type="password" class="form-control" id="ConfirmPassword" th:field="*{passwordConfirm}"/>
                 <p th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">Password Confirm Error</p>
 
-                <label for="email">Email</label>
+                <label for="email">E-mail</label>
                 <input type="text" class="form-control" id="email" th:field="*{email}"/>
                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
 
@@ -57,16 +57,16 @@
                 <input type='text' class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
                 <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Name Error</p>
 
-                <label for="phone">Telefoon</label>
+                <label for="phone">Telefoonnummer</label>
                 <input type="text" class="form-control" id="phone" th:field="*{phone}"/>
                 <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</p>
 
-                <label for="subscribeToNewsletter">Subscribe to newsletter (SMS and email)</label>
+                <label for="subscribeToNewsletter">Opgeven voor nieuwsbrief (SMS and email)</label>
                 <input type="checkbox" class="form-control" id="subscribeToNewsletter" th:field="*{subscribeToNewsletter}"/>
                 <p th:if="${#fields.hasErrors('subscribeToNewsletter')}" th:errors="*{subscribeToNewsletter}">Newsletter Error</p>
 
                 <div class="float-right mt-2">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Registreer</button>
                 </div>
 
                 <div class="float-right mt-2">

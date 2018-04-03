@@ -8,15 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/newsletter")
 public class AdminNewsletterController {
-
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
     @Autowired
     private FlashService flashService;
@@ -28,13 +29,14 @@ public class AdminNewsletterController {
     private NewsletterTemplateService newsletterService;
 
     @Autowired
-    public AdminNewsletterController() {}
+    public AdminNewsletterController() {
+    }
 
     @GetMapping
     public ModelAndView newsletterForm(@ModelAttribute Newsletter newsletter) {
 
         ModelAndView mav = new ModelAndView();
-        mav.addObject("title", "Newsletter - Create");
+        mav.addObject("title", "Nieuwsbrief");
         mav.setViewName("views/newsletter/form");
 
         return mav;
@@ -43,13 +45,13 @@ public class AdminNewsletterController {
     @PostMapping()
     public ModelAndView sendNewsletter(@ModelAttribute Newsletter newsletter, BindingResult bindingResult, RedirectAttributes redirect) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("title", "Newsletter - Create");
+        mav.addObject("title", "Nieuwsbrief - Verstuur");
 
         bindingResult = newsletterConstraintService.newsletterCheck(bindingResult, newsletter);
 
         if (bindingResult.hasErrors()) {
             mav.addObject("form_errors", bindingResult.getAllErrors());
-            mav.addObject("flash", this.flashService.createFlash("danger", "Newsletter was not sent. Fix the errors and try again."));
+            mav.addObject("flash", this.flashService.createFlash("danger", "Nieuwsbrief was niet verstuurd. Fix je errors."));
             mav.setViewName("views/newsletter/form");
 
             return mav;

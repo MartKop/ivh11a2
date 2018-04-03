@@ -13,7 +13,7 @@ public class RegistrationSystem {
     }
 
     public void sendConfirmations(RegisteredUser user) {
-        for (Enumeration e = listeners.elements(); e.hasMoreElements();) {
+        for (Enumeration e = listeners.elements(); e.hasMoreElements(); ) {
             ((RegistrationListener) e.nextElement()).sendRegistrationConfirmation(user);
         }
     }

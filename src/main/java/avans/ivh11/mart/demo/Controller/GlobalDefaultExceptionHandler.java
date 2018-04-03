@@ -17,12 +17,12 @@ class GlobalDefaultExceptionHandler {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
-	@ExceptionHandler(NoHandlerFoundException.class)
-	public ModelAndView handleError404(HttpServletRequest request, Exception e) {
-	    logger.error("404 - page was not found!");
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView handleError404(HttpServletRequest request, Exception e) {
+        logger.error("404 - page was not found!");
 
-		return this.errorValues("error/404", request, e, "Oeps - 404");
-	}
+        return this.errorValues("error/404", request, e, "Oeps - 404");
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleError403(HttpServletRequest request, Exception e) {

@@ -1,6 +1,6 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Domain.*;
+import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,25 +44,25 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/shoppingCart/goToPayment")
-    public ModelAndView goToPayment(){
-        if(shoppingCartService.getSize() > 0){
+    public ModelAndView goToPayment() {
+        if (shoppingCartService.getSize() > 0) {
             ModelAndView mav = new ModelAndView();
             mav.addObject("products", shoppingCartService.getProductsInCart());
             mav.addObject("total", shoppingCartService.getTotal());
             mav.setViewName("views/payment/paymentSelection");
             return mav;
-        }else{
+        } else {
             return shoppingCart();
         }
     }
 
     @GetMapping("/shoppingCart/checkout")
-    public ModelAndView checkout(@ModelAttribute("user")  BaseUser unregUser) {
-        if(unregUser.getEmail() != null){
+    public ModelAndView checkout(@ModelAttribute("user") BaseUser unregUser) {
+        if (unregUser.getEmail() != null) {
             shoppingCartService.checkout(unregUser);
             ModelAndView mav = new ModelAndView("views/product/productOverview");
             return mav;
-        }else {
+        } else {
             BaseUser user = (BaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             shoppingCartService.checkout(user);
             ModelAndView mav = new ModelAndView("views/product/productOverview");
@@ -73,14 +73,14 @@ public class ShoppingCartController {
 
     @GetMapping("/shoppingCart/bow")
     @ResponseBody
-    public Float updateBow(@RequestParam boolean checked){
+    public Float updateBow(@RequestParam boolean checked) {
         shoppingCartService.setBow(checked);
         return shoppingCartService.getTotal();
     }
 
     @GetMapping("/shoppingCart/wrapping")
     @ResponseBody
-    public Float updateWrapping(@RequestParam boolean checked){
+    public Float updateWrapping(@RequestParam boolean checked) {
         shoppingCartService.setWrappingPaper(checked);
         return shoppingCartService.getTotal();
     }

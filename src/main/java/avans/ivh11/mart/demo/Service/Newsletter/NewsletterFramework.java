@@ -56,9 +56,9 @@ public abstract class NewsletterFramework {
     private List<RegisteredUser> getAllRecipients(Iterable<RegisteredUser> users) {
         List<RegisteredUser> list = new ArrayList<>();
         for (RegisteredUser user : users) {
-           if (user.isSubscribeToNewsletter()) {
-               list.add(user);
-           }
+            if (user.isSubscribeToNewsletter()) {
+                list.add(user);
+            }
         }
 
         return list;

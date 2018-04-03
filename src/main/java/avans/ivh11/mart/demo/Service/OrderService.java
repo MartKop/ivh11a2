@@ -13,7 +13,7 @@ public class OrderService {
     @Autowired
     private BaseOrderRepository baseOrderRepository;
 
-    public Order getOrderDetails(Long id){
+    public Order getOrderDetails(Long id) {
         return (Order) baseOrderRepository.findOne(id);
     }
 
@@ -23,9 +23,9 @@ public class OrderService {
      * @param order
      * @return
      */
-    public Float getTotalPrice(Order order){
+    public Float getTotalPrice(Order order) {
         Float total = 0.0f;
-        for(OrderRow prod : order.getProducts()){
+        for (OrderRow prod : order.getProducts()) {
             total += prod.getProduct().getPrice();
         }
         return total;
@@ -36,10 +36,8 @@ public class OrderService {
      *
      * @param order
      */
-    public void cancelOrder(Order order){
+    public void cancelOrder(Order order) {
         order.setOrderState(new OrderCancelledState(order));
         baseOrderRepository.save(order);
     }
-
-
 }

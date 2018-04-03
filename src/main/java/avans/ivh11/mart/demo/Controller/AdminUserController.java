@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -41,7 +40,7 @@ public class AdminUserController {
         Iterable<BaseUser> users = this.baseUserBaseUserRepository.findAll();
         ModelAndView mav = new ModelAndView();
 
-        mav.addObject("title", "User - List");
+        mav.addObject("title", "Gebruiker - Lijst");
         mav.addObject("users", users);
         mav.setViewName("views/user/list");
 
@@ -53,7 +52,7 @@ public class AdminUserController {
         ModelAndView mav = new ModelAndView();
         BaseUser user = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
 
-        mav.addObject("title", "User - " + userId);
+        mav.addObject("title", "Gebruiker - " + userId);
         mav.addObject("user", user);
         mav.addObject("checker", new TypeChecker());
         mav.setViewName("views/user/view");
@@ -66,7 +65,7 @@ public class AdminUserController {
         ModelAndView mav = new ModelAndView();
 
         mav.addObject("user", new UnregisteredUser());
-        mav.addObject("title", "User - Create");
+        mav.addObject("title", "Gebruiker - Maken");
         mav.setViewName("views/user/form");
 
         return mav;
@@ -74,11 +73,11 @@ public class AdminUserController {
 
     @PostMapping(value = "create")
     public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result,
-                   RedirectAttributes redirect, HttpServletRequest request) {
+                               RedirectAttributes redirect, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
         if (result.hasErrors()) {
-            mav.addObject("title", "User - Create");
+            mav.addObject("title", "Gebruiker - Maken");
             mav.addObject("form_errors", result.getAllErrors());
             mav.setViewName("views/user/form");
             return mav;
@@ -87,7 +86,7 @@ public class AdminUserController {
         this.baseUserBaseUserRepository.save(user);
         mav.addObject("user.id", user.getId());
         mav.setViewName("redirect:/profile/{user.id}");
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully created a new user"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Nieuwe gebruiker aangemaakt."));
 
         return mav;
     }
@@ -96,7 +95,7 @@ public class AdminUserController {
     public ModelAndView modifyForm(@PathVariable("id") String userId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
-        mav.addObject("title", "User - Edit");
+        mav.addObject("title", "Gebruiker - Wijzigen");
         mav.addObject("user", this.baseUserBaseUserRepository.findOne(Long.parseLong(userId)));
         mav.addObject("edit", true);
         mav.setViewName("views/user/form");
@@ -107,18 +106,18 @@ public class AdminUserController {
     @Transactional
     @PostMapping(value = "{id}/edit")
     public ModelAndView updateUser(@PathVariable("id") String userId, @Valid BaseUser user,
-                   BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
+                                   BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         BaseUser oldUser = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
 
         if (userService.getCurrentUser().getId() != user.getId() && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
             mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            mav.addObject("exception", new AccessDeniedException("Je hebt geen toegang tot deze pagina"));
             return mav;
         }
 
         if (result.hasErrors()) {
-            mav.addObject("title", "User - Edit");
+            mav.addObject("title", "Gebruiker - Wijzigen");
             mav.addObject("form_errors", result.getAllErrors());
             mav.addObject("edit", true);
             mav.setViewName("views/user/form");
@@ -128,7 +127,7 @@ public class AdminUserController {
         oldUser.updateBaseUser(user);
         mav.addObject("user.id", user.getId());
         mav.setViewName("redirect:/profile/{user.id}");
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully updated user " + user.getId()));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Gebruiker " + user.getId() + " gewijzigd."));
 
         return mav;
     }
@@ -140,13 +139,13 @@ public class AdminUserController {
 
         if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
             mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            mav.addObject("exception", new AccessDeniedException("Je hebt geen rechten hiervoor."));
             return mav;
         }
 
         mav.addObject("title", "User - List");
         mav.addObject("users", this.baseUserBaseUserRepository.findAll());
-        mav.addObject("flash", this.flashService.createFlash("success", "Succesfully deleted user" + id));
+        mav.addObject("flash", this.flashService.createFlash("success", "Gebruiker " + id + " verwijderd."));
         mav.setViewName("redirect:/user/");
 
         return mav;

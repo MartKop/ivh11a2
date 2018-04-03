@@ -37,7 +37,7 @@ public class OrderController {
 
         if (userService.getCurrentUser() != order.getUser() && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
             mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            mav.addObject("exception", new AccessDeniedException("Je hebt geen toegang tot deze pagina"));
             return mav;
         }
 
@@ -52,13 +52,13 @@ public class OrderController {
 
 
     @GetMapping("/cancel/{id}")
-    public String cancelOrder(@PathVariable("id") Long orderId, RedirectAttributes redirect){
+    public String cancelOrder(@PathVariable("id") Long orderId, RedirectAttributes redirect) {
         Order order = orderService.getOrderDetails(orderId);
-        if(order.canCancel()){
+        if (order.canCancel()) {
             orderService.cancelOrder(order);
-            redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Order is gecancelled."));
+            redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Bestelling is gecancelled."));
             return "redirect:/user/" + order.getUser().getId();
-        }else{
+        } else {
             redirect.addFlashAttribute("flash", this.flashService.createFlash("error", "Kan order niet cancellen op dit moment, Wacht op volgende status."));
             return "redirect:/order/" + order.getId();
         }

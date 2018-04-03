@@ -1,11 +1,12 @@
-package avans.ivh11.mart.demo.Service.Adapter;
+package avans.ivh11.mart.demo.Service.Importer;
 
 import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.BolAPIConnector;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
@@ -40,7 +41,7 @@ public class BolAPIProductAdapter implements ProductAdapter {
 
         List<Product> productList = new ArrayList<>();
 
-        for(int i = 0; i < products.length(); i++){
+        for (int i = 0; i < products.length(); i++) {
             JSONObject jsonProduct = products.getJSONObject(i);
             if (StreamSupport.stream(webshopProducts.spliterator(), false).noneMatch(x -> x.getName().equals(StringUtils.abbreviate(jsonProduct.getString("title"), 50)))) {
                 productList.add(this.createProduct(jsonProduct));
@@ -50,8 +51,7 @@ public class BolAPIProductAdapter implements ProductAdapter {
         return productList;
     }
 
-    private Product createProduct(JSONObject jsonProduct)
-    {
+    private Product createProduct(JSONObject jsonProduct) {
         Product product = new Product();
 
         product.setId(jsonProduct.getLong("id"));

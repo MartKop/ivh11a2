@@ -1,12 +1,11 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Service.Adapter.BolAPIProductAdapter;
-import avans.ivh11.mart.demo.Service.Adapter.LocalJsonAPIProductAdapter;
-import avans.ivh11.mart.demo.Service.Adapter.ProductAdapter;
 import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
-import org.slf4j.LoggerFactory;
+import avans.ivh11.mart.demo.Service.Importer.BolAPIProductAdapter;
+import avans.ivh11.mart.demo.Service.Importer.LocalJsonAPIProductAdapter;
+import avans.ivh11.mart.demo.Service.Importer.ProductAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +22,8 @@ public class AdminProductImportController {
 
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private FlashService flashService;
-
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
     @GetMapping(value = "local")
     public ModelAndView addLocalProducts(RedirectAttributes redirect) {
@@ -58,9 +54,9 @@ public class AdminProductImportController {
     private HashMap<String, String> saveProductsAndFlash(List<Product> products) {
         if (products.size() > 0) {
             this.productRepository.save(products);
-            return this.flashService.createFlash("success", "Successfully created " + products.size() + " products");
+            return this.flashService.createFlash("success", "Er zijn " + products.size() + " producten aangemaakt.");
         } else {
-            return this.flashService.createFlash("warning", "0 products were added");
+            return this.flashService.createFlash("warning", "0 producten zijn aangemaakt.");
         }
     }
 }
