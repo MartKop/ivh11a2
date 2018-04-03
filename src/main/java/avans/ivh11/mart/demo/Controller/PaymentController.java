@@ -2,6 +2,7 @@ package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.Order;
 import avans.ivh11.mart.demo.Domain.OrderOption;
+import avans.ivh11.mart.demo.Domain.PayPalStrategy;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.PaymentStrategy;
@@ -46,7 +47,7 @@ public class PaymentController {
     @RequestMapping(value = "/payment/paypal", method = RequestMethod.GET)
     public ModelAndView payPalPayment(){
         // Create paypalpayment
-        String payment = paymentStrategy.payPalPayment(shoppingCartService.getTotal().toString());
+        String payment = paymentStrategy.pay( new PayPalStrategy(shoppingCartService.getTotal().toString()));
         return new ModelAndView("redirect:" + payment);
     }
 

@@ -88,4 +88,9 @@ public class Order extends BaseOrder implements IOrder {
     public void setStrategy(final PaymentStrategy paymentStrategy){
         this.paymentStrategy = paymentStrategy;
     }
+
+    public String pay(PayPalStrategy paymentMethod){
+        String amount = getPrice().toString();
+        return paymentMethod.pay(amount);
+    }
 }
