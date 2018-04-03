@@ -47,7 +47,7 @@
 								<span sec:authentication="principal.fullName"></span> <!-- PRINCIPAL IS HIER HET USER OBJCECT -->
 							</a>
 							<ul class="dropdown-menu">
-								<li sec:authorize="hasRole('ROLE_USER')"><a href="#">My profile</a></li>
+								<li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{'/profile/{id}'(id=${#authentication.getPrincipal().getId()})}">My profile</a></li>
 								<li><a th:href="@{/logout}">Log out</a></li>
 								<li sec:authorize="hasRole('ROLE_ADMIN')" role="separator" class="divider"></li>
 								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 1</a></li>

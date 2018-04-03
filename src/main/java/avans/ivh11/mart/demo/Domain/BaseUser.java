@@ -59,6 +59,16 @@ public class BaseUser implements Serializable {
 
 		return this.firstName + " " + this.infix + " " + this.lastName;
 	}
+
+	public void updateBaseUser(BaseUser user) {
+		this.email = user.getEmail();
+		this.firstName = user.getFirstName();
+		this.infix = user.getInfix();
+		this.lastName = user.getLastName();
+		this.dateOfBirth = user.getDateOfBirth();
+		this.phone = user.getPhone();
+		this.subscribeToNewsletter = user.isSubscribeToNewsletter();
+	}
 }
 
 

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 @ControllerAdvice
@@ -24,6 +25,13 @@ class GlobalDefaultExceptionHandler {
 		return this.errorValues("error/404", request, e, "Oeps - 404");
 	}
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ModelAndView handleError403(HttpServletRequest request, Exception e) {
+        logger.error("403 - Access Denied!");
+
+        return this.errorValues("error/403", request, e, "Oeps - 403");
+    }
+
     @ExceptionHandler(TemplateEngineException.class)
     public ModelAndView handleThymeleaf(HttpServletRequest request, Exception e) {
         logger.error("Thymeleaf error - critical error while loading template!");
@@ -32,8 +40,7 @@ class GlobalDefaultExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView
-    defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
+    public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
         logger.error("5xx - Error!");
         logger.error(e.getMessage());
         if (AnnotationUtils.findAnnotation

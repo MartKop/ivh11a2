@@ -9,6 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Entity(name = "Review")
 @Getter
@@ -35,4 +36,10 @@ public class Review implements Serializable {
     @ManyToOne
     @JoinColumn(name="product_id", nullable=false)
     private Product product;
+
+    private Calendar created = Calendar.getInstance();
+
+    public void updateTime() {
+        this.created = Calendar.getInstance();
+    }
 }

@@ -11,3 +11,30 @@
     font-style: italic;
     cursor: pointer;
 }
+
+.commentWrapper {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 10px;
+}
+
+.commentTableWrapper {
+    margin-bottom: 30px;
+}
+
+.commentForm {
+    padding: 20px;
+    /*cursor: pointer;*/
+    border: 1px solid black;
+}
+
+.comment {
+    padding: 20px;
+    /*cursor: pointer;*/
+    border: 1px solid black;
+}
+
+.commentFormFrame {
+    margin-left: 10%;
+    margin-right: 10%;
+}

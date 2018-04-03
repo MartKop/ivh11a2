@@ -5,8 +5,10 @@ import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
+import avans.ivh11.mart.demo.Service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashMap;
 
@@ -27,19 +31,22 @@ public class UserController {
     private FlashService flashService;
 
     @Autowired
-    private BaseUserRepository<UnregisteredUser> unregisteredUserRepository;
-
-    @Autowired
-    private BaseUserRepository<RegisteredUser> registeredUserRepository;
-
-    @Autowired
     private BaseUserRepository<BaseUser> baseUserBaseUserRepository;
 
-    @GetMapping
-    public ModelAndView list() {
-        Iterable<BaseUser> users = this.baseUserBaseUserRepository.findAll();
+    @Autowired
+    private UserService userService;
 
+    @GetMapping
+    public ModelAndView list(HttpServletRequest request) {
+        Iterable<BaseUser> users = this.baseUserBaseUserRepository.findAll();
         ModelAndView mav = new ModelAndView();
+
+        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
+
         mav.addObject("title", "User - List");
         mav.addObject("users", users);
         mav.setViewName("views/user/list");
@@ -48,9 +55,16 @@ public class UserController {
     }
 
     @GetMapping(value = "{id}")
-    public ModelAndView view(@PathVariable("id") String userId) {
-        BaseUser user = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
+    public ModelAndView view(@PathVariable("id") String userId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
+        BaseUser user = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
+
+        if (userService.getCurrentUser().getId() != Long.parseLong(userId) && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
+
         mav.addObject("title", "User - " + userId);
         mav.addObject("user", user);
         mav.setViewName("views/user/view");
@@ -58,19 +72,33 @@ public class UserController {
         return mav;
     }
 
-    @GetMapping(value = "create")
-    public ModelAndView createForm(@ModelAttribute UnregisteredUser user) {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("user", new UnregisteredUser());
-        mav.addObject("title", "User - Create");
-        mav.setViewName("views/user/form");
-
-        return mav;
-    }
+//    @GetMapping(value = "create")
+//    public ModelAndView createForm(@ModelAttribute UnregisteredUser user) {
+//        ModelAndView mav = new ModelAndView();
+//
+//        if (!userService.getRole().equals(RegisteredUser.ROLE_ADMIN)) {
+//            mav.setViewName("error/403");
+//            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+//            return mav;
+//        }
+//
+//        mav.addObject("user", new UnregisteredUser());
+//        mav.addObject("title", "User - Create");
+//        mav.setViewName("views/user/form");
+//
+//        return mav;
+//    }
 
     @PostMapping(value = "create")
-    public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
+    public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result,
+                   RedirectAttributes redirect, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
+
+        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
 
         if (result.hasErrors()) {
             mav.addObject("title", "User - Create");
@@ -82,26 +110,42 @@ public class UserController {
 
         this.baseUserBaseUserRepository.save(user);
         mav.addObject("user.id", user.getId());
-        mav.setViewName("redirect:/user/{user.id}");
+        mav.setViewName("redirect:/profile/{user.id}");
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully created a new user"));
 
         return mav;
     }
 
     @GetMapping(value = "{id}/edit")
-    public ModelAndView modifyForm(@PathVariable("id") String userId) {
+    public ModelAndView modifyForm(@PathVariable("id") String userId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
+
+        if (userService.getCurrentUser().getId() != Long.parseLong(userId) && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
+
         mav.addObject("title", "User - Edit");
-        mav.addObject("user", this.unregisteredUserRepository.findOne(Long.parseLong(userId)));
+        mav.addObject("user", this.baseUserBaseUserRepository.findOne(Long.parseLong(userId)));
         mav.addObject("edit", true);
         mav.setViewName("views/user/form");
 
         return mav;
     }
 
+    @Transactional
     @PostMapping(value = "{id}/edit")
-    public ModelAndView updateUser(@Valid UnregisteredUser user, BindingResult result, RedirectAttributes redirect) {
+    public ModelAndView updateUser(@PathVariable("id") String userId, @Valid BaseUser user,
+                   BindingResult result, RedirectAttributes redirect, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
+        BaseUser oldUser = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
+
+        if (userService.getCurrentUser().getId() != user.getId() && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
 
         if (result.hasErrors()) {
             mav.addObject("title", "User - Edit");
@@ -112,26 +156,30 @@ public class UserController {
             return mav;
         }
 
-        this.unregisteredUserRepository.save(user);
+        oldUser.updateBaseUser(user);
         mav.addObject("user.id", user.getId());
-        mav.setViewName("redirect:/user/{user.id}");
+        mav.setViewName("redirect:/profile/{user.id}");
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully updated user " + user.getId()));
 
         return mav;
     }
 
     @DeleteMapping(value = "{id}/delete")
-    public ModelAndView delete(@PathVariable("id") Long id) {
-        this.unregisteredUserRepository.delete(id);
-
+    public ModelAndView delete(@PathVariable("id") Long id, HttpServletRequest request) {
+        this.baseUserBaseUserRepository.delete(id);
         ModelAndView mav = new ModelAndView();
+
+        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
+
         mav.addObject("title", "User - List");
-        mav.addObject("users", this.unregisteredUserRepository.findAll());
+        mav.addObject("users", this.baseUserBaseUserRepository.findAll());
         mav.addObject("flash", this.flashService.createFlash("success", "Succesfully deleted user" + id));
         mav.setViewName("redirect:/user/");
 
         return mav;
     }
-
-
 }

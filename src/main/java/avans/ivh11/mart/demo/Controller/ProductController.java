@@ -4,6 +4,7 @@ import avans.ivh11.mart.demo.Domain.*;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
+import avans.ivh11.mart.demo.Service.FlashService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,9 @@ public class ProductController {
     private  BaseOrderRepository<OrderOption> orderOptionRepository;
     @Autowired
     private BaseUserRepository baseUserRepository;
+
+    @Autowired
+    private FlashService flashService;
 
     public ProductController() {
 
@@ -99,6 +103,7 @@ public class ProductController {
         mav.setViewName("views/product/list");
         return mav;
     }
+
     @GetMapping
     @RequestMapping("/productOverview")
     public ModelAndView listOverview() {
@@ -116,6 +121,7 @@ public class ProductController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "Product - " + productId);
         mav.addObject("product", product);
+        mav.addObject("review", new Review());
         mav.setViewName("views/product/view");
         return mav;
     }
@@ -154,7 +160,7 @@ public class ProductController {
 
         mav.addObject("product.id", product.getId());
         mav.setViewName("redirect:/product/{product.id}");
-        redirect.addFlashAttribute("flash", this.createFlash("success", "Successfully created a new product"));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully created a new product"));
 
         return mav;
     }
@@ -187,7 +193,7 @@ public class ProductController {
         product = this.productRepository.save(product);
         mav.addObject("product.id", product.getId());
         mav.setViewName("redirect:/product/{product.id}");
-        redirect.addFlashAttribute("flash", this.createFlash("success", "Successfully updated product " + product.getId()));
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully updated product " + product.getId()));
 
         return mav;
     }
@@ -199,19 +205,10 @@ public class ProductController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "product - List");
         mav.addObject("products", this.productRepository.findAll());
-        mav.addObject("flash", this.createFlash("success", "Succesfully deleted product" + id));
+        mav.addObject("flash", this.flashService.createFlash("success", "Succesfully deleted product" + id));
         mav.setViewName("redirect:/product/");
 
         return mav;
-    }
-
-    private HashMap<String, String> createFlash(String type, String text)
-    {
-        HashMap<String, String> flash = new HashMap<>();
-        flash.put("type", type);
-        flash.put("text", text);
-
-        return flash;
     }
 
     private Product checkProductConstraints(Product product, BindingResult result)

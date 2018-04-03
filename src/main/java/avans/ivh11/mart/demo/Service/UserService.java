@@ -17,10 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.thymeleaf.extras.springsecurity4.auth.Authorization;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -201,5 +198,15 @@ public class UserService {
         }
 
         return authorities;
+    }
+
+    public RegisteredUser getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof RegisteredUser) {
+            return this.registeredUserRepository.findOne(((RegisteredUser) principal).getId());
+        }
+
+        return null;
     }
 }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <h1>This page shows your profile.</h1>
+    <h3> It has your personal information, comments and recent placed orders.</h3>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 th:text="${user.firstName} + ' ' + ${user.infix != null ? user.infix + ' ':''} + ${user.lastName}">Naam ...</h2>
+                    <div class="row">
+                        <div class="col-xs-4">ID</div>
+                        <div class="col-xs-8">
+                            <p><span th:text="${user.id}">ID</span><br/></p>
+                        </div>
+                        <div class="col-xs-4">Email</div>
+                        <div class="col-xs-8">
+                            <p><span th:text="${user.email}">Email</span><br/></p>
+                        </div>
+                        <div class="col-xs-4">Phone</div>
+                        <div class="col-xs-8">
+                            <p th:text="${user.phone}">Phone ...</p>
+                        </div>
+                        <div class="col-xs-4">Date of Birth</div>
+                        <!--<div class="col-xs-9"><p th:text="${#dates.format(user.dateOfBirth, 'dd MMM yyyy')}">Date of birth...</p>-->
+                        <div class="col-xs-8"><p th:text="${user.dateOfBirth}">Date of birth...</p>
+                        </div>
+                        <div class="col-xs-4">Created at</div>
+                        <div class="col-xs-8"><p th:text="${#dates.format(user.created, 'dd MMM yyyy  -  HH:mm')}">Created at...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <a class="btn btn-warning btn-sm" th:href="@{/user/{id}/edit(id=${user.id})}">Edit my profile</a>
+                </div>
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <a class="btn btn-danger btn-sm" data-toggle="modal" th:attr="data-target='#myModal'+${user.id}">Delete my account</a>
+                    <div th:include="fragments :: modal(${'user'}, ${user.id})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="commentTableWrapper">
+                <div th:each="review : ${user.reviews}">
+                    <div class="row comment">
+                        <div class="col-sm-2">
+                            <b><span th:text="${review.product.name}"></span></b>
+                            <span th:text="${review.product.description}"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <span th:text="${review.rating + ' out of 10'}"></span><br/>
+                            <span th:text="${'on ' + #dates.format(review.created, 'dd MMMM yyyy')}"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span th:text="${review.comment}"></span>
+                        </div>
+                        <div sec:authorize="isAuthenticated()" class="col-sm-2 pull-right" >
+                        <span th:if="${#authentication.getPrincipal().getId() == review.user.id}">
+                            <a th:href="@{'/comment/product/{id}/delete/{comment_id}'(id=${review.product.id}, comment_id=${review.id})}">
+                                Delete comment
+                            </a>
+                        </span>
+                            <span sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:if="${#authentication.getPrincipal().getId() != review.user.id}">
+                            <a th:href="@{'/comment/product/{id}/delete/{comment_id}'(id=${review.product.id}, comment_id=${review.id})}">
+                                Delete comment
+                            </a>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>
