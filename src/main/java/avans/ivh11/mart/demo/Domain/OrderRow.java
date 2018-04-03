@@ -22,6 +22,12 @@ public class OrderRow implements Serializable {
     @Min(value = 1, message = "At least 1 of this object is required")
     private int quantity;
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 }

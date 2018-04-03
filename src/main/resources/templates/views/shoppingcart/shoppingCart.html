@@ -4,6 +4,8 @@
 <body>
 <div class="container">
     <div th:include="fragments :: header"></div>
+    <div th:fragment="form">
+
 
     <h1>Winkelwagen</h1>
     <div class="row">
@@ -30,45 +32,55 @@
     <div class="row panel-body">
         <h4 class="col-md-11">Versiering opties:</h4>
         <div class="col-md-11">
-            <label>Cadeaupapier: + €2,50 </label><input type="checkbox"/>
+            <label>Cadeaupapier: + €2,50 </label><input type="checkbox" id="wrapping" th:checked="${wrapping}"/>
         </div>
         <div class="col-md-11">
-            <label>Strikje: + € 1,00</label><input type="checkbox"/>
+            <label>Strikje: + € 1,00</label><input type="checkbox" id="bow" th:checked="${bow}"/>
         </div>
     </div>
 
 
     <div class="row panel-body">
-        <h2 class="col-md-11" th:text="${'Totaal: € ' + total}"></h2>
-        <a th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
-            <button type="button" class="btn btn-danger" th:text="Betalen"></button>
+        <h2 id="totalPrice" class="col-md-11" th:text="${'Totaal: € ' + total}"></h2>
+        <a th:href="@{'/shoppingCart/goToPayment'}" class="col-md-1">
+            <button type="button" class="btn btn-success" th:text="Betalen"></button>
         </a>
     </div>
 
 
 
 </div>
+</div>
 <div th:include="fragments :: scripts"></div>
 
-<!--<script>-->
-    <!--$(document).ready(function(){-->
+<script>
+    $(document).ready(function(){
+
+        $('#wrapping').click(function(){
+            var checked = this.checked;
+            $.ajax({
+                url: "/shoppingCart/wrapping",
+                data: { "checked": checked},
+                success: function(data){
+                    $('#totalPrice').html("Totaal: € "  + data);
+                }
+            });
+
+        });
+
+        $('#bow').click(function(){
+            var checked = this.checked;
+            $.ajax({
+                url: "/shoppingCart/bow",
+                data: { "checked": checked},
+                success: function(data){
+                    $('#totalPrice').html("Totaal: € "  + data);
+                }
+            });
+        });
 
 
-        <!--$('#decorationOrder').dialog({-->
-            <!--autoOpen: false,-->
-            <!--height: 200,-->
-            <!--width: 200,-->
-            <!--resizable: false,-->
-            <!--modal: true-->
-        <!--});-->
-
-        <!--$('#decorationDialog').click(function(){-->
-            <!--$('#decorationOrder').dialog('open');-->
-        <!--});-->
-
-
-
-    <!--})-->
-<!--</script>-->
+    })
+</script>
 </body>
 </html>

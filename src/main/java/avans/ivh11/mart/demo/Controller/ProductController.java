@@ -1,6 +1,7 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.*;
+import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
@@ -18,10 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ProductController {
@@ -34,8 +32,6 @@ public class ProductController {
     @Autowired
     private BaseOrderRepository baseOrderRepository;
 
-    @Autowired
-    private  BaseOrderRepository<OrderOption> orderOptionRepository;
     @Autowired
     private BaseUserRepository baseUserRepository;
 
@@ -78,17 +74,27 @@ public class ProductController {
         producttest3.setQuantity(20);
         productRepository.save(producttest3);
 
-        List<Product> orderItems = new ArrayList<>();
-        orderItems.add(producttest);
-        orderItems.add(producttest1);
+        RegisteredUser user = (RegisteredUser) this.baseUserRepository.findOne(1L);
+
+        OrderRow row1 = new OrderRow();
+        row1.setProduct(producttest);
+        row1.setQuantity(2);
+        OrderRow row2 = new OrderRow();
+        row2.setProduct(producttest2);
+        row2.setQuantity(12);
+        List<OrderRow> producten = new ArrayList<>();
+        producten.add(row1);
+        producten.add(row2);
+
         Order order = new Order();
-        order.setOrderItems(orderItems);
+        order.setProducts(producten);
+        row1.setOrder(order);
+        row2.setOrder(order);
+        order.setOrderState(new OrderPendingState(order));
+        order.setUser(user);
 
         baseOrderRepository.save(order);
 
-        Optional<Order> concreteOrder  = Optional.ofNullable(order);
-        OrderOption decoratedOrder1 = new OrderOption(concreteOrder.get(),"Wrapping paper", 2.50F );
-        orderOptionRepository.save(decoratedOrder1);
         ModelAndView mav = new ModelAndView("views/product/productOverview");
         return mav;
     }
@@ -98,7 +104,7 @@ public class ProductController {
     public ModelAndView list() {
         Iterable<Product> products = this.productRepository.findAll();
         ModelAndView mav = new ModelAndView();
-        mav.addObject("title", "Product - List");
+        mav.addObject("title", "ProductenOverzicht");
         mav.addObject("products", products);
         mav.setViewName("views/product/list");
         return mav;

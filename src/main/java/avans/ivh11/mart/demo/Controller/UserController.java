@@ -5,6 +5,7 @@ import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Domain.UnregisteredUser;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
+import avans.ivh11.mart.demo.Service.TypeChecker;
 import avans.ivh11.mart.demo.Service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping("/user")
@@ -67,27 +67,28 @@ public class UserController {
 
         mav.addObject("title", "User - " + userId);
         mav.addObject("user", user);
+        mav.addObject("checker", new TypeChecker());
         mav.setViewName("views/user/view");
 
         return mav;
     }
 
-//    @GetMapping(value = "create")
-//    public ModelAndView createForm(@ModelAttribute UnregisteredUser user) {
-//        ModelAndView mav = new ModelAndView();
-//
-//        if (!userService.getRole().equals(RegisteredUser.ROLE_ADMIN)) {
-//            mav.setViewName("error/403");
-//            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
-//            return mav;
-//        }
-//
-//        mav.addObject("user", new UnregisteredUser());
-//        mav.addObject("title", "User - Create");
-//        mav.setViewName("views/user/form");
-//
-//        return mav;
-//    }
+    @GetMapping(value = "create")
+    public ModelAndView createForm(@ModelAttribute UnregisteredUser user, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+
+        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
+            mav.setViewName("error/403");
+            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
+            return mav;
+        }
+
+        mav.addObject("user", new UnregisteredUser());
+        mav.addObject("title", "User - Create");
+        mav.setViewName("views/user/form");
+
+        return mav;
+    }
 
     @PostMapping(value = "create")
     public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result,
@@ -104,7 +105,6 @@ public class UserController {
             mav.addObject("title", "User - Create");
             mav.addObject("form_errors", result.getAllErrors());
             mav.setViewName("views/user/form");
-
             return mav;
         }
 
@@ -152,7 +152,6 @@ public class UserController {
             mav.addObject("form_errors", result.getAllErrors());
             mav.addObject("edit", true);
             mav.setViewName("views/user/form");
-
             return mav;
         }
 

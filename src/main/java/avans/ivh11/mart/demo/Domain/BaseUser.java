@@ -11,6 +11,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @NoArgsConstructor
@@ -45,6 +47,10 @@ public class BaseUser implements Serializable {
 
 	@Size(min = 10, max = 15)
 	private String phone;
+
+
+	@OneToMany(mappedBy= "user")
+	private Set<Order> orders = new HashSet<>();
 
 	private Calendar created = Calendar.getInstance();
 

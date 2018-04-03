@@ -15,11 +15,19 @@ import javax.persistence.Entity;
 @DiscriminatorValue("paid")
 public class OrderPaidState extends OrderState {
 
+    public OrderPaidState(Order order) {
+        super(order);
+    }
+
     public boolean canCancel(Order order){
         return true;
     }
 
     public boolean canShip(Order order){
         return true;
+    }
+    @Override
+    public String toString() {
+        return "Paid";
     }
 }

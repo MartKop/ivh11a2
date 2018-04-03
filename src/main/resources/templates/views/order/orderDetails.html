@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+    <div class="row">
+
+        <div class="col-sm-8">
+            <div>
+                <h4 th:text="${'Order status: ' +order.orderState.toString()}"></h4>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <h4 th:text="${#dates.format(order.created, 'dd-MM-yyyy')}"></h4>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Productnaam</td>
+                <td>Aantal</td>
+                <td>Prijs</td>
+            </tr>
+            </thead>
+            <tbody th:each="orderRow : ${products}">
+            <tr>
+                <td th:text="${orderRow.product.name}"></td>
+                <td th:text="${orderRow.quantity}"></td>
+                <td th:text="${'€' + orderRow.product.price}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td th:text="${'Totaal: € ' + totalPrice}"></td>
+            </tr>
+            </tfoot>
+        </table>
+
+
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-6">
+            <div>
+                <a th:href="@{/user/{id}(id=${order.getUser().id})}" class="btn btn-default">Ga terug</a>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div>
+                <a th:href="@{/order/cancel/{id}(id=${order.id})}" class="btn btn-warning">Cancel order</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>

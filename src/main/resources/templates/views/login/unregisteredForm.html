@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+    <title>Messages : Registreer voor bestelling</title>
+</head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <!--<form id="form" action="#" th:object="${user}" th:="${} ? th:action=@{/user/{id}/edit(id=${user.id})} : @{/user/create}}" method="post">-->
+    <form id="form" th:object="${user}" th:action="@{/registrationUnregistered/}" method="post">
+        <h4 th:text="'Registeer voor bestelling'"></h4>
+
+        <div th:fragment="form">
+            <div th:if="${#fields.hasErrors('*')}">
+                <div th:if="${#fields.hasErrors('*')}">
+                    <div layout:include="fragments/alert :: error_summary"
+                         th:with="type='danger', header=${'fouten in het formulier'}, errors=${form_errors}" th:remove="tag">
+                        <th:block layout:fragment="alert-summary">
+                            <p>Niet alle velden in het formulier zijn correct ingevuld. Corrigeer deze en verzend
+                                opnieuw.</p>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" th:field="*{email}"/>
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+
+                <label for="firstname">Voornaam</label>
+                <input type="text" class="form-control" id="firstname" th:field="*{firstName}"/>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</p>
+
+                <label for="infix">Tussenvoegsel</label>
+                <input type="text" class="form-control" id="infix" th:field="*{infix}"/>
+                <p th:if="${#fields.hasErrors('infix')}" th:errors="*{infix}">Infix Error</p>
+
+                <label for="lastname">Achternaam</label>
+                <input type="text" class="form-control" id="lastname" th:field="*{lastName}"/>
+                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
+
+                <label for="dateOfBirth">Geboortedatum</label>
+                <input type='text' class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
+                <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Name Error</p>
+
+                <label for="phone">Telefoon</label>
+                <input type="text" class="form-control" id="phone" th:field="*{phone}"/>
+                <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</p>
+
+
+                <div class="float-right mt-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+                <div class="float-right mt-2">
+                    <a th:href="@{/}">
+                        <div class="btn btn-secondary">Cancel</div>
+                    </a>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>
