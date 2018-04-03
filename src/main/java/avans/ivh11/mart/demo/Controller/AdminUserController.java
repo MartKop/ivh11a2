@@ -22,8 +22,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("admin/user/")
+public class AdminUserController {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
@@ -41,12 +41,6 @@ public class UserController {
         Iterable<BaseUser> users = this.baseUserBaseUserRepository.findAll();
         ModelAndView mav = new ModelAndView();
 
-        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
-            mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
-            return mav;
-        }
-
         mav.addObject("title", "User - List");
         mav.addObject("users", users);
         mav.setViewName("views/user/list");
@@ -58,12 +52,6 @@ public class UserController {
     public ModelAndView view(@PathVariable("id") String userId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         BaseUser user = this.baseUserBaseUserRepository.findOne(Long.parseLong(userId));
-
-        if (userService.getCurrentUser().getId() != Long.parseLong(userId) && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
-            mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
-            return mav;
-        }
 
         mav.addObject("title", "User - " + userId);
         mav.addObject("user", user);
@@ -77,12 +65,6 @@ public class UserController {
     public ModelAndView createForm(@ModelAttribute UnregisteredUser user, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
-        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
-            mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
-            return mav;
-        }
-
         mav.addObject("user", new UnregisteredUser());
         mav.addObject("title", "User - Create");
         mav.setViewName("views/user/form");
@@ -94,12 +76,6 @@ public class UserController {
     public ModelAndView create(@Valid @ModelAttribute("user") UnregisteredUser user, BindingResult result,
                    RedirectAttributes redirect, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-
-        if (!request.isUserInRole(RegisteredUser.ROLE_ADMIN)) {
-            mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
-            return mav;
-        }
 
         if (result.hasErrors()) {
             mav.addObject("title", "User - Create");
@@ -119,12 +95,6 @@ public class UserController {
     @GetMapping(value = "{id}/edit")
     public ModelAndView modifyForm(@PathVariable("id") String userId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-
-        if (userService.getCurrentUser().getId() != Long.parseLong(userId) && !request.isUserInRole(RegisteredUser.ROLE_SUPER_ADMIN)) {
-            mav.setViewName("error/403");
-            mav.addObject("exception", new AccessDeniedException("You do not have access to this page"));
-            return mav;
-        }
 
         mav.addObject("title", "User - Edit");
         mav.addObject("user", this.baseUserBaseUserRepository.findOne(Long.parseLong(userId)));

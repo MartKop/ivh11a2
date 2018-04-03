@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/newsletter")
-public class NewsletterController {
+public class AdminNewsletterController {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
@@ -28,7 +28,7 @@ public class NewsletterController {
     private NewsletterTemplateService newsletterService;
 
     @Autowired
-    public NewsletterController() {}
+    public AdminNewsletterController() {}
 
     @GetMapping
     public ModelAndView newsletterForm(@ModelAttribute Newsletter newsletter) {

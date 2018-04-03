@@ -50,8 +50,8 @@
 								<li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{'/profile/{id}'(id=${#authentication.getPrincipal().getId()})}">My profile</a></li>
 								<li><a th:href="@{/logout}">Log out</a></li>
 								<li sec:authorize="hasRole('ROLE_ADMIN')" role="separator" class="divider"></li>
-								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 1</a></li>
-								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 2</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/products/add/bol}">Add Bol products</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/products/add/local}">Add Json list</a></li>
 							</ul>
 						</li>
 					</ul>
