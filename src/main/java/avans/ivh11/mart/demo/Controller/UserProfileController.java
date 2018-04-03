@@ -19,8 +19,20 @@ public class UserProfileController {
     @Autowired
     private UserService userService;
 
+    @GetMapping(value = "")
+    public ModelAndView view() {
+        RegisteredUser user = this.userService.getUserById(userService.getCurrentUser().getId());
+        ModelAndView mav = new ModelAndView();
+
+        mav.addObject("title", "profile - " + user.getFullName());
+        mav.addObject("user", user);
+        mav.setViewName("views/profile/view");
+
+        return mav;
+    }
+
     @GetMapping(value = "{id}")
-    public ModelAndView view(@PathVariable("id") String userId, HttpServletRequest request) {
+    public ModelAndView viewById(@PathVariable("id") String userId, HttpServletRequest request) {
         RegisteredUser user = this.userService.getUserById(Long.parseLong(userId));
         ModelAndView mav = new ModelAndView();
 

@@ -64,12 +64,13 @@ public class LoginController {
 
             return mav;
         }
+
         this.userService.save(user);
         this.userService.loginUser(user);
 //        this.registrationSystem.sendConfirmations(user);
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Successfully registered"));
 
-        return new ModelAndView("redirect:/user");
+        return new ModelAndView("redirect:/profile");
     }
 
     @GetMapping(value = "/login")

@@ -2,33 +2,47 @@ package avans.ivh11.mart.demo.Adapter;
 
 import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.LocalJsonAPIConnector;
+import avans.ivh11.mart.demo.Repository.ProductRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Getter
 @Setter
+@Service
 public class LocalJsonAPIProductAdapter implements ProductAdapter {
 
     private LocalJsonAPIConnector localJsonAPI;
 
-    public LocalJsonAPIProductAdapter() {
+    private ProductRepository productRepository;
+
+    @Autowired
+    public LocalJsonAPIProductAdapter(ProductRepository productRepository) {
         this.localJsonAPI = new LocalJsonAPIConnector();
+        this.productRepository = productRepository;
     }
 
     @Override
     public List<Product> getProductList()
     {
+        Iterable<Product> webshopProducts = this.productRepository.findAll();
         JSONArray products = localJsonAPI.getProducts();
 
         List<Product> productList = new ArrayList<>();
 
         for(int i = 0; i < products.length(); i++){
-            productList.add(this.createProduct(products.getJSONObject(i)));
+            JSONObject jsonProduct = products.getJSONObject(i);
+            if (StreamSupport.stream(webshopProducts.spliterator(), false).noneMatch(x -> x.getName().equals(StringUtils.abbreviate(jsonProduct.getString("naam"), 50)))) {
+                productList.add(this.createProduct(jsonProduct));
+            }
         }
 
         return productList;
