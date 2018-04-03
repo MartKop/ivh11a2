@@ -75,6 +75,14 @@ public class ShoppingCartController {
         }
     }
 
+    @GetMapping("/shoppingCart/quantity")
+    @ResponseBody
+    public Float updateQuantity(@RequestParam Long productId, @RequestParam int quantity){
+        Product product = productRepository.findOne(productId);
+        shoppingCartService.updateQuantity(product, quantity);
+        return shoppingCartService.getTotal();
+    }
+
 
     @GetMapping("/shoppingCart/bow")
     @ResponseBody

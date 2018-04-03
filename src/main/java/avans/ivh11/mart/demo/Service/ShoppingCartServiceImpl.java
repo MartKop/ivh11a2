@@ -18,12 +18,12 @@ import java.util.*;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    
+
     @Autowired
     private BaseOrderRepository baseOrderRepository;
 
     @Autowired
-    private  BaseOrderRepository<OrderOption> orderOptionRepository;
+    private BaseOrderRepository<OrderOption> orderOptionRepository;
 
     private Map<Product, Integer> products = new HashMap<>();
 
@@ -76,7 +76,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void checkout(BaseUser user) {
         List<OrderRow> orderRows = new LinkedList<>();
         Order order = new Order();
-        for(Map.Entry<Product, Integer> pair : products.entrySet()) {
+        for (Map.Entry<Product, Integer> pair : products.entrySet()) {
             OrderRow row = new OrderRow();
             row.setProduct(pair.getKey());
             row.setQuantity(pair.getValue());
@@ -87,12 +87,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         order.setUser(user);
         order.setOrderState(new OrderPendingState(order));
         baseOrderRepository.save(order);
-        if(bow){
-            OrderOption bow = new OrderOption(order, "WrappingPaper", 1.00F, user);
+        if (bow) {
+            OrderOption bow = new OrderOption(order, "Bow", 1.00F, user);
             orderOptionRepository.save(bow);
-
         }
-        if(wrappingPaper){
+        if (wrappingPaper) {
             OrderOption wrapping = new OrderOption(order, "Wrapping paper", 2.50F, user);
             orderOptionRepository.save(wrapping);
         }
@@ -113,13 +112,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             total += entry.getKey().getPrice() * (new Float(entry.getValue()));
         }
-        if(wrappingPaper){
+        if (wrappingPaper) {
             total += 2.50f;
         }
-        if(bow){
-            total+=1.00f;
+        if (bow) {
+            total += 1.00f;
         }
         return total;
+    }
+
+    @Override
+    public void updateQuantity(Product product, int quantity) {
+            if(products.containsKey(product)){
+                products.replace(product, quantity);
+            }
     }
 
     public boolean isWrappingPaper() {

@@ -1,5 +1,6 @@
 package avans.ivh11.mart.demo.Domain;
 
+import avans.ivh11.mart.demo.Domain.OrderState.OrderSentState;
 import avans.ivh11.mart.demo.Domain.OrderState.OrderState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,13 +23,14 @@ public class Order extends BaseOrder {
     @JoinColumn(name="user_id", nullable=false)
     private BaseUser user;
 
-    @OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderRow> products = new ArrayList<>();
 
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.PERSIST,
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = true)
     public OrderState orderState;
+
 
     public OrderState getOrderState() {
         return orderState;
@@ -46,7 +48,7 @@ public class Order extends BaseOrder {
 
     public void SentOrder(){
         if(orderState.canShip(this)){
-            orderState.orderSentState(this);
+            this.setOrderState(new OrderSentState(this));
         }
     }
 

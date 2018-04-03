@@ -53,14 +53,14 @@ public class OrderController {
 
 
     @GetMapping("/cancel/{id}")
-    public String cancelOrder(@PathVariable("id") Long orderId, RedirectAttributes redirect){
+    public String cancelOrder(@PathVariable("id") Long orderId, RedirectAttributes redirect) {
         Order order = orderService.getOrderDetails(orderId);
-        if(order.canCancel()){
+        if (order.canCancel()) {
             orderService.cancelOrder(order);
             redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Order is gecancelled."));
             return "redirect:/user/" + order.getUser().getId();
-        }else{
-            redirect.addFlashAttribute("flash", this.flashService.createFlash("error", "Kan order niet cancellen op dit moment, Wacht op volgende status."));
+        } else {
+            redirect.addFlashAttribute("flash", this.flashService.createFlash("danger", "Kan order niet cancellen op dit moment, Wacht op volgende status."));
             return "redirect:/order/" + order.getId();
         }
     }
