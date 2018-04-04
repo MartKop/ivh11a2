@@ -123,7 +123,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return total;
     }
 
-    @Override
     public void updateQuantity(Product product, int quantity) {
             if(products.containsKey(product)){
                 products.replace(product, quantity);
