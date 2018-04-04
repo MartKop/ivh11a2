@@ -36,16 +36,16 @@
         <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-12" style="margin-bottom: 10px;">
-                    <a class="btn btn-primary btn-sm" th:href="@{/user/}">Gebruikers</a>
+                    <a class="btn btn-primary btn-sm" th:href="@{/admin/user/}">Gebruikers</a>
                 </div>
 
                 <div class="col-sm-12" style="margin-bottom: 10px;">
-                    <a class="btn btn-warning btn-sm" th:href="@{/profile/{id}/edit(id=${user.id})}">Wijzig gebruiker</a>
+                    <a class="btn btn-warning btn-sm" th:href="@{{id}/edit(id=${user.id})}">Wijzig gebruiker</a>
                 </div>
 
                 <div class="col-sm-12" style="margin-bottom: 10px;">
                     <a class="btn btn-danger btn-sm" data-toggle="modal" th:attr="data-target='#myModal'+${user.id}">Verwijder gebruiker</a>
-                    <div th:include="fragments :: modal(${'user'}, ${user.id})"></div>
+                    <div th:include="fragments :: Usermodal(${'user'}, ${user.id}, '/admin/user/'+ ${user.id} +'/delete')"></div>
                 </div>
             </div>
         </div>

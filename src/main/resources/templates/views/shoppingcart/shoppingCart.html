@@ -20,7 +20,7 @@
         </div>
         <div class="row panel-body">
             <div th:inline="text" class="col-md-2">Prijs: € [[${product.getKey().price}]] </div>
-            <div th:inline="text" class="col-md-8">Aantal: [[${product.getValue()}]]</div>
+            <div th:inline="text" class="col-md-8"><input class="quantity" th:id="${product.getKey().id}" min="0" th:type="number"  onkeypress="restrictMinus(event);" th:value="${product.getValue()}"/></div>
             <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${product.getKey().id})}" class="col-md-1">
                 <button type="button" class="btn btn-primary" th:text="Verwijderen"></button>
             </a>
@@ -76,8 +76,33 @@
             });
         });
 
+        $('.quantity').on('paste', function(e){
+           e.preventDefault();
+        });
 
-    })
+        $('.quantity').on('change', function(e){
+            var inputKeyCode = e.keyCode ? e.keyCode : e.which;
+            if (inputKeyCode != null) {
+                if (inputKeyCode == 45 || inputKeyCode == 101) e.preventDefault();
+            }
+           var product = $(this).attr('id');
+           var quantity = this.value;
+            $.ajax({
+               url: "/shoppingCart/quantity",
+               data: {"productId": product, "quantity" : quantity},
+               success: function(data){
+                   $('#totalPrice').html("Totaal: € " + data);
+               }
+            });
+        });
+
+    });
+    function restrictMinus(e) {
+        var inputKeyCode = e.keyCode ? e.keyCode : e.which;
+        if (inputKeyCode != null) {
+            if (inputKeyCode == 45 || inputKeyCode == 101) e.preventDefault();
+        };
+    };
 </script>
 </body>
 </html>

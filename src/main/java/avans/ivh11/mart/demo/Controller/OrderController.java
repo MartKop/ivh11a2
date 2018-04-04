@@ -57,7 +57,7 @@ public class OrderController {
         if (order.canCancel()) {
             orderService.cancelOrder(order);
             redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Bestelling is gecancelled."));
-            return "redirect:/user/" + order.getUser().getId();
+            return "redirect:/profile/" + order.getUser().getId();
         } else {
             redirect.addFlashAttribute("flash", this.flashService.createFlash("error", "Kan order niet cancellen op dit moment, Wacht op volgende status."));
             return "redirect:/order/" + order.getId();

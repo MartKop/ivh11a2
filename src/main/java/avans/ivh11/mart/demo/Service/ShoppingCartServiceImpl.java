@@ -90,9 +90,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         order.setUser(user);
         baseOrderRepository.save(order);
         if (bow) {
-            OrderOption bow = new OrderOption(order, "WrappingPaper", 1.00F, user);
+            OrderOption bow = new OrderOption(order, "Bow", 1.00F, user);
             orderOptionRepository.save(bow);
-
         }
         if (wrappingPaper) {
             OrderOption wrapping = new OrderOption(order, "Wrapping paper", 2.50F, user);
@@ -122,6 +121,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             total += 1.00f;
         }
         return total;
+    }
+
+    @Override
+    public void updateQuantity(Product product, int quantity) {
+            if(products.containsKey(product)){
+                products.replace(product, quantity);
+            }
     }
 
     public boolean isWrappingPaper() {

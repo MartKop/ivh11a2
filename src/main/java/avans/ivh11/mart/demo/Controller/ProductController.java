@@ -1,19 +1,12 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Domain.Product;
-import avans.ivh11.mart.demo.Domain.Review;
+import avans.ivh11.mart.demo.Domain.*;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
 
 
 @Controller
@@ -28,7 +21,6 @@ public class ProductController {
     public ProductController() {
 
     }
-
     @GetMapping
     @RequestMapping("/product")
     public ModelAndView list() {

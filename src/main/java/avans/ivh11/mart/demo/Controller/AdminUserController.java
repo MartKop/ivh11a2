@@ -85,7 +85,7 @@ public class AdminUserController {
 
         this.baseUserBaseUserRepository.save(user);
         mav.addObject("user.id", user.getId());
-        mav.setViewName("redirect:/profile/{user.id}");
+        mav.setViewName("redirect:/admin/user/{user.id}");
         redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Nieuwe gebruiker aangemaakt."));
 
         return mav;
@@ -126,8 +126,8 @@ public class AdminUserController {
 
         oldUser.updateBaseUser(user);
         mav.addObject("user.id", user.getId());
-        mav.setViewName("redirect:/profile/{user.id}");
-        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Gebruiker " + user.getId() + " gewijzigd."));
+        mav.setViewName("redirect:/admin/user/{user.id}");
+        redirect.addFlashAttribute("flash", this.flashService.createFlash("success", "Gebruiker " + user.getFirstName() +" "+ user.getLastName() +  " gewijzigd."));
 
         return mav;
     }
@@ -146,7 +146,7 @@ public class AdminUserController {
         mav.addObject("title", "User - List");
         mav.addObject("users", this.baseUserBaseUserRepository.findAll());
         mav.addObject("flash", this.flashService.createFlash("success", "Gebruiker " + id + " verwijderd."));
-        mav.setViewName("redirect:/user/");
+        mav.setViewName("redirect:/admin/user/");
 
         return mav;
     }

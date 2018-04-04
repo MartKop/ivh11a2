@@ -1,6 +1,7 @@
 package avans.ivh11.mart.demo.Controller;
 
 import avans.ivh11.mart.demo.Domain.BaseUser;
+import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,17 +58,23 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/shoppingCart/checkout")
-    public ModelAndView checkout(@ModelAttribute("user") BaseUser unregUser) {
+    public String checkout(@ModelAttribute("user") BaseUser unregUser) {
         if (unregUser.getEmail() != null) {
             shoppingCartService.checkout(unregUser);
-            ModelAndView mav = new ModelAndView("views/product/productOverview");
-            return mav;
+            return "redirect:/productOverview";
         } else {
             BaseUser user = (BaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             shoppingCartService.checkout(user);
-            ModelAndView mav = new ModelAndView("views/product/productOverview");
-            return mav;
+            return "redirect:/profile/" + user.getId();
         }
+    }
+
+    @GetMapping("/shoppingCart/quantity")
+    @ResponseBody
+    public Float updateQuantity(@RequestParam Long productId, @RequestParam int quantity){
+        Product product = productRepository.findOne(productId);
+        shoppingCartService.updateQuantity(product, quantity);
+        return shoppingCartService.getTotal();
     }
 
 
