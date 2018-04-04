@@ -1,5 +1,6 @@
 package avans.ivh11.mart.demo.Config;
 
+import avans.ivh11.mart.demo.Service.PayPalStrategy;
 import avans.ivh11.mart.demo.Service.*;
 import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationEmail;
 import avans.ivh11.mart.demo.Service.ObserverPattern.RegistrationSMS;
@@ -24,9 +25,6 @@ public class Beans {
     }
 
     @Bean
-    public PaymentStrategy paymentStrategy() { return new PayPalPayment(); }
-
-    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -45,6 +43,12 @@ public class Beans {
     public SMSSender sender() {
         return new SMSSender();
     }
+
+    @Bean
+    public PaymentStrategy payPalPayment() { return new PayPalStrategy(); }
+
+    @Bean
+    public PaymentStrategy creditCardPayment() {return new CreditCardStrategy(); }
 
     @Bean
     public JavaMailSender emailSender() {

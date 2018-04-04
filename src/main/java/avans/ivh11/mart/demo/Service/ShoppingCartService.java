@@ -31,4 +31,6 @@ public interface ShoppingCartService {
     void setWrappingPaper(boolean wrappingPaper);
 
     void setBow(boolean bow);
+
+    void clearProducts();
 }

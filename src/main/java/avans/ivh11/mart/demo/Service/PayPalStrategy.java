@@ -1,23 +1,34 @@
 package avans.ivh11.mart.demo.Service;
 
 import com.paypal.api.payments.*;
+import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@Service
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Transactional
-public class PayPalPayment implements PaymentStrategy {
+@Getter
+@Setter
+@NoArgsConstructor
+public class PayPalStrategy extends avans.ivh11.mart.demo.Service.Payment {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+
+    private String price;
+
+    public PayPalStrategy(String price){
+        this.price = price;
+    }
+
+    @Override
     public String pay(String price) {
 
         // Payment ammount
@@ -39,7 +50,7 @@ public class PayPalPayment implements PaymentStrategy {
         payer.setPaymentMethod("paypal");
 
         // Add payment details
-        Payment payment = new Payment();
+        com.paypal.api.payments.Payment payment = new com.paypal.api.payments.Payment();
         payment.setIntent("sale");
         payment.setPayer(payer);
         payment.setTransactions(transactions);

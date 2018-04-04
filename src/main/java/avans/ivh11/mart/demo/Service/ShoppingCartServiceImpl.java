@@ -146,4 +146,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.bow = bow;
     }
 
+    public void clearProducts(){
+        products.clear();
+    }
+
 }

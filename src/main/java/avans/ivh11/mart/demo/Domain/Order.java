@@ -1,6 +1,7 @@
 package avans.ivh11.mart.demo.Domain;
 
 import avans.ivh11.mart.demo.Domain.OrderState.OrderState;
+import avans.ivh11.mart.demo.Service.PayPalStrategy;
 import avans.ivh11.mart.demo.Service.PaymentStrategy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,18 +35,14 @@ public class Order extends BaseOrder implements IOrder {
             fetch = FetchType.LAZY, optional = true)
     private OrderState orderState;
 
-    private PaymentStrategy paymentStrategy;
-
     private Float price;
 
-    public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState,
-                 final PaymentStrategy paymentStrategy) {
+    public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState) {
         this.status = status;
         this.user = user;
         this.created = created;
         this.products = products;
         this.orderState = orderState;
-        this.paymentStrategy = paymentStrategy;
         loadPrice();
     }
 
@@ -85,12 +82,8 @@ public class Order extends BaseOrder implements IOrder {
         return price;
     }
 
-    public void setStrategy(final PaymentStrategy paymentStrategy){
-        this.paymentStrategy = paymentStrategy;
-    }
-
-    public String pay(PayPalStrategy paymentMethod){
-        String amount = getPrice().toString();
-        return paymentMethod.pay(amount);
-    }
+//    public String pay(PayPalStrategy paymentMethod){
+//        String amount = getPrice().toString();
+//        return paymentMethod.pay(amount);
+//    }
 }
