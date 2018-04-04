@@ -1,10 +1,10 @@
 package avans.ivh11.mart.demo.Repository;
 
-import avans.ivh11.mart.demo.Domain.Product;
+import avans.ivh11.mart.demo.Domain.Review;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
 
 @Transactional
-public interface CategoryRepository extends CrudRepository<Product, Long> {
+public interface ReviewRepository extends CrudRepository<Review, Long> {
 }

@@ -13,12 +13,12 @@
         </div>
 
         <div class="col-sm-8">
-            <h2 th:text="${product.photo}"></h2>
+            <img src="" th:src="${product.photo}"/>
         </div>
 
         <div class="col-sm-8">
             <div>
-                <h4 th:text="${product.description}"></h4>
+                <h4 th:utext="${product.description}"></h4>
             </div>
         </div>
 
@@ -37,6 +37,58 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="commentWrapper">
+        <div class="commentTableWrapper">
+            <div th:each="review : ${product.reviews}">
+                <div class="row comment">
+                    <div class="col-sm-2">
+                        <span th:text="${review.rating + ' van de 10'}"></span><br/>
+                        <span th:text="${review.user.getFullName()}"></span><br/>
+                        <span th:text="${'op ' + #dates.format(review.created, 'dd MMMM yyyy')}"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span th:text="${review.comment}"></span>
+                    </div>
+                    <div sec:authorize="isAuthenticated()" class="col-sm-2 pull-right" >
+                        <span th:if="${#authentication.getPrincipal().getId() == review.user.id}">
+                            <a th:href="@{'/comment/product/{id}/delete/{comment_id}'(id=${product.id}, comment_id=${review.id})}">
+                                Verwijder opmerking
+                            </a>
+                        </span>
+                        <span sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:if="${#authentication.getPrincipal().getId() != review.user.id}">
+                            <a th:href="@{'/comment/product/{id}/delete/{comment_id}'(id=${product.id}, comment_id=${review.id})}">
+                                Verwijder opmerking
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <div class="panel panel-default">
+                <h3>Plaats een opmerking</h3>
+                <div class="commentFormFrame">
+                    <form id="form" action="#" th:object="${review}" th:action="@{'/comment/product/{id}/create'(id=${product.id})}" method="post">
+                        <div class="form-group">
+                            <label for="comment">Opmerking</label>
+                            <input type="text" class="form-control" id="comment" th:field="*{comment}"/>
+                            <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment error</p>
+
+                            <label for="rating">Beoordeling van het product (van 1 tot 10)</label>
+                            <input type="range" id="rating" th:field="*{rating}" min="1" max="10" />
+                            <p th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Rating Error</p>
+
+                            <div class="float-right mt-2">
+                                <button type="submit" class="btn btn-primary">Plaats</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div>

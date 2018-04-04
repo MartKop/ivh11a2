@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Service.TemplatePattern;
+package avans.ivh11.mart.demo.Service.Newsletter;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
@@ -38,16 +38,27 @@ public abstract class NewsletterFramework {
         return this.sendingNewsletter(recipients, newsletter);
     }
 
+    /**
+     * find all Registered users
+     *
+     * @return
+     */
     private Iterable<RegisteredUser> getAllUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * filters registered users who do not wish to receive a newsletter
+     *
+     * @param users
+     * @return
+     */
     private List<RegisteredUser> getAllRecipients(Iterable<RegisteredUser> users) {
         List<RegisteredUser> list = new ArrayList<>();
         for (RegisteredUser user : users) {
-           if (user.isSubscribeToNewsletter()) {
-               list.add(user);
-           }
+            if (user.isSubscribeToNewsletter()) {
+                list.add(user);
+            }
         }
 
         return list;

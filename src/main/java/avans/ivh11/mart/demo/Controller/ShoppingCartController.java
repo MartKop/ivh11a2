@@ -4,6 +4,7 @@ import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.Order;
 import avans.ivh11.mart.demo.Domain.OrderOption;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
+import avans.ivh11.mart.demo.Domain.Product;
 import avans.ivh11.mart.demo.Repository.ProductRepository;
 import avans.ivh11.mart.demo.Service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 public class ShoppingCartController {
@@ -25,6 +27,7 @@ public class ShoppingCartController {
     private BaseOrderRepository<Order> orderRepository;
     @Autowired
     private BaseOrderRepository<OrderOption> orderOptionRepository;
+
 
 
     @GetMapping("/shoppingCart")
@@ -50,37 +53,32 @@ public class ShoppingCartController {
         return shoppingCart();
     }
 
-    @GetMapping("/shoppingCart/goToPayment")
-    public ModelAndView goToPayment(){
-        if(shoppingCartService.getSize() > 0){
-            ModelAndView mav = new ModelAndView();
-            mav.addObject("products", shoppingCartService.getProductsInCart());
-            mav.addObject("total", shoppingCartService.getTotal());
-            mav.setViewName("views/payment/paymentSelection");
-            return mav;
-        }else{
-            return shoppingCart();
-        }
-    }
-
     @GetMapping("/shoppingCart/checkout")
     public ModelAndView checkout(@ModelAttribute("user") BaseUser unregUser) {
         if(unregUser.getEmail() != null){
-            shoppingCartService.checkout(unregUser);
-            ModelAndView mav = new ModelAndView("views/payment/payment");
+            long id = shoppingCartService.checkout(unregUser);
+            ModelAndView mav = new ModelAndView("redirect:/payment/" + String.valueOf(id));
             return mav;
-        }else {
+        } else {
             BaseUser user = (BaseUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            shoppingCartService.checkout(user);
-            ModelAndView mav = new ModelAndView("views/payment/payment");
+            long id = shoppingCartService.checkout(user);
+            ModelAndView mav = new ModelAndView("redirect:/payment/" + String.valueOf(id));
             return mav;
         }
+    }
+
+    @GetMapping("/shoppingCart/quantity")
+    @ResponseBody
+    public Float updateQuantity(@RequestParam Long productId, @RequestParam int quantity){
+        Product product = productRepository.findOne(productId);
+        shoppingCartService.updateQuantity(product, quantity);
+        return shoppingCartService.getTotal();
     }
 
 
     @GetMapping("/shoppingCart/bow")
     @ResponseBody
-    public Float updateBow(@RequestParam boolean checked){
+    public Float updateBow(@RequestParam boolean checked) {
         shoppingCartService.setBow(checked);
         return shoppingCartService.getTotal();
     }
@@ -94,3 +92,7 @@ public class ShoppingCartController {
 
 
 }
+
+
+
+

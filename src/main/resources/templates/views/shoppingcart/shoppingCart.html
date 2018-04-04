@@ -4,12 +4,14 @@
 <body>
 <div class="container">
     <div th:include="fragments :: header"></div>
+    <div th:fragment="form">
 
     <h1>Winkelwagen</h1>
+
     <div class="row">
-    <div class="col-sm-12">
-        <a th:href="@{/productOverview}" class="btn btn-default">Terug naar producten overzicht</a>
-    </div>
+        <div class="col-sm-12">
+            <a th:href="@{/productOverview}" class="btn btn-default">Terug naar producten overzicht</a>
+        </div>
     </div>
     <div class="panel-default well" th:each="product : ${products.entrySet()}">
         <div class="panel-heading">
@@ -18,7 +20,7 @@
         </div>
         <div class="row panel-body">
             <div th:inline="text" class="col-md-2">Prijs: € [[${product.getKey().price}]] </div>
-            <div th:inline="text" class="col-md-8">Aantal: [[${product.getValue()}]]</div>
+            <div th:inline="text" class="col-md-8"><input class="quantity" th:id="${product.getKey().id}" min="0" th:type="number"  onkeypress="restrictMinus(event);" th:value="${product.getValue()}"/></div>
             <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${product.getKey().id})}" class="col-md-1">
                 <button type="button" class="btn btn-primary" th:text="Verwijderen"></button>
             </a>
@@ -26,49 +28,85 @@
         <br></br>
     </div>
 
-
     <div class="row panel-body">
         <h4 class="col-md-11">Versiering opties:</h4>
         <div class="col-md-11">
-            <label>Cadeaupapier: + €2,50 </label><input type="checkbox"/>
+            <label>Cadeaupapier: + €2,50 </label><input type="checkbox" id="wrapping" th:checked="${wrapping}"/>
         </div>
         <div class="col-md-11">
-            <label>Strikje: + € 1,00</label><input type="checkbox"/>
+            <label>Strikje: + € 1,00</label><input type="checkbox" id="bow" th:checked="${bow}"/>
         </div>
     </div>
 
-
-    <div class="row panel-body">
+    <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
         <h2 class="col-md-11" th:text="${'Totaal: € ' + total}"></h2>
-        <a th:href="@{'/payment'}" class="col-md-1">
-            <button type="button" class="btn btn-danger" th:text="Betalen"></button>
+        <a th:case="${false}" th:href="@{'/registrationUnregistered'}" class="col-md-1">
+            <button type="button" class="btn btn-primary" th:text="Betalen"></button>
         </a>
+        <a th:case="${true}" th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
+            <button type="button" class="btn btn-primary" th:text="Betalen"></button>
+        </a>
+        <span th:case="*">Should never happen, but who knows...</span>
     </div>
 
-
-
+    </div>
 </div>
+
 <div th:include="fragments :: scripts"></div>
 
-<!--<script>-->
-    <!--$(document).ready(function(){-->
+<script>
+    $(document).ready(function(){
 
+        $('#wrapping').click(function(){
+            var checked = this.checked;
+            $.ajax({
+                url: "/shoppingCart/wrapping",
+                data: { "checked": checked},
+                success: function(data){
+                    $('#totalPrice').html("Totaal: € "  + data);
+                }
+            });
 
-        <!--$('#decorationOrder').dialog({-->
-            <!--autoOpen: false,-->
-            <!--height: 200,-->
-            <!--width: 200,-->
-            <!--resizable: false,-->
-            <!--modal: true-->
-        <!--});-->
+        });
 
-        <!--$('#decorationDialog').click(function(){-->
-            <!--$('#decorationOrder').dialog('open');-->
-        <!--});-->
+        $('#bow').click(function(){
+            var checked = this.checked;
+            $.ajax({
+                url: "/shoppingCart/bow",
+                data: { "checked": checked},
+                success: function(data){
+                    $('#totalPrice').html("Totaal: € "  + data);
+                }
+            });
+        });
 
+        $('.quantity').on('paste', function(e){
+           e.preventDefault();
+        });
 
+        $('.quantity').on('change', function(e){
+            var inputKeyCode = e.keyCode ? e.keyCode : e.which;
+            if (inputKeyCode != null) {
+                if (inputKeyCode == 45 || inputKeyCode == 101) e.preventDefault();
+            }
+           var product = $(this).attr('id');
+           var quantity = this.value;
+            $.ajax({
+               url: "/shoppingCart/quantity",
+               data: {"productId": product, "quantity" : quantity},
+               success: function(data){
+                   $('#totalPrice').html("Totaal: € " + data);
+               }
+            });
+        });
 
-    <!--})-->
-<!--</script>-->
+    });
+    function restrictMinus(e) {
+        var inputKeyCode = e.keyCode ? e.keyCode : e.which;
+        if (inputKeyCode != null) {
+            if (inputKeyCode == 45 || inputKeyCode == 101) e.preventDefault();
+        };
+    };
+</script>
 </body>
 </html>

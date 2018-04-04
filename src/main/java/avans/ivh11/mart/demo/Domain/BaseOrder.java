@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Getter
 @Setter
@@ -17,8 +18,10 @@ import java.io.Serializable;
 public abstract class BaseOrder implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    public abstract Float getPrice();
+    private Calendar created = Calendar.getInstance();
+
+    public abstract float price();
 }

@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Service.ObserverPattern;
+package avans.ivh11.mart.demo.Service.Registration;
 
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import org.springframework.stereotype.Service;

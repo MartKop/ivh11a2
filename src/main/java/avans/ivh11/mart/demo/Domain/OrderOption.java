@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
@@ -14,9 +17,11 @@ import javax.persistence.*;
 public class OrderOption extends DecoratedOrder {
 
     private String name;
-    private Float price;
+
+    private float price;
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
+
     private BaseUser user;
 
     public OrderOption(BaseOrder order, String name, float price, BaseUser user) {
@@ -27,7 +32,12 @@ public class OrderOption extends DecoratedOrder {
     }
 
     @Override
+    public float price() {
+        return price;
+    }
+
+    @Override
     public String toString() {
-        return "Option: " + name +"; " + order;
+        return "Option: " + name + "; " + order;
     }
 }

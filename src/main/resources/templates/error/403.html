@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:replace="fragments :: header"></div>
+
+    <h1>403 - Access denied</h1>
+    <p>Je hebt geen toegang tot deze pagina.
+        Hier <a th:text="hier" th:href="@{/welcome}">hier</a> om naar de home pagina terug te gaan.</p>
+    <p><i><span th:if="${exception}" th:text="${exception}"></span></i></p>
+
+</div>
+<div th:replace="fragments :: scripts"></div>
+</body>
+</html>

@@ -8,6 +8,13 @@ import org.springframework.validation.ObjectError;
 @Service
 public class NewsletterConstraintService {
 
+    /**
+     * checks for constraint violations based on type
+     *
+     * @param bindingResult
+     * @param newsletter
+     * @return
+     */
     public BindingResult newsletterCheck(BindingResult bindingResult, Newsletter newsletter) {
         switch (newsletter.getType()) {
             case "email":
@@ -26,7 +33,11 @@ public class NewsletterConstraintService {
         return bindingResult;
     }
 
-
+    /**
+     * @param bindingResult
+     * @param newsletter
+     * @return
+     */
     private BindingResult doEmail(BindingResult bindingResult, Newsletter newsletter) {
         if (newsletter.getSubject().isEmpty()) {
             bindingResult.addError(
@@ -50,8 +61,13 @@ public class NewsletterConstraintService {
         return bindingResult;
     }
 
+    /**
+     * @param bindingResult
+     * @param newsletter
+     * @return
+     */
     private BindingResult doSMS(BindingResult bindingResult, Newsletter newsletter) {
-        if (newsletter.getBody().length() >= 160 || newsletter.getBody().length() < 5 ) {
+        if (newsletter.getBody().length() >= 160 || newsletter.getBody().length() < 5) {
             bindingResult.addError(
                     new ObjectError(
                             "body",

@@ -1,9 +1,9 @@
 package avans.ivh11.mart.demo.Service;
 
 import avans.ivh11.mart.demo.Domain.*;
-import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
-import avans.ivh11.mart.demo.Repository.ProductRepository;
+import avans.ivh11.mart.demo.Service.BuilderPattern.NewOrderBuilder;
+import avans.ivh11.mart.demo.Service.BuilderPattern.OrderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -13,24 +13,16 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
 
-/**
- * Shopping Cart is implemented with a Map, and as a session bean
- *
- * @author Dusan
- */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private BaseOrderRepository baseOrderRepository;
 
     @Autowired
-    private  BaseOrderRepository<OrderOption> orderOptionRepository;
+    private BaseOrderRepository<OrderOption> orderOptionRepository;
 
     private Map<Product, Integer> products = new HashMap<>();
 
@@ -80,10 +72,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public void checkout(BaseUser user) {
+    public long checkout(BaseUser user) {
+        OrderBuilder ob = new NewOrderBuilder();
+        ob.createNewOrder();
+        Order order = ob.buildOrder();
+
         List<OrderRow> orderRows = new LinkedList<>();
-        Order order = new Order();
-        for(Map.Entry<Product, Integer> pair : products.entrySet()) {
+        for (Map.Entry<Product, Integer> pair : products.entrySet()) {
             OrderRow row = new OrderRow();
             row.setProduct(pair.getKey());
             row.setQuantity(pair.getValue());
@@ -92,14 +87,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         order.setProducts(orderRows);
         order.setUser(user);
-        order.setOrderState(new OrderPendingState(order));
-        baseOrderRepository.save(order);
-        if(bow){
-            OrderOption bow = new OrderOption(order, "WrappingPaper", 1.00F, user);
-            orderOptionRepository.save(bow);
 
+        baseOrderRepository.save(order);
+        if (bow) {
+            OrderOption bow = new OrderOption(order, "Bow", 1.00F, user);
+            orderOptionRepository.save(bow);
         }
-        if(wrappingPaper){
+        if (wrappingPaper) {
             OrderOption wrapping = new OrderOption(order, "Wrapping paper", 2.50F, user);
             orderOptionRepository.save(wrapping);
         }
@@ -107,6 +101,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         bow = false;
         products.clear();
 
+        return order.getId();
     }
 
     @Override
@@ -120,11 +115,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             total += entry.getKey().getPrice() * (new Float(entry.getValue()));
         }
-        if(wrappingPaper){
+        if (wrappingPaper) {
             total += 2.50f;
         }
-        if(bow){
-            total+=1.00f;
+        if (bow) {
+            total += 1.00f;
         }
         return total;
     }
@@ -137,10 +132,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return bow;
     }
 
+    public void updateQuantity(Product product, int quantity) {
+            if(products.containsKey(product)){
+                products.replace(product, quantity);
+            }
+    }
+
     public void setWrappingPaper(boolean wrappingPaper) {
         this.wrappingPaper = wrappingPaper;
     }
-
 
     public void setBow(boolean bow) {
         this.bow = bow;
@@ -149,5 +149,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void clearProducts(){
         products.clear();
     }
+
+
 
 }

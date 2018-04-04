@@ -48,11 +48,11 @@
 								<span sec:authentication="principal.fullName"></span> <!-- PRINCIPAL IS HIER HET USER OBJCECT -->
 							</a>
 							<ul class="dropdown-menu">
-								<li sec:authorize="hasRole('ROLE_USER')"><a href="#">My profile</a></li>
+								<li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{'/profile/{id}'(id=${#authentication.getPrincipal().getId()})}">My profile</a></li>
 								<li><a th:href="@{/logout}">Log out</a></li>
 								<li sec:authorize="hasRole('ROLE_ADMIN')" role="separator" class="divider"></li>
-								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 1</a></li>
-								<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">Admin action 2</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/products/add/bol}">Add Bol products</a></li>
+								<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/products/add/local}">Add Json list</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -101,9 +101,37 @@
 			</div>
 		</div>
 
+
+		<!-- Modal -->
+		<div th:fragment="Usermodal(what, id, url)">
+			<div class="modal fade" th:id="${'myModal' + id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel1" th:text="${'Delete ' + what}">delete object</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p th:text="${'Are you sure you want to delete this ' + what + '?'}"></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondaryy" data-dismiss="modal">cancel</button>
+							<div th:with="deleteUrl=${url}, endpoint=${'/admin/user/'}">
+								<button type="button" class="btn btn-danger"
+										th:onclick="'javascript:sendAjaxDeleteRequest(\'' + ${deleteUrl} + '\',\'' + ${endpoint} +  '\',\'' + ${what} + '\');'">delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div th:fragment="scripts">
 			<script>
                 function sendAjaxDeleteRequest(where, endpoint, what) {
+                    console.log("where :" + where + " what: " + what+" endpoint " + endpoint);
                     $.ajax({
                         url: where,
                         type: 'DELETE',

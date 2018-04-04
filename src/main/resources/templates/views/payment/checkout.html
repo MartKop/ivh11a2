@@ -9,11 +9,11 @@
 
     <p th:text="${total}"></p>
 
-    <a th:href="@{'/payment/paypal'}" class="col-md-1">
+    <a th:href="@{/payment/paypal/{id}(id=${id})}" class="col-md-1">
         <button type="button" class="btn btn-danger" th:text="paypal"></button>
     </a>
 
-    <a th:href="@{'/payment/creditcard'}" class="col-md-1">
+    <a th:href="@{/payment/creditcard/{id}(id=${id})}" class="col-md-1">
         <button type="button" class="btn btn-danger" th:text="creditcard"></button>
     </a>
 

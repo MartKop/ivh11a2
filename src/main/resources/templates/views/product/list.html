@@ -5,20 +5,17 @@
 <div class="container">
     <div th:include="fragments :: header"></div>
 
-    <h4>Products : View all</h4>
-    <div>
-        <a class="btn btn-primary btn-sm" th:href="@{/product/create}">Create new Product</a>
-    </div>
+    <h4>Alle producten</h4>
 
     <table class="table table-striped table-hover">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Categories</th>
-            <th>Price</th>
-            <th colspan="2">Options</th>
+            <th>Naam</th>
+            <th>Beschrijving</th>
+            <th>Hoeveelheid</th>
+            <th>Prijs</th>
+            <th colspan="2">Opties</th>
         </tr>
         </thead>
         <tbody>
@@ -26,12 +23,12 @@
             <td th:text="${product.id}">1</td>
             <td><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name} ">Name ...</a></td>
             <td th:text="${product.description}">Description ...</td>
-            <td>Categories ...</td>
+            <td th:text="${product.quantity}">Categories ...</td>
             <td th:text="${'€ ' + product.price}">Created at ...</td>
             <th>
-                <a th:href="@{/product/{id}/edit(id=${product.id})}">
+                <!--<a th:href="@{/product/{id}/edit(id=${product.id})}">-->
                     <span class="glyphicon glyphicon-cog"></span>
-                </a>
+                <!--</a>-->
             </th>
             <th>
                 <a data-toggle="modal" th:attr="data-target='#myModal'+${product.id}">

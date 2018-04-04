@@ -17,7 +17,7 @@ public interface ShoppingCartService {
 
     Map<Product, Integer> getProductsInCart();
 
-    void checkout(BaseUser user);
+    long checkout(BaseUser user);
 
     int getSize();
 
@@ -33,4 +33,6 @@ public interface ShoppingCartService {
     void setBow(boolean bow);
 
     void clearProducts();
+
+    void updateQuantity(Product product, int quantity);
 }

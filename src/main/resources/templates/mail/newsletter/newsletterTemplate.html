@@ -1,23 +1,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<p th:text="${'hello ' + name}">
-    Hello, Peter Static!
-</p>
-<p th:if="${name.length() gt 10}">
-    Wow! You've got a long name (more than 10 chars)! <br />
+<p th:text="${'Beste ' + user.getFullName() + ','}">
+    Hallo statisch
 </p>
 <p>
-    You have been successfully subscribed to the <b>Fake newsletter</b> on
-    <span th:text="${#dates.format(subscriptionDate)}">28-12-2012</span>
+    We sturen je deze E-mail omdat je hebt aangegeven op de website van IVH11A2 deze te willen ontvangen. Er is nieuwe informatie in deze <b>neppe nieuwsbrief</b>
 </p>
-<p>Your hobbies are:</p>
-<ul th:remove="all-but-first">
-    <li th:each="hobby : ${hobbies}"
-        th:text="${hobby}">Reading</li>
-    <li>Writing</li>
-    <li>Bowling</li>
-</ul>
+
+<p th:text="${newsletter.getBody()}"></p>
+
 <p>
-    Regards, <br />
-    &emsp; <em>The Thymeleaf Team</em>
+    Dit bericht is automatisch verstuurd vanuit een Spring applicatie.
 </p>
 </html>

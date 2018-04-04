@@ -10,19 +10,26 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 class GlobalDefaultExceptionHandler {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
-	@ExceptionHandler(NoHandlerFoundException.class)
-	public ModelAndView handleError404(HttpServletRequest request, Exception e) {
-	    logger.error("404 - page was not found!");
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView handleError404(HttpServletRequest request, Exception e) {
+        logger.error("404 - page was not found!");
 
-		return this.errorValues("error/404", request, e, "Oeps - 404");
-	}
+        return this.errorValues("error/404", request, e, "Oeps - 404");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ModelAndView handleError403(HttpServletRequest request, Exception e) {
+        logger.error("403 - Access Denied!");
+
+        return this.errorValues("error/403", request, e, "Oeps - 403");
+    }
 
     @ExceptionHandler(TemplateEngineException.class)
     public ModelAndView handleThymeleaf(HttpServletRequest request, Exception e) {
@@ -32,8 +39,7 @@ class GlobalDefaultExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView
-    defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
+    public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
         logger.error("5xx - Error!");
         logger.error(e.getMessage());
         if (AnnotationUtils.findAnnotation

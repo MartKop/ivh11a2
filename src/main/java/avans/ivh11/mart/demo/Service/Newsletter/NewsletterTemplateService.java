@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Service.TemplatePattern;
+package avans.ivh11.mart.demo.Service.Newsletter;
 
 import avans.ivh11.mart.demo.Domain.Newsletter;
 import avans.ivh11.mart.demo.Service.FlashService;
@@ -20,6 +20,13 @@ public class NewsletterTemplateService {
     @Autowired
     private FlashService flashService;
 
+    /**
+     * Calling the right type of newsletter
+     *
+     * @param newsletter
+     * @param redirect
+     * @return
+     */
     public RedirectAttributes handleNewsletter(Newsletter newsletter, RedirectAttributes redirect) {
 
         HashMap<String, Object> results = new HashMap<>();

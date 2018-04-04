@@ -1,15 +1,13 @@
 package avans.ivh11.mart.demo.Domain;
 
+import avans.ivh11.mart.demo.Domain.OrderState.OrderSentState;
 import avans.ivh11.mart.demo.Domain.OrderState.OrderState;
-import avans.ivh11.mart.demo.Service.PayPalStrategy;
-import avans.ivh11.mart.demo.Service.PaymentStrategy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import javax.persistence.Entity;
 import java.util.Calendar;
 import java.util.List;
 
@@ -50,19 +48,19 @@ public class Order extends BaseOrder implements IOrder {
         return orderState;
     }
 
-    public boolean canCancel(){
+    public boolean canCancel() {
         return orderState.canCancel(this);
     }
 
-    public void cancelOrder(){
-        if(orderState.canCancel(this)){
+    public void cancelOrder() {
+        if (orderState.canCancel(this)) {
             orderState.cancelOrder(this);
         }
     }
 
     public void SentOrder(){
         if(orderState.canShip(this)){
-            orderState.orderSentState(this);
+            this.setOrderState(new OrderSentState(this));
         }
     }
 
@@ -82,8 +80,8 @@ public class Order extends BaseOrder implements IOrder {
         return price;
     }
 
-//    public String pay(PayPalStrategy paymentMethod){
-//        String amount = getPrice().toString();
-//        return paymentMethod.pay(amount);
-//    }
+    public float price() {
+        this.loadPrice();
+        return this.price;
+    }
 }

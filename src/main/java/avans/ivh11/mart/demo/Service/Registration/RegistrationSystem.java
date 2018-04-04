@@ -1,4 +1,4 @@
-package avans.ivh11.mart.demo.Service.ObserverPattern;
+package avans.ivh11.mart.demo.Service.Registration;
 
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 
@@ -13,7 +13,7 @@ public class RegistrationSystem {
     }
 
     public void sendConfirmations(RegisteredUser user) {
-        for (Enumeration e = listeners.elements(); e.hasMoreElements();) {
+        for (Enumeration e = listeners.elements(); e.hasMoreElements(); ) {
             ((RegistrationListener) e.nextElement()).sendRegistrationConfirmation(user);
         }
     }
