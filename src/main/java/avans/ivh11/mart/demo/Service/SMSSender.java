@@ -11,15 +11,15 @@ public class SMSSender {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(SMSSender.class);
 
     //THESE ARE PRODUCTION CREDENTIALS
-//    public static final String ACCOUNT_SID = "ACca192ebce23f2dffed78bb23e9ddbbf3";
-//    public static final String FROM_VALID = "+3197014200826";
-//    public static final String AUTH_TOKEN = "289ac7db647dd82b5cf957311d55c428";
+    public static final String ACCOUNT_SID = "ACca192ebce23f2dffed78bb23e9ddbbf3";
+    public static final String FROM_VALID = "+3197014200826";
+    public static final String AUTH_TOKEN = "289ac7db647dd82b5cf957311d55c428";
     private static final String TO = "+31634888673";
 
     //THESE ARE TEST CREDENTIALS
-    private static final String ACCOUNT_SID = "AC994964b3d9e7aed3be62600c6a0943f6";
-    private static final String AUTH_TOKEN = "e2bc0065642db0096b7b18b455361031";
-    private static final String FROM_VALID = "+15005550006";
+//    private static final String ACCOUNT_SID = "AC994964b3d9e7aed3be62600c6a0943f6";
+//    private static final String AUTH_TOKEN = "e2bc0065642db0096b7b18b455361031";
+//    private static final String FROM_VALID = "+15005550006";
 //    public static final String FROM_INVALID = "+15005550001";
 //    public static final String FROM_SMS_INCAPABLE = "+15005550007";
 //    public static final String FROM_FULL_QUEUE = "+15005550008";
