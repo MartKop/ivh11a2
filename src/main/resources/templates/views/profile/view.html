@@ -66,11 +66,11 @@
                         </tr>
                         </thead>
                         <tbody th:each="order : ${user.getOrders()}">
-                        <!--<tr th:if="!${checker.isOrderOption(order)}">-->
-                        <tr th:if="${order.orderState != null}">
+                        <tr th:if="!${checker.isOrderOption(order)}">
+                        <!--<tr th:if="${order.orderState != null}">-->
                             <td><a th:href="@{/order/{id}(id=${order.id})}" th:text="${order.id}"></a></td>
                             <td th:text="${#dates.format(order.created, 'dd-MMM-yyyy')}"></td>
-                            <td th:text="${order.orderState.toString()}"></td>
+                            <td th:text="${order.orderState == null ? 'dit hoort bij bestelling ' + order.id : order.orderState.toString()}"></td>
                         </tr>
                         </tbody>
                     </table>

@@ -4,6 +4,7 @@ import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.RegisteredUser;
 import avans.ivh11.mart.demo.Repository.BaseUserRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
+import avans.ivh11.mart.demo.Service.TypeChecker;
 import avans.ivh11.mart.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -33,6 +34,9 @@ public class UserProfileController {
     @Autowired
     private FlashService flashService;
 
+    @Autowired
+    private TypeChecker typeChecker;
+
 
     @GetMapping(value = "")
     public ModelAndView view() {
@@ -41,6 +45,7 @@ public class UserProfileController {
 
         mav.addObject("title", "Profiel - " + user.getFullName());
         mav.addObject("user", user);
+        mav.addObject("checker", this.typeChecker);
         mav.setViewName("views/profile/view");
 
         return mav;
@@ -59,6 +64,7 @@ public class UserProfileController {
 
         mav.addObject("title", "Profiel - " + user.getFullName());
         mav.addObject("user", user);
+        mav.addObject("checker", this.typeChecker);
         mav.setViewName("views/profile/view");
 
         return mav;
