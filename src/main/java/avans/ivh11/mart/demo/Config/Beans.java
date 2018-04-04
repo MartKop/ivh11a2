@@ -55,8 +55,8 @@ public class Beans {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("in-v3.mailjet.com");
         javaMailSender.setPort(587);
-        javaMailSender.setUsername("9b64f11f41684523c392969e5e1ace2c");
-        javaMailSender.setPassword("a1b38108c24652320dc4ff427e45e37d");
+        javaMailSender.setUsername("090932d25e2f525715226729438e6c9e");
+        javaMailSender.setPassword("ce387831b0760bfc431f5062eb004f83");
         javaMailSender.setJavaMailProperties(this.javaMailProperties());
 
         return javaMailSender;

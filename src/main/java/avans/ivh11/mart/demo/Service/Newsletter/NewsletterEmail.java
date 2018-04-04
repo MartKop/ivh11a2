@@ -45,7 +45,7 @@ public class NewsletterEmail extends NewsletterFramework {
 
                 MimeMessage message = emailSender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message);
-                helper.setFrom(new InternetAddress("mkop@avans.nl", "IVH11A2"));
+                helper.setFrom(new InternetAddress("mart-k15@hotmail.com", "IVH11A2"));
                 helper.setTo(new InternetAddress(user.getEmail(), user.getFullName()));
                 helper.setSubject(newsletter.getSubject());
                 helper.setText(textContent, true);

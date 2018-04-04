@@ -44,9 +44,8 @@ public class RegistrationEmail implements RegistrationListener {
 
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom(new InternetAddress("mkop@avans.nl", "Test Registration"));
-            helper.setTo(new InternetAddress("mart-k15@hotmail.com", "Martyy"));
-//                helper.setTo(new InternetAddress(user.getEmail(), user.getFullname()));
+            helper.setFrom(new InternetAddress("mart-k15@hotmail.com", "Test Registration"));
+            helper.setTo(new InternetAddress(user.getEmail(), user.getFullName()));
             helper.setSubject("Registratie webshop IVH11A2");
             helper.setText(textContent, true);
 
