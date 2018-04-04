@@ -25,7 +25,7 @@
         <tbody>
         <tr th:each="user : ${users}">
             <td th:text="${user.id}">1</td>
-            <td><a th:href="@{/{id}(id=${user.id})}" th:text="${user.firstName} + ' ' + ${user.infix != null ? user.infix + ' ':''} + ${user.lastName}">Name ...</a></td>
+            <td><a th:href="@{/admin/user/{id}(id=${user.id})}" th:text="${user.firstName} + ' ' + ${user.infix != null ? user.infix + ' ':''} + ${user.lastName}">Name ...</a></td>
             <td th:text="${user.email}">Phone ...</td>
             <td th:text="${user.phone}">Email ...</td>
             <td th:text="${user.dateOfBirth}">Date of Birth ...</td>
@@ -40,7 +40,7 @@
                 <a data-toggle="modal" th:attr="data-target='#myModal'+${user.id}">
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
-                <div th:include="fragments :: modal(${'user'}, ${user.id})"></div>
+                <div th:include="fragments :: Usermodal(${'user'}, ${user.id}, '/admin/user/'+ ${user.id} +'/delete')"></div>
             </th>
         </tr>
         </tbody>
