@@ -1,14 +1,13 @@
 package avans.ivh11.mart.demo.Config;
 
+
+import avans.ivh11.mart.demo.Service.*;
 import avans.ivh11.mart.demo.Service.Newsletter.NewsletterEmail;
 import avans.ivh11.mart.demo.Service.Newsletter.NewsletterFramework;
 import avans.ivh11.mart.demo.Service.Newsletter.NewsletterSMS;
 import avans.ivh11.mart.demo.Service.Registration.RegistrationEmail;
 import avans.ivh11.mart.demo.Service.Registration.RegistrationSMS;
 import avans.ivh11.mart.demo.Service.Registration.RegistrationSystem;
-import avans.ivh11.mart.demo.Service.SMSSender;
-import avans.ivh11.mart.demo.Service.ShoppingCartService;
-import avans.ivh11.mart.demo.Service.ShoppingCartServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -44,6 +43,12 @@ public class Beans {
     public SMSSender sender() {
         return new SMSSender();
     }
+
+    @Bean
+    public PaymentStrategy payPalPayment() { return new PayPalStrategy(); }
+
+    @Bean
+    public PaymentStrategy creditCardPayment() {return new CreditCardStrategy(); }
 
     @Bean
     public JavaMailSender emailSender() {

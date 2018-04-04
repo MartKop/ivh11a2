@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div class="container">
+    <div th:include="fragments :: header"></div>
+
+    <h1 th:text="${title}"></h1>
+
+    <p th:text="${total}"></p>
+
+    <a th:href="@{/payment/paypal/{id}(id=${id})}" class="col-md-1">
+        <button type="button" class="btn btn-danger" th:text="paypal"></button>
+    </a>
+
+    <a th:href="@{/payment/creditcard/{id}(id=${id})}" class="col-md-1">
+        <button type="button" class="btn btn-danger" th:text="creditcard"></button>
+    </a>
+
+</div>
+<div th:include="fragments :: scripts"></div>
+</body>
+</html>

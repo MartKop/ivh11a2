@@ -17,9 +17,11 @@ import javax.persistence.ManyToOne;
 public class OrderOption extends DecoratedOrder {
 
     private String name;
+
     private float price;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+
     private BaseUser user;
 
     public OrderOption(BaseOrder order, String name, float price, BaseUser user) {

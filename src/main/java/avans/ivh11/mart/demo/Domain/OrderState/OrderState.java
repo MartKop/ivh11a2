@@ -26,7 +26,6 @@ public abstract class OrderState implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     public OrderState(Order order) {
         this.order = order;
     }

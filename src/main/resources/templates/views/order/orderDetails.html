@@ -44,9 +44,13 @@
             </div>
         </div>
 
+
         <div class="col-lg-6">
             <div>
                 <a th:href="@{/order/cancel/{id}(id=${order.id})}" class="btn btn-warning">Cancel order</a>
+            </div>
+            <div th:if="${order.getOrderState() != null and order.orderState.toString() == 'Pending'}">
+                <a th:href="@{/payment/{id}(id=${order.id})}" class="btn btn-success">Betaal order</a>
             </div>
         </div>
 

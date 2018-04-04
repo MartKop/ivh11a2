@@ -7,15 +7,7 @@
 
     <div class="row">
         <div class="col-lg-offset-1">
-        <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-            <a th:case="${false}" th:href="@{'/registrationUnregistered'}" class="col-md-1">
-                <button type="button" class="btn btn-primary" th:text="Paypal"></button>
-            </a>
-            <a th:case="${true}" th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
-                <button type="button" class="btn btn-primary" th:text="Paypal"></button>
-            </a>
-            <span th:case="*">Should never happen, but who knows...</span>
-        </div>
+
         </div>
         <!--<div class="col-lg-6">-->
             <!--<label>Paypal</label>-->

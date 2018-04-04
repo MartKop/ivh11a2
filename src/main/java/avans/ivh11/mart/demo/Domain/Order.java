@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Getter
@@ -15,26 +16,36 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue(value = "order")
-public class Order extends BaseOrder {
+public class Order extends BaseOrder implements IOrder {
 
     private String status;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name="user_id", nullable=false)
     private BaseUser user;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = true)
-    public OrderState orderState;
+    private Calendar created = Calendar.getInstance();
 
     @OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "order")
     private List<OrderRow> products = new ArrayList<>();
 
-    public OrderState getOrderState() {
-        return orderState;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = true)
+    private OrderState orderState;
+
+    private Float price;
+
+    public Order(String status, BaseUser user, Calendar created, List<OrderRow> products, OrderState orderState) {
+        this.status = status;
+        this.user = user;
+        this.created = created;
+        this.products = products;
+        this.orderState = orderState;
+        loadPrice();
     }
 
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
+    public OrderState getOrderState() {
+        return orderState;
     }
 
     public boolean canCancel() {
@@ -53,8 +64,24 @@ public class Order extends BaseOrder {
         }
     }
 
-    @Override
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
+    }
+
+    private void loadPrice(){
+        Float price = 0.0f;
+        for (OrderRow product : products) {
+            price += product.getProduct().getPrice() * product.getQuantity();
+        }
+        this.price = price;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
     public float price() {
-        return 0;
+        this.loadPrice();
+        return this.price;
     }
 }

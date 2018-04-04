@@ -130,6 +130,12 @@
 			<artifactId>twilio</artifactId>
 			<version>7.17.0</version>
 		</dependency>
+		<!-- PAYPAL SDK -->
+		<dependency>
+			<groupId>com.paypal.sdk</groupId>
+			<artifactId>rest-api-sdk</artifactId>
+			<version>LATEST</version>
+		</dependency>
 	</dependencies>
 
 

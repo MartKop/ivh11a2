@@ -1,7 +1,6 @@
 package avans.ivh11.mart.demo.Service;
 
 import avans.ivh11.mart.demo.Domain.*;
-import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
 import avans.ivh11.mart.demo.Service.BuilderPattern.NewOrderBuilder;
 import avans.ivh11.mart.demo.Service.BuilderPattern.OrderBuilder;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
-
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -29,6 +27,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private Map<Product, Integer> products = new HashMap<>();
 
     private boolean wrappingPaper, bow;
+
 
     /**
      * If product is in the map just increment quantity by 1.
@@ -73,7 +72,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public void checkout(BaseUser user) {
+    public long checkout(BaseUser user) {
         OrderBuilder ob = new NewOrderBuilder();
         ob.createNewOrder();
         Order order = ob.buildOrder();
@@ -88,6 +87,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         order.setProducts(orderRows);
         order.setUser(user);
+
         baseOrderRepository.save(order);
         if (bow) {
             OrderOption bow = new OrderOption(order, "Bow", 1.00F, user);
@@ -101,6 +101,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         bow = false;
         products.clear();
 
+        return order.getId();
     }
 
     @Override
@@ -123,25 +124,32 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return total;
     }
 
-    public void updateQuantity(Product product, int quantity) {
-            if(products.containsKey(product)){
-                products.replace(product, quantity);
-            }
-    }
-
     public boolean isWrappingPaper() {
         return wrappingPaper;
-    }
-
-    public void setWrappingPaper(boolean wrappingPaper) {
-        this.wrappingPaper = wrappingPaper;
     }
 
     public boolean isBow() {
         return bow;
     }
 
+    public void updateQuantity(Product product, int quantity) {
+            if(products.containsKey(product)){
+                products.replace(product, quantity);
+            }
+    }
+
+    public void setWrappingPaper(boolean wrappingPaper) {
+        this.wrappingPaper = wrappingPaper;
+    }
+
     public void setBow(boolean bow) {
         this.bow = bow;
     }
+
+    public void clearProducts(){
+        products.clear();
+    }
+
+
+
 }
