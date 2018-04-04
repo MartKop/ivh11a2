@@ -3,6 +3,8 @@ package avans.ivh11.mart.demo.Service;
 import avans.ivh11.mart.demo.Domain.*;
 import avans.ivh11.mart.demo.Domain.OrderState.OrderPendingState;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
+import avans.ivh11.mart.demo.Service.BuilderPattern.NewOrderBuilder;
+import avans.ivh11.mart.demo.Service.BuilderPattern.OrderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -72,8 +74,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public void checkout(BaseUser user) {
+        OrderBuilder ob = new NewOrderBuilder();
+        ob.createNewOrder();
+        Order order = ob.buildOrder();
+
         List<OrderRow> orderRows = new LinkedList<>();
-        Order order = new Order();
         for (Map.Entry<Product, Integer> pair : products.entrySet()) {
             OrderRow row = new OrderRow();
             row.setProduct(pair.getKey());
@@ -83,7 +88,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         order.setProducts(orderRows);
         order.setUser(user);
-        order.setOrderState(new OrderPendingState(order));
         baseOrderRepository.save(order);
         if (bow) {
             OrderOption bow = new OrderOption(order, "WrappingPaper", 1.00F, user);
