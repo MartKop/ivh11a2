@@ -1,16 +1,11 @@
 package avans.ivh11.mart.demo.Controller;
 
-import avans.ivh11.mart.demo.Domain.BaseUser;
 import avans.ivh11.mart.demo.Domain.Order;
-import avans.ivh11.mart.demo.Domain.OrderOption;
 import avans.ivh11.mart.demo.Domain.OrderState.OrderPaidState;
 import avans.ivh11.mart.demo.Repository.OrderStateRepository;
 import avans.ivh11.mart.demo.Service.FlashService;
-import avans.ivh11.mart.demo.Service.PayPalStrategy;
 import avans.ivh11.mart.demo.Repository.BaseOrderRepository;
-import avans.ivh11.mart.demo.Repository.ProductRepository;
-import avans.ivh11.mart.demo.Service.PaymentStrategy;
-import avans.ivh11.mart.demo.Service.ShoppingCartService;
+import avans.ivh11.mart.demo.Service.IPaymentStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PaymentController {
 
     @Autowired
-    private PaymentStrategy payPalPayment;
+    private IPaymentStrategy payPalPayment;
 
     @Autowired
-    private PaymentStrategy creditCardPayment;
+    private IPaymentStrategy creditCardPayment;
 
     @Autowired
     private BaseOrderRepository<Order> orderRepository;

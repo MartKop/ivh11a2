@@ -1,5 +1,5 @@
 package avans.ivh11.mart.demo.Service;
 
-public interface PaymentStrategy {
+public interface IPaymentStrategy {
     String pay(String price);
 }

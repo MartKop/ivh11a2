@@ -45,10 +45,10 @@ public class Beans {
     }
 
     @Bean
-    public PaymentStrategy payPalPayment() { return new PayPalStrategy(); }
+    public IPaymentStrategy payPalPayment() { return new PayPalStrategy(); }
 
     @Bean
-    public PaymentStrategy creditCardPayment() {return new CreditCardStrategy(); }
+    public IPaymentStrategy creditCardPayment() { return new CreditCardStrategy(); }
 
     @Bean
     public JavaMailSender emailSender() {
